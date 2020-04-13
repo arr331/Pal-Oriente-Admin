@@ -1,0 +1,54 @@
+<div class="container">
+  <button type="button" data-toggle="modal" data-target="#modalCreate" class="btn btn-primary"><i class="fa fa-plus"
+      aria-hidden="true"></i> Crear Municipio</button>
+  <button type="button" (click)="listMpio()" class="btn btn-secondary"><i class="fa fa-list" aria-hidden="true"></i>
+    Mostrar municipios</button>
+</div>
+
+<!-- <button (click)="s()">Pruba</button> -->
+
+<div class="container" *ngIf="showList">
+  <ul class="list-group">
+    <li class="list-group-item active">Municipios</li>
+    <li *ngFor="let mpio of listMunicipalities" (click)="showInfo(mpio)" class="list-group-item list-group-item-action">
+      {{mpio.name}}</li>
+  </ul>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div *ngIf="municipality" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Información de {{municipality.name}}</h5>
+      </div>
+      <div class="modal-body">
+        <ul *ngIf="listSitios" class="list-group">
+          <li class="list-group-item list-group-item-action" style="text-align: center;"><img
+              src="{{municipality.image}}" width="300px" height="180px" alt="error al cargar"></li>
+          <li class="list-group-item list-group-item-action">Descripcion de {{municipality.name}}: {{municipality.description}}</li>
+          <ng-container *ngFor="let sitio of listSitios">
+            <li  class="list-group-item list-group-item-action">Lugar: {{sitio.name}}</li>
+            <li class="list-group-item list-group-item-action" style="text-align: center;"><img
+              src="{{sitio.image}}" width="300px" height="180px" alt="error al cargar"></li>
+              <li  class="list-group-item list-group-item-action">Descripcion {{sitio.name}}: {{sitio.description}}</li>
+          </ng-container>
+          
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="modalCreate" tabindex="-1" role="dialog"
+  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-municipality></app-municipality>
+      </div>
+    </div>
+  </div>
+</div>

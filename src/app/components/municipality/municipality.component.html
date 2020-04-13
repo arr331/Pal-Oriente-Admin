@@ -1,0 +1,53 @@
+<div class="container">
+  <h5>Crear municipio</h5>
+  <hr>
+
+  <form [formGroup]="municipalityForm">
+    <div style="text-align: center;">
+      <img src="{{url}}" *ngIf="url" width="300px" height="180px" alt="no se cargo">
+    </div>  
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Nombre del municipio</span>
+      </div>
+      <input type="text" class="form-control" required formControlName="name">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Descripción</span>
+      </div>
+      <input type="text" class="form-control" formControlName="description">
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
+      </div>
+      <div class="custom-file">
+        <input type="file" accept=".png, .jpg" (change)="upload($event)" class="custom-file-input" id="inputGroupFile01"
+          aria-describedby="inputGroupFileAddon01">
+        <label class="custom-file-label" for="inputGroupFile01">Elegir archivo</label>
+        <input type="text" class="form-control" value="{{url}}" formControlName="image">
+      </div>
+    </div>
+
+    <button type="button" data-toggle="modal" data-target="#modalCreateSite" class="btn btn-secondary">Adicionar
+      contenido al municipio</button>
+  </form>
+  <hr>
+  <button type="button" class="btn btn-danger btn-sm pull-right" (click)="clearMpio()"
+    data-dismiss="modal">Cerrar</button>
+  <button type="button" (click)="newMpio()" class="btn btn-success btn-sm pull-right">Aceptar</button>
+
+  
+  <div class="modal fade bd-example-modal-lg" id="modalCreateSite" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <app-site (newSite) = "receivedSite($event)" (images) = "receivedImages($event)"></app-site>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
