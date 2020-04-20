@@ -12,8 +12,13 @@ export class MunicipalityService {
 
   constructor(private fireBase: AngularFireDatabase, private storage: AngularFireStorage) { }
 
-  addMunicipality(mpio, site) {  
-    this.fireBase.list('Z').push(mpio).child('info').push(site);
+  addMunicipality(mpio) { 
+    this.fireBase.list('Z').set(mpio.idMun, mpio);
+  }
+
+  update(mpio) { 
+    this.fireBase.list('Z').update(mpio.idMun, {"description": mpio.description, "idMun": mpio.idMun,
+     "image": mpio.image, "name": mpio.name});
   }
 
   buildMunicipality(form): Municipality {
@@ -22,14 +27,27 @@ export class MunicipalityService {
       description: form.description,
       image: form.image,
       info: '',
+      idMun: this.fireBase.createPushId()
     };
     return municipality;
-  }
+  } 
+
+  // updateMunicipality(form, mun): Municipality {
+  //   return new Municipality(form.name, form.description, form.image, mun.idMun);   
+  // } 
+   
+  updateMunicipality(form, mun) {
+    mun.name = form.name;
+    mun.description = form.description;
+    mun.image = form.image;
+    mun.info = mun.info;
+    return mun;
+  } 
 
   async uploadImg(img) {
     const file = img.target.files[0];
     const id = Math.random().toString(36).substring(2);
-    const filePath = `Z/portada_${id}`;
+    const filePath = `Z/portada/img_${id}`;
     const ref = this.storage.ref(filePath);
     await this.storage.upload(filePath, file)
     return await ref.getDownloadURL().toPromise();

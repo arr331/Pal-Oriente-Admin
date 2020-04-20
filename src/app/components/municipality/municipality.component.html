@@ -1,10 +1,10 @@
 <div class="container">
-  <h5>Crear municipio</h5>
+  <h5>{{update ? 'Actualizar municipio': 'Crear municipio'}}</h5>
   <hr>
 
   <form [formGroup]="municipalityForm">
     <div style="text-align: center;">
-      <img src="{{url}}" *ngIf="url" width="300px" height="180px" alt="no se cargo">
+      <img src="{{municipality.image}}" *ngIf="update" width="300px" height="180px" alt="no se cargo">
     </div>  
     <div class="input-group mb-3">
       <div class="input-group-prepend">
@@ -31,22 +31,44 @@
       </div>
     </div>
 
-    <button type="button" data-toggle="modal" data-target="#modalCreateSite" class="btn btn-secondary">Adicionar
-      contenido al municipio</button>
+    <div class="row" *ngIf= "update">
+      <div class="col-md-3">
+        <button type="button" data-toggle="modal" data-target="#modalCreateSite"  class="btn btn-success">Agregar sitio</button>
+      </div>
+      <div class="col-md-3">
+        <button type="button" data-toggle="modal" data-target="#modalSites" class="btn btn-primary">Editar sitios</button>
+      </div>
+    </div>
   </form>
   <hr>
   <button type="button" class="btn btn-danger btn-sm pull-right" (click)="clearMpio()"
     data-dismiss="modal">Cerrar</button>
-  <button type="button" (click)="newMpio()" class="btn btn-success btn-sm pull-right">Aceptar</button>
+  <button type="button" (click)="saveMpio()" class="btn btn-success btn-sm pull-right">Aceptar</button>
 
-  
-  <div class="modal fade bd-example-modal-lg" id="modalCreateSite" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <app-site (newSite) = "receivedSite($event)" (images) = "receivedImages($event)"></app-site>
-        </div>
+   
+</div>
+<div class="modal fade bd-example-modal-lg"  id="modalCreateSite" tabindex="-1" role="dialog"
+  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body" *ngIf= "municipality">
+        <app-site [municipality]= "municipality.idMun" [site] = "site" [update] = "editSite"></app-site>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div  *ngIf= "municipality" class="modal fade bd-example-modal-lg"  id="modalSites">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ul class="list-group">
+          <li class="list-group-item active">Sitios de {{municipality.name}}</li>
+          <li class="list-group-item" (click)= "updateSite(site)" *ngFor = "let site of sites">{{site.name}}</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button btn-sm" class="btn btn-primary" data-dismiss="modalSites">Cancelar</button>
       </div>
     </div>
   </div>

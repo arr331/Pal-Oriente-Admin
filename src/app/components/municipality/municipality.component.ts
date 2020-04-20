@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MunicipalityService } from 'src/app/services/municipality.service';
 import { Observable } from 'rxjs';
@@ -9,11 +9,14 @@ declare var $: any;
   templateUrl: './municipality.component.html',
   styleUrls: ['./municipality.component.scss']
 })
-export class MunicipalityComponent implements OnInit {
+export class MunicipalityComponent implements OnInit, OnChanges {
   municipalityForm: FormGroup;
-  url: Observable<string>;
+  url: any;
   site: any;
-  images: any;
+  editSite = false;
+  @Input() municipality: any;
+  @Input() update: any;
+  @Input() sites: any;
 
   fields = {
     name: 'Nombre del mucnicipio',
@@ -24,47 +27,69 @@ export class MunicipalityComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private municipalityService: MunicipalityService) { }
 
   ngOnInit(): void {
+    console.log(this.sites, 'sitios in list in mun');
+    
     this.municipalityForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: [''],
       image: [''],
     });
-  }
-
-  newMpio() {
-    if (this.municipalityForm.get('name').value && this.municipalityForm.get('image').value) {
-      const mpio = this.municipalityService.buildMunicipality(this.municipalityForm.value);
-      this.municipalityService.addMunicipality(mpio, this.site);
-      if(this.images.length != 0 && this.site){
-        this.sendImages();
-      }
-      this.ngOnInit();
-      console.log('creado');
-      
-      $('#modalCreate').modal('hide');
+    if (this.update && this.municipality){
+      this.fillForm();
     }
   }
-
-  receivedImages(images){
-    this.images = images;
-    console.log(this.images, 'img in muni');
+  ngOnChanges(): void {
+    this.ngOnInit();
   }
 
-  receivedSite(site){
+  fillForm() {
+    this.municipalityForm.get('name').setValue(this.municipality.name);
+    this.municipalityForm.get('description').setValue(this.municipality.description);
+    this.municipalityForm.get('image').setValue(this.municipality.image);
+  }
+
+  saveMpio() {
+    if (!this.update && this.municipalityForm.get('name').value) {
+      const mpio = this.municipalityService.buildMunicipality(this.municipalityForm.value);
+      this.municipalityService.uploadImg(this.url).then(answer =>{
+        mpio.image = answer;
+        this.municipalityService.addMunicipality(mpio);
+        this.reset('Municipio Guardado')
+      });
+    } else if (this.update && this.municipality && this.municipalityForm.get('name').value) {
+      this.municipality = this.municipalityService.updateMunicipality(this.municipalityForm.value, this.municipality);
+      if (!this.url) {
+        this.municipalityService.update(this.municipality);
+        this.reset('Municipio Actualizado');
+      } else {
+        this.municipalityService.uploadImg(this.url).then(answer => {
+          this.municipality.image = answer;
+          this.municipalityService.update(this.municipality)
+          this.reset('Municipio Actualizado');
+        })
+      }
+    }
+  }
+  
+  reset(msj) {
+    console.log(msj);
+    this.ngOnInit();
+    this.url = null;
+    $('#modalCreate').modal('hide');
+  }
+
+  updateSite(site){
     this.site = site;
-    console.log(this.site, 'site in muni');
+    this.editSite = true;
+    $('#modalSites').modal('hide');
+    $('#modalCreateSite').modal('show');
   }
 
   clearMpio() {
     this.municipalityForm.reset();
   }
 
-  sendImages(){
-    this.municipalityService.uploadGalery(this.images, this.site.galery);
-  }
-
-  async upload(img){
-    this.url = await  this.municipalityService.uploadImg(img);
-    this.municipalityForm.get('image').setValue(this.url);
+  upload(img){
+    this.url = img
   }
 }

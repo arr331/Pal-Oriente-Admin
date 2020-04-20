@@ -1,17 +1,19 @@
 <div class="container">
-  <button type="button" data-toggle="modal" data-target="#modalCreate" class="btn btn-primary"><i class="fa fa-plus"
-      aria-hidden="true"></i> Crear Municipio</button>
-  <button type="button" (click)="listMpio()" class="btn btn-secondary"><i class="fa fa-list" aria-hidden="true"></i>
-    Mostrar municipios</button>
+  <button type="button" (click)= "newMun()" class="btn btn-primary">Crear Municipio</button>
+
 </div>
 
 <!-- <button (click)="s()">Pruba</button> -->
 
-<div class="container" *ngIf="showList">
+<div class="container">
   <ul class="list-group">
-    <li class="list-group-item active">Municipios</li>
-    <li *ngFor="let mpio of listMunicipalities" (click)="showInfo(mpio)" class="list-group-item list-group-item-action">
+    <li class="list-group-item active list-group-horizontal">Municipios</li>
+  </ul>
+  <ul class="list-group list-group-horizontal"  *ngFor="let mpio of listMunicipalities">
+    <li (click)="showInfo(mpio)" class="list-group-item list-group-item-action">
       {{mpio.name}}</li>
+    <li class="list-group-item list-group-item-action actions" (click)= "updateMun(mpio)" style="width: 7rem;"><button class="btn-sm btn-success">Actualizar</button></li>
+    <li class="list-group-item list-group-item-action actions" (click)= "deleteMun(mpio)" style="width: 7rem;"><button class="btn-sm btn-danger">Eliminar</button></li>
   </ul>
 </div>
 
@@ -47,7 +49,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <app-municipality></app-municipality>
+        <app-municipality [municipality] = "municipality" [update] = "update" [sites] = "listSitios"></app-municipality>
       </div>
     </div>
   </div>

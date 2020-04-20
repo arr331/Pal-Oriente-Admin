@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DataServiceService } from 'src/app/services/data-service.service';
 declare var $: any;
 
@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   listMunicipalities: Array<any> = [];
   municipality;
   listSitios: Array<any> = [];
-  showList = false;
+  update = false;
   
   constructor(
     private dateService: DataServiceService) { }
@@ -31,11 +31,24 @@ export class HomeComponent implements OnInit {
     $('#modal').modal('show');
   }
 
-  listMpio() {
-    this.showList = true;
+  deleteMun(mpio){
+
+  }
+  updateMun(mpio){
+    this.update = true;
+    this.municipality = mpio;  
+    this.listSitios = [];
+    Object.keys(this.municipality.info).forEach((m) => {
+      this.listSitios.push(this.municipality.info[m]);
+    });
+    $('#modalCreate').modal('show');
+  }
+  newMun(){
+    this.update = false;
+    $('#modalCreate').modal('show');
   }
   
-  //TRae todas las url del la carpeta
+  //TRae todas las url del la carpeta 
   s() { 
     // var sorage = this.storage.storage;
     // var storageRef = sorage.ref('Z');

@@ -34,14 +34,14 @@
                 <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
             </div>
             <div class="custom-file">
-                <input type="file" accept=".png, .jpg" (change)="upload($event)" class="custom-file-input" id="inputGroupFile01"
+                <input type="file" accept=".png, .jpg" (change)="uploadImage($event)" class="custom-file-input" id="inputGroupFile01"
                 aria-describedby="inputGroupFileAddon01">
                 <label class="custom-file-label" for="inputGroupFile01">Elegir archivo</label>
-                <input type="text" class="form-control" value="{{url}}" formControlName="image">
+                <input type="text" class="form-control" formControlName="image">
             </div>
         </div>
 
-        <div class="input-group mb-3">
+        <!-- <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroupFileAddon01">Cargar imágenes</span>
             </div>
@@ -50,10 +50,10 @@
                     formControlName="galery">
 
             </div>
-        </div>
+        </div> -->
     </form>
 
     <hr>
     <button type="button" class="btn btn-danger" (click)="clearSite()">Cancelar</button>
-    <button type="button" class="btn btn-success pull-left" (click)="createSite()">Aceptar</button>
+    <button type="button" class="btn btn-success pull-left" (click)="saveSite()">Aceptar</button>
 </div>

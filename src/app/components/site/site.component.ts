@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
@@ -10,13 +10,15 @@ declare var $: any;
   templateUrl: './site.component.html',
   styleUrls: ['./site.component.scss']
 })
-export class SiteComponent implements OnInit {
+export class SiteComponent implements OnInit, OnChanges {
   siteForm: FormGroup;
   files: FileList;
+  file: File;
   url: Observable<string>;
 
-  @Output() newSite = new EventEmitter<any>();
-  @Output() images = new EventEmitter<any>();
+  @Input() municipality: any;
+  @Input() site: any;
+  @Input() update: any;
 
   fields = {
     name: 'Nombre del mucnicipio',
@@ -24,7 +26,7 @@ export class SiteComponent implements OnInit {
     image: 'Imagen',
     x: 'X',
     y: 'Y',
-    galery: 'Galeria'
+    // galery: 'Galeria'
   };
 
   constructor(private formBuilder: FormBuilder, private storage: AngularFireStorage,
@@ -37,17 +39,51 @@ export class SiteComponent implements OnInit {
       image: [''],
       x: [''],
       y: [''],
-      galery: ['']
+      // galery: ['']
     });
+    this.update && this.site ? this.fillform() : '';
   }
 
-  createSite(){
-    if(this.siteForm.get('name').value){
+  ngOnChanges(): void {
+    this.ngOnInit();
+  }
+
+  fillform() {
+    this.siteForm.get('name').setValue(this.site.name);
+    this.siteForm.get('description').setValue(this.site.description);
+    this.siteForm.get('image').setValue(this.site.image);
+    this.siteForm.get('x').setValue(this.site.x);
+    this.siteForm.get('y').setValue(this.site.y);
+  }
+
+  saveSite(){
+    if(!this.update && this.siteForm.get('name').value){
       const site =  this.siteService.buildSite(this.siteForm.value);
-      this.newSite.emit(site);
-      this.images.emit(this.files)
-      $('#modalCreateSite').modal('hide');
+      this.siteService.uploadImg(this.url).then(answer => {
+        site.image = answer;
+        this.siteService.addSite(site, this.municipality);
+        this.reset('Sitio Guardado')
+      });
+    } else if (this.update && this.site && this.siteForm.get('name').value) {
+      this.site = this.siteService.updateSite(this.siteForm.value, this.site);
+      if (!this.url) {
+        this.siteService.addSite(this.site, this.municipality);
+        this.reset('Sitio Actualizado');
+      } else {
+        this.siteService.uploadImg(this.url).then(answer => {
+          this.site.image = answer;
+          this.siteService.addSite(this.site, this.municipality);
+          this.reset('Sitio Actualizado');
+        })
+      }
     }
+  }
+
+  reset(msj) {
+    console.log(msj);
+    this.ngOnInit();
+    this.url = null;
+    $('#modalCreateSite').modal('hide');
   }
 
   clearSite() {
@@ -57,13 +93,13 @@ export class SiteComponent implements OnInit {
  
   importImages(imgs) {
     this.files = imgs.target.files
-    console.log(this.files, 'los files');
   }
   
-  async upload(img){
-    this.url = await  this.siteService.uploadImg(img);
-    console.log(this.url, 'la url del porada sitio');
-    
-    this.siteForm.get('image').setValue(this.url);
+  upload(img){
+    this.file = img.target.files[0];    
+  }
+
+  uploadImage(img){
+    this.url = img;
   }
 }
