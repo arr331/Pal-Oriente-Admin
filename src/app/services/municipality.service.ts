@@ -49,13 +49,13 @@ export class MunicipalityService {
     const id = Math.random().toString(36).substring(2);
     const filePath = `Z/portada/img_${id}`;
     const ref = this.storage.ref(filePath);
-    await this.storage.upload(filePath, file)
+    await this.storage.upload(filePath, file);
     return await ref.getDownloadURL().toPromise();
   }
 
-  uploadGalery(images, site){
+  uploadGalery(images, site) {
     for (let i = 0; i < images.length; i++) {
-      const id = site
+      const id = site;
       const name = Math.random().toString(36).substring(2);
       const filePath = `Z/${id}/img_${name}`;
       this.storage.upload(filePath, images[i]);

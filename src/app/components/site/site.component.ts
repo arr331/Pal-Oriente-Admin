@@ -74,7 +74,7 @@ export class SiteComponent implements OnInit, OnChanges {
           this.site.image = answer;
           this.siteService.addSite(this.site, this.municipality);
           this.reset('Sitio Actualizado');
-        })
+        });
       }
     }
   }
