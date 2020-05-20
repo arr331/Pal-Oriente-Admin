@@ -42,7 +42,7 @@ export class SiteService {
     const id = Math.random().toString(36).substring(2);
     const filePath = `Z/portada/img_${id}`;
     const ref = this.storage.ref(filePath);
-    await this.storage.upload(filePath, file)
+    await this.storage.upload(filePath, file);
     return await ref.getDownloadURL().toPromise();
   }
 }

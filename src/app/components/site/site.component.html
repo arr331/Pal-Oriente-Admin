@@ -34,8 +34,7 @@
                 <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
             </div>
             <div class="custom-file">
-                <input type="file" accept=".png, .jpg" (change)="uploadImage($event)" class="custom-file-input" id="inputGroupFile01"
-                aria-describedby="inputGroupFileAddon01">
+                <input type="file" accept=".png, .jpg, .jpeg" (change)="uploadImage($event)" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
                 <label class="custom-file-label" for="inputGroupFile01">Elegir archivo</label>
                 <input type="text" class="form-control" formControlName="image">
             </div>

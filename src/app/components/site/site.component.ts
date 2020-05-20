@@ -21,7 +21,7 @@ export class SiteComponent implements OnInit, OnChanges {
   @Input() update: any;
 
   fields = {
-    name: 'Nombre del mucnicipio',
+    name: 'Nombre del municipio',
     description: 'Descripción',
     image: 'Imagen',
     x: 'X',
@@ -62,7 +62,7 @@ export class SiteComponent implements OnInit, OnChanges {
       this.siteService.uploadImg(this.url).then(answer => {
         site.image = answer;
         this.siteService.addSite(site, this.municipality);
-        this.reset('Sitio Guardado')
+        this.reset('Sitio Guardado');
       });
     } else if (this.update && this.site && this.siteForm.get('name').value) {
       this.site = this.siteService.updateSite(this.siteForm.value, this.site);
@@ -74,7 +74,7 @@ export class SiteComponent implements OnInit, OnChanges {
           this.site.image = answer;
           this.siteService.addSite(this.site, this.municipality);
           this.reset('Sitio Actualizado');
-        })
+        });
       }
     }
   }
@@ -92,7 +92,7 @@ export class SiteComponent implements OnInit, OnChanges {
   }
  
   importImages(imgs) {
-    this.files = imgs.target.files
+    this.files = imgs.target.files;
   }
   
   upload(img){

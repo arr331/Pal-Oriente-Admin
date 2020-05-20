@@ -19,7 +19,7 @@ export class MunicipalityComponent implements OnInit, OnChanges {
   @Input() sites: any;
 
   fields = {
-    name: 'Nombre del mucnicipio',
+    name: 'Nombre del municipio',
     description: 'Descripción',
     image: 'Imagen',
   };
@@ -54,7 +54,7 @@ export class MunicipalityComponent implements OnInit, OnChanges {
       this.municipalityService.uploadImg(this.url).then(answer =>{
         mpio.image = answer;
         this.municipalityService.addMunicipality(mpio);
-        this.reset('Municipio Guardado')
+        this.reset('Municipio Guardado');
       });
     } else if (this.update && this.municipality && this.municipalityForm.get('name').value) {
       this.municipality = this.municipalityService.updateMunicipality(this.municipalityForm.value, this.municipality);

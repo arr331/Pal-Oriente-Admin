@@ -11,7 +11,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { MunicipalityComponent } from './components/municipality/municipality.component';
 import { SiteComponent } from './components/site/site.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -28,7 +27,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ReactiveFormsModule,
     FormsModule,
     AngularFireStorageModule,
-    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
