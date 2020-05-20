@@ -26,7 +26,7 @@ export class SiteComponent implements OnInit, OnChanges {
     image: 'Imagen',
     x: 'X',
     y: 'Y',
-    // galery: 'Galeria'
+    galery: 'Galeria'
   };
 
   constructor(private formBuilder: FormBuilder, private storage: AngularFireStorage,
@@ -39,7 +39,7 @@ export class SiteComponent implements OnInit, OnChanges {
       image: [''],
       x: [''],
       y: [''],
-      // galery: ['']
+      galery: ['']
     });
     this.update && this.site ? this.fillform() : '';
   }
@@ -58,14 +58,16 @@ export class SiteComponent implements OnInit, OnChanges {
 
   saveSite(){
     if(!this.update && this.siteForm.get('name').value){
-      const site =  this.siteService.buildSite(this.siteForm.value);
+      const site =  this.siteService.buildSite(this.siteForm.value, this.municipality);
+      this.files ?  this.siteService.uploadGalery(this.files) : '';
       this.siteService.uploadImg(this.url).then(answer => {
         site.image = answer;
         this.siteService.addSite(site, this.municipality);
         this.reset('Sitio Guardado')
       });
     } else if (this.update && this.site && this.siteForm.get('name').value) {
-      this.site = this.siteService.updateSite(this.siteForm.value, this.site);
+      this.site = this.siteService.updateSite(this.siteForm.value, this.site, this.municipality);
+      this.files ? this.siteService.uploadGalery(this.files) : '';
       if (!this.url) {
         this.siteService.addSite(this.site, this.municipality);
         this.reset('Sitio Actualizado');
@@ -83,6 +85,7 @@ export class SiteComponent implements OnInit, OnChanges {
     console.log(msj);
     this.ngOnInit();
     this.url = null;
+    this.files = null;
     $('#modalCreateSite').modal('hide');
   }
 
@@ -90,16 +93,20 @@ export class SiteComponent implements OnInit, OnChanges {
     this.siteForm.reset();
     $('#modalCreateSite').modal('hide');
   }
- 
-  importImages(imgs) {
-    this.files = imgs.target.files
-  }
-  
-  upload(img){
-    this.file = img.target.files[0];    
-  }
 
   uploadImage(img){
     this.url = img;
   }
+
+  uploadGallery(imgs) {
+    this.files = imgs.target.files
+    console.log(this.files, 'carpeta');
+    
+  }
+  // upload(img){
+  //   this.file = img.target.files[0];    
+  // }
+  // importImages(imgs) {
+  //   this.files = imgs.target.files
+  // }
 }
