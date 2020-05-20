@@ -10,11 +10,11 @@ export class DataServiceService {
   constructor(private fireBase: AngularFireDatabase ) {}
 
   getMunicipalities() {
-    return (this.list = this.fireBase.list('Z'));
+    return (this.list = this.fireBase.list('ZZ'));
   }
 
   getID(id) {
-    return (this.list = this.fireBase.list('Z', (re) =>
+    return (this.list = this.fireBase.list('ZZ', (re) =>
       re.orderByChild('id').equalTo(id)
     ));
   }

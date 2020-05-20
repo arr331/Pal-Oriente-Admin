@@ -3,62 +3,108 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { Municipality } from '../clases/municipality';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MunicipalityService {
-  url: Observable<string>;
+  id;
 
   constructor(private fireBase: AngularFireDatabase, private storage: AngularFireStorage) { }
 
-  addMunicipality(mpio) { 
-    this.fireBase.list('Z').set(mpio.idMun, mpio);
+  addMunicipality(mpio) {
+    this.fireBase.list('ZZ').set(mpio.idMun, mpio);
   }
 
-  update(mpio) { 
-    this.fireBase.list('Z').update(mpio.idMun, {"description": mpio.description, "idMun": mpio.idMun,
-     "image": mpio.image, "name": mpio.name});
+  update(mpio) {
+    this.fireBase.list('ZZ').update(mpio.idMun, {
+      "description": mpio.description, "idMun": mpio.idMun,
+      "image": mpio.image, "name": mpio.name
+    });
   }
 
   buildMunicipality(form): Municipality {
+    this.id = this.fireBase.createPushId();
     const municipality: Municipality = {
       name: form.name,
       description: form.description,
       image: form.image,
       info: '',
-      idMun: this.fireBase.createPushId()
+      idMun: this.id
     };
-    return municipality;
-  } 
 
-  // updateMunicipality(form, mun): Municipality {
-  //   return new Municipality(form.name, form.description, form.image, mun.idMun);   
-  // } 
-   
+    return municipality;
+  }
+
   updateMunicipality(form, mun) {
     mun.name = form.name;
     mun.description = form.description;
     mun.image = form.image;
     mun.info = mun.info;
+    this.id = mun.idMun
     return mun;
-  } 
+  }
 
-  async uploadImg(img) {
-    const file = img.target.files[0];
-    const id = Math.random().toString(36).substring(2);
-    const filePath = `Z/portada/img_${id}`;
+  // async uploadImg(img) {
+  //   const file = img.target.files[0];    
+  //   const filePath = `ZZ`;
+  //   // const filePath = `ZZ/portadas/${this.id}`;
+  //   const ref = this.storage.ref(filePath);
+  //   await this.storage.upload(filePath, file);
+  //   return await ref.getDownloadURL().toPromise();
+  // }
+
+
+
+  async uploadImg(event) {
+    // const filePath = `ZZ/portadas/${this.id}`;
+    const filePath = `ZZ`;
     const ref = this.storage.ref(filePath);
-    await this.storage.upload(filePath, file)
+    await ref.put(event).then(function(snapshot) {
+      console.log('Uploaded a blob or file!');
+    });
     return await ref.getDownloadURL().toPromise();
   }
 
-  uploadGalery(images, site){
+
+
+
+//  async compressFile(image) {
+//    await this.imageCompress.compressFile(image, -1, 50, 50).then(
+//       result => {
+//         this.imageBlob = this.dataURItoBlob(result.split(',')[1]);
+        
+        
+//         // const filePath = `ZZ`;
+//         // const ref = this.storage.ref(filePath);
+//         // ref.put(this.imageBlob).then(function (snapshot) {
+//         //   console.log('Uploaded a blob!');
+//         // });
+//       });
+//   }
+
+
+
+//   dataURItoBlob(dataURI) {
+//     const byteString = window.atob(dataURI);
+//     const arrayBuffer = new ArrayBuffer(byteString.length);
+//     const int8Array = new Uint8Array(arrayBuffer);
+//     for (let i = 0; i < byteString.length; i++) {
+//       int8Array[i] = byteString.charCodeAt(i);
+//     }
+//     const blob = new Blob([int8Array], { type: 'image/jpeg' });
+//     return blob;
+//   }
+
+
+  uploadGalery(images, site) {
     for (let i = 0; i < images.length; i++) {
-      const id = site
+      const id = site;
       const name = Math.random().toString(36).substring(2);
-      const filePath = `Z/${id}/img_${name}`;
+      const filePath = `ZZ/${id}/img_${name}`;
       this.storage.upload(filePath, images[i]);
     }
   }
+
 }

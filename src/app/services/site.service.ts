@@ -7,25 +7,32 @@ import { AngularFireStorage } from 'angularfire2/storage';
   providedIn: 'root'
 })
 export class SiteService {
+  idSite;
+  idMun;
 
   constructor(private fireBase: AngularFireDatabase , private storage: AngularFireStorage) { }
 
   addSite(site, id){
-    this.fireBase.list(`Z/${id}/info`).set(site.idSite, site);
+    this.fireBase.list(`ZZ/${id}/info`).set(site.idSite, site);
   }
 
-  buildSite(form): Sitio {
+  buildSite(form, idMun): Sitio {
+    this.idSite = this.fireBase.createPushId();
+    this.idMun = idMun;
     const site: Sitio = {
       name: form.name,
       description: form.description,
       image: form.image,
       x: form.x,
       y: form.y,
-      idSite: this.fireBase.createPushId()
+      idSite: this.idSite
     };
     return site;
   }
-  updateSite(form, site): Sitio {
+  
+  updateSite(form, site, idMun): Sitio {
+    this.idSite = site.idSite;
+    this.idMun = idMun;
     const updateSite: Sitio = {
       name: form.name,
       description: form.description,
@@ -39,10 +46,17 @@ export class SiteService {
 
   async uploadImg(img) {
     const file = img.target.files[0];
-    const id = Math.random().toString(36).substring(2);
-    const filePath = `Z/portada/img_${id}`;
+    const filePath = `ZZ/sites/${this.idMun}/portadas/${this.idSite}`;
     const ref = this.storage.ref(filePath);
     await this.storage.upload(filePath, file);
     return await ref.getDownloadURL().toPromise();
+  }
+
+   uploadGalery(images) {
+    for (let i = 0; i < images.length; i++) {
+      const name = this.fireBase.createPushId();
+      const filePath = `ZZ/sites/${this.idMun}/galerias/${this.idSite}/${name}`;
+       this.storage.upload(filePath, images[i]);
+    }
   }
 }

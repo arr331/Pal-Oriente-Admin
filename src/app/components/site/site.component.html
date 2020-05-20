@@ -20,13 +20,13 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Coordeada x</span>
             </div>
-            <input type="number" class="form-control" formControlName="x">
+            <input type="text" class="form-control" formControlName="x">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Coordeada y</span>
             </div>
-            <input type="number" class="form-control" formControlName="y">
+            <input type="text" class="form-control" formControlName="y">
         </div>
 
         <div class="input-group mb-3">
@@ -40,16 +40,16 @@
             </div>
         </div>
 
-        <!-- <div class="input-group mb-3">
+        <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroupFileAddon01">Cargar imágenes</span>
             </div>
             <div class="custom-file">
-                <input type="file" multiple=true class="form-control" (change)="importImages($event)"
+                <input type="file" multiple=true class="form-control" (change)="uploadGallery($event)"
                     formControlName="galery">
 
             </div>
-        </div> -->
+        </div>
     </form>
 
     <hr>

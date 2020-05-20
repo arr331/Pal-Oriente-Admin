@@ -11,6 +11,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { MunicipalityComponent } from './components/municipality/municipality.component';
 import { SiteComponent } from './components/site/site.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,7 @@ import { SiteComponent } from './components/site/site.component';
     FormsModule,
     AngularFireStorageModule,
   ],
-  providers: [],
+  providers: [NgxImageCompressService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

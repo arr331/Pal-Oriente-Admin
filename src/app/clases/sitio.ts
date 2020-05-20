@@ -2,7 +2,7 @@ export class Sitio {
     name: string;
     description: string;
     image: string;
-    x: number;
-    y: number;
+    x: string;
+    y: string;
     idSite: string;
 }
