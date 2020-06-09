@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.dateService.getMunicipalities().valueChanges().subscribe((answer) => {
         this.listMunicipalities = answer;
+        console.log(answer, "Lista");
+        
       });
   }
 

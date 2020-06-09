@@ -23,7 +23,7 @@ export class MunicipalityComponent implements OnInit {
   editSite = false;
 
   fields = {
-    name: 'Nombre del mucnicipio',
+    name: 'Nombre del municipio',
     description: 'Descripción',
     image: 'Imagen',
   };

@@ -27,7 +27,7 @@ import {NgxImageCompressService} from 'ngx-image-compress';
     AngularFireDatabaseModule,
     ReactiveFormsModule,
     FormsModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
   ],
   providers: [NgxImageCompressService],
   bootstrap: [AppComponent]
