@@ -18,4 +18,8 @@ export class DataServiceService {
       re.orderByChild('id').equalTo(id)
     ));
   }
+
+  getHomeImages(){
+    return (this.list= this.fireBase.list('HOME'))
+  }
 }

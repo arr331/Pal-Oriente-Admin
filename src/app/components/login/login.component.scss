@@ -1,0 +1,26 @@
+#log-in{
+    padding: 0;
+    position:relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#log-in ul li{
+    list-style: none;
+    margin: 1px;
+    display: flex;
+    float: right;
+}
+
+.btn-google{
+    background: #dd4b39;
+    color: #fff;
+    width: 100%;
+}
+
+ul li h6{
+    color: blue;
+}

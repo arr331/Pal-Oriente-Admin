@@ -1,0 +1,38 @@
+<h3>En esta sección encontrará información relevante para preparar su viaje</h3>
+    
+    <br>
+    
+    <div class="grid-gallery" *ngIf="listItems.length>0">
+        
+       <div id="contenedor-gridB" class="contenedor-gridB">
+            <a class="grid-gallery__item" href="informacion/elOriente.html">
+                <img class="grid-gallery__image" src="{{listItems[0].urlImage}}">
+            </a>
+           <h5><strong>{{listItems[0].name}}</strong></h5>
+        </div>
+        <div id="contenedor-grid" class="contenedor-grid">
+            <a class="grid-gallery__item" href="informacion/clima.html">
+                <img class="grid-gallery__image" src="{{listItems[1].urlImage}}">
+            </a>
+            <h5><strong>{{listItems[1].name}}</strong></h5>
+        </div>
+        <div id="contenedor-grid" class="contenedor-grid">
+             <a class="grid-gallery__item" href="informacion/salud.html">
+                <img class="grid-gallery__image" src="{{listItems[2].urlImage}}">
+            </a>
+            <h5><strong>{{listItems[2].name}}</strong></h5>
+        </div>
+        <div id="contenedor-grid" class="contenedor-grid">
+             <a class="grid-gallery__item" href="informacion/gastronomia.html">
+                <img class="grid-gallery__image" src="{{listItems[3].urlImage}}">
+            </a>
+            <h5><strong>{{listItems[3].name}}</strong></h5>
+        </div>
+        <div id="contenedor-grid" class="contenedor-grid">
+            <a class="grid-gallery__item" href="informacion/seguridad.html">
+                <img class="grid-gallery__image" src="{{listItems[4].urlImage}}">
+            </a>
+            <h5><strong>{{listItems[4].name}}</strong></h5>
+        </div>
+        
+    </div>
