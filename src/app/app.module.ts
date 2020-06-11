@@ -22,6 +22,7 @@ import { ContactusComponent } from './components/contactus/contactus.component';
 import { LoginComponent } from './components/login/login.component';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { SubregionComponent } from './components/subregion/subregion.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 
 @NgModule({
   declarations: [
