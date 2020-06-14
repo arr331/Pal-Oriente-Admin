@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { HeaderComponent } from './components/header/header.component';
 import { RegionInfoComponent } from './components/region-info/region-info.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { ContactusComponent } from './components/contactus/contactus.component';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { SubregionComponent } from './components/subregion/subregion.component';
+import { MunicipalityComponent } from './components/configuration/municipality/municipality.component';
 
 
 const routes: Routes = [
@@ -16,6 +15,7 @@ const routes: Routes = [
   {path: 'contactenos', component: ContactusComponent},
   {path: 'administration', component: AdministrationComponent},
   {path: 'subregiones', component: SubregionComponent},
+  {path: 'm', component: MunicipalityComponent},
   {path: '**', redirectTo: 'inicio', pathMatch: 'full'}
 ];
 

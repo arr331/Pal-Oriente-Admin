@@ -1,70 +1,27 @@
-<div id=log-in>
-    <ul *ngIf="user==null">
-        <li><Button (click)="showForm()" class="btn btn-primary">Iniciar Sesión</Button></li>
-        <li><Button (click)="showFormRegister()" class="btn btn-success">Registrarse</Button></li>
-    </ul>
-    <ul *ngIf="user!=null">
-      <li><Button (click)="logOut()" class="btn btn-primary">logOut</Button></li>
-      <li><h6><fa-icon [icon]="faUser"></fa-icon>{{email}}</h6></li>
-  </ul>
+<div class="container">
+  <h3 style="margin-top: 15px;">Iniciar sesión</h3>
+  <hr>
+  <form class="was-validated">
+    <div class="mb-3">
+      <label>Correo electrónico</label>
+      <input type="text" class="form-control" placeholder="Ingrese el correo" required>
+    </div>
+    <div class="mb-3">
+      <label>Contraseña</label>
+      <input type="password" class="form-control" placeholder="Ingrese la contraseña" required>
+    </div>
+    <div class="custom-control custom-checkbox mb-3">
+      <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
+      <label class="custom-control-label" for="customControlValidation1" style="color: black;">Recordar contraseña</label>
+    </div>
+  </form>
+  <hr>
+  <div class="mb-3">
+    <button class="btn btn-lg btn-block" style="background: #22B547; color: white;">Ingresar</button>
+  </div>
+  <div class="container-fluid mb-3">
+    <button (click)="onLoginGoogle()" class="btn btn-danger pull-right"><i class="fa fa-google"
+        aria-hidden="true"></i>  Acceder con Google</button>
+    <button class="btn btn-outline-dark">Registrarme</button>
+  </div>
 </div>
-
-
-<div class="modal" id="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Login</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <label for="formGroupExampleInput2">USUARIO</label>
-            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="diego123">
-
-            <label for="formGroupExampleInput">CONTRASEÑA</label>
-            <input type="password" class="form-control" id="formGroupExampleInput" placeholder=".....">
-            <br>
-            <button (click)="onLoginGoogle()" class="btn btn-lg btn-google"><fa-icon [icon]="faUser"></fa-icon>ACCEDER CON GOOGLE</button>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary">Iniciar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="modalRegister" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Registro</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-            <label for="formGroupExampleInput2">Nombre de Usuario</label>
-            <input type="text" class="form-control" id="formGroupExampleInput1" placeholder="diego123">
-
-            <label for="formGroupExampleInput">Email</label>
-            <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="diego@gmail.com">
-            
-            <label for="formGroupExampleInput">Contraseña</label>
-            <input type="password" class="form-control" id="formGroupExampleInput4" placeholder=".....">
-            
-            <label for="formGroupExampleInput">Repite la constraseña</label>
-            <input type="password" class="form-control" id="formGroupExampleInput5" placeholder=".....">
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-success">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>

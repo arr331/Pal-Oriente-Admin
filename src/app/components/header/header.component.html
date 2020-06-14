@@ -1,39 +1,26 @@
-<header id="header">
-    <div class="center">
-
-
-        <!-- LOGO-->
-        <div id="logo">
-           <a href="index.html">
-            <img src="assets/logo.jpg" class="app-logo" alt="Logotipo">
-            <span id="brand">
-                <strong href="index.html">Discover</strong>Oriente
-            </span>
-            </a>
-        </div>
-
-      
-
-        <!--MENU-->
-        <nav id="menu">
-           <ul>
-                <li>
-                    <a routerLink="/inicio" routerLinkActive="link-active"><fa-icon [icon]="faHome"></fa-icon>Inicio</a>
-                </li>
-                <li>
-                    <a routerLink="/subregiones" routerLinkActive="link-active"><fa-icon [icon]="faThLarge"></fa-icon>Regiones</a>
-                </li>
-                <li>
-                    <a routerLink="/info" routerLinkActive="link-active"><fa-icon [icon]="faQuestionCircle"></fa-icon>Información práctica</a>
-                </li>
-                <li>
-                    <a routerLink="/contactenos" routerLinkActive="link-active"><fa-icon [icon]="faAddressCard"></fa-icon>Contáctenos</a>
-                </li>
-            </ul>
-        </nav>
-         <div class="menu-toggle"><i class="fas fa-bars"></i></div>
-        <!--LIMPIAR FLOAT-->
-        <div class="clearfix"></div>
+<div class="header">
+    <div class="logo">
+        <img src="assets/logo.jpg" width="70px" height="70px" class="app-logo" alt="Logotipo">
     </div>
+    <div class="tittle">
+        <h2 routerLink="/inicio">Discover Oriente</h2>
+    </div>
+    <div class="menu">
+        <li routerLink="/subregiones">Regiones</li>
+        <li routerLink="/info">Información</li>
+        <li routerLink="/contactenos">Contáctenos</li>
+    </div>
+    <div class="login">
+        <button type="button" data-toggle="modal" data-target="#login" class="btn btn-outline-success"><i
+                class="fa fa-user" aria-hidden="true"></i> Acceder</button>
+    </div>
+</div>
 
-</header>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <app-login></app-login>
+        </div>
+    </div>
+</div>
