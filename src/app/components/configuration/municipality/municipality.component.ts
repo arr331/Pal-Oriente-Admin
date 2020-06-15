@@ -55,6 +55,7 @@ export class MunicipalityComponent implements OnInit {
     Object.keys(mpio.info).forEach((m) => {
       this.listSitios.push(this.municipality.info[m]);
     });
+    console.log(this.listSitios);
   }
 
   newMun() {

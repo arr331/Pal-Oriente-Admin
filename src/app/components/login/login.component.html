@@ -1,14 +1,14 @@
-<div class="container">
+<div class="container" >
   <h3 style="margin-top: 15px;">Iniciar sesión</h3>
   <hr>
-  <form class="was-validated">
+  <form [formGroup]="logInForm" class="was-validated">
     <div class="mb-3">
       <label>Correo electrónico</label>
-      <input type="text" class="form-control" placeholder="Ingrese el correo" required>
+      <input type="text" formControlName="email" class="form-control" placeholder="Ingrese el correo" required>
     </div>
     <div class="mb-3">
       <label>Contraseña</label>
-      <input type="password" class="form-control" placeholder="Ingrese la contraseña" required>
+      <input type="password" formControlName="password" class="form-control" placeholder="Ingrese la contraseña" required>
     </div>
     <div class="custom-control custom-checkbox mb-3">
       <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
@@ -17,7 +17,7 @@
   </form>
   <hr>
   <div class="mb-3">
-    <button class="btn btn-lg btn-block" style="background: #22B547; color: white;">Ingresar</button>
+    <button (click)="ingresar()" class="btn btn-lg btn-block" style="background: #22B547; color: white;">Ingresar</button>
   </div>
   <div class="container-fluid mb-3">
     <button (click)="onLoginGoogle()" class="btn btn-danger pull-right"><i class="fa fa-google"

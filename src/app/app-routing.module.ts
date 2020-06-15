@@ -6,6 +6,8 @@ import { ContactusComponent } from './components/contactus/contactus.component';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { SubregionComponent } from './components/subregion/subregion.component';
 import { MunicipalityComponent } from './components/configuration/municipality/municipality.component';
+import { MuniComponent } from './components/muni/muni.component';
+import { SitesShowComponent } from './components/sites-show/sites-show.component';
 
 
 const routes: Routes = [
@@ -15,6 +17,8 @@ const routes: Routes = [
   {path: 'contactenos', component: ContactusComponent},
   {path: 'administration', component: AdministrationComponent},
   {path: 'subregiones', component: SubregionComponent},
+  {path: 'subregiones/altiplano', component: MuniComponent},
+  {path: 'subregiones/altiplano/mun:sites', component: SitesShowComponent},
   {path: 'm', component: MunicipalityComponent},
   {path: '**', redirectTo: 'inicio', pathMatch: 'full'}
 ];

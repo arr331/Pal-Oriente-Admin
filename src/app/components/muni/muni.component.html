@@ -1,0 +1,14 @@
+<ul class="list-unstyled" *ngFor="let mpio of listMunicipalities">
+    <li class="media" id="imagelistMun">
+      <img src="{{mpio.image}}" class="mr-3" alt="imagen{{mpio}}">
+      <div class="media-body" id="texto">
+        <h5 class="mt-0 mb-1">{{mpio.name}}</h5>
+        {{mpio.description}}
+      </div>
+      <div class="btn-group-vertical" role="group" aria-label="Basic example">
+        <button (click)="goSites(mpio)" type="button" class="btn btn-primary">Sitios</button>
+        <button type="button" class="btn btn-success">Celebraciones</button>
+        <button type="button" class="btn btn-danger">info del municipio</button>
+      </div>
+    </li>
+</ul>

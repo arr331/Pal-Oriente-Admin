@@ -22,7 +22,10 @@ import { ContactusComponent } from './components/contactus/contactus.component';
 import { LoginComponent } from './components/login/login.component';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { SubregionComponent } from './components/subregion/subregion.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { MuniComponent } from './components/muni/muni.component';
+import { SitesShowComponent } from './components/sites-show/sites-show.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
     ContactusComponent,
     LoginComponent,
     AdministrationComponent,
-    SubregionComponent
+    SubregionComponent,
+    MuniComponent,
+    SitesShowComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +52,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     ReactiveFormsModule,
+    HttpClientModule,
     FormsModule,
     AngularFireStorageModule,
     FontAwesomeModule

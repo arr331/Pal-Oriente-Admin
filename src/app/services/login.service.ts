@@ -3,6 +3,10 @@ import {AngularFireAuth} from '@angular/fire/auth'
 import { auth } from 'firebase/app';
 import * as firebase from 'firebase/app'
 import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../clases/user';
+import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +15,7 @@ export class LoginService {
 
 
 
-  constructor(public afAuth: AngularFireAuth) { }
+  constructor(private httpClient:HttpClient, public afAuth: AngularFireAuth) { }
 
   async loginGoogle(){
     try{
@@ -21,8 +25,22 @@ export class LoginService {
   }
   
   isAuth(){   
-    this.afAuth.authState.pipe(map(auth => auth));
-    return firebase.auth().currentUser;
+    return this.afAuth.authState.pipe(map(auth => auth));
+    //return firebase.auth().currentUser;
   }
+
+  logIn(email: string,password: string): Observable<User>{
+    let headers= new HttpHeaders().set('Content-type','application/json')
+
+   return this.httpClient.post<User>('http://localhost:8080/controller-user/'+email+'/'+password+'',{headers: headers});
+  }
+
+  createUser(user:User): Observable<User>{
+    let headers= new HttpHeaders().set('Content-type','application/json')
+
+   return this.httpClient.post<User>('http://localhost:8080/controller-user/',user,{headers: headers});
+  }
+
+
 
 }

@@ -12,6 +12,12 @@ body{
     -moz-osx-font-smoothing: antialiased;
 }
 
+#texto{
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+}
+
 .carousel-item{
   width: 100%;
   height: 500px;
