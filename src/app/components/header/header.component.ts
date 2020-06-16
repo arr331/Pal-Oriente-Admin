@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { LoginService } from 'src/app/services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  user: string;
 
-  constructor() { }
+  constructor(private loginservice:LoginService, private router: Router) { }
 
   ngOnInit(): void {
+    this.loginservice.isAuth().subscribe(answer => answer ? this.user = answer.displayName.split(" ")[0] : '' );
   }
 
+  logOut() {
+    this.loginservice.logOut().then(res =>  {
+      this.user = null;
+      this.router.navigate(['/inicio']);
+    });
+  }
 }

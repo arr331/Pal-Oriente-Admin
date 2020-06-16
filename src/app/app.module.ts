@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule} from 'angularfire2';
+import { AngularFireAuthGuard} from '@angular/fire/auth-guard';
 import { AngularFireAuthModule} from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 import { HomeComponent } from './components/home/home.component';
@@ -57,7 +58,7 @@ import { SitesShowComponent } from './components/sites-show/sites-show.component
     AngularFireStorageModule,
     FontAwesomeModule
   ],
-  providers: [NgxImageCompressService],
+  providers: [NgxImageCompressService, AngularFireAuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

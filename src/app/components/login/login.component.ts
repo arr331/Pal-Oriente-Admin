@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import * as firebase from 'firebase/app';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { User } from 'src/app/clases/user';
+declare var $: any;
 
 @Component({
   selector: 'app-login',
@@ -11,7 +11,7 @@ import { User } from 'src/app/clases/user';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+  isNew: boolean;
   user: any;
   email:string="yesid";
   pass:string="123";
@@ -24,30 +24,17 @@ export class LoginComponent implements OnInit {
     })
   }
 
-
   constructor(private formBuilder: FormBuilder, private loginservice:LoginService, private router:Router) { 
     this.logInForm= this.createFormGroup();
   }
 
   ngOnInit(): void {
-    
   }
 
-  async onLoginGoogle(){
-    try{
-      this.loginservice.loginGoogle()
-      .then((res)=>{
-          this.router.navigate(['/administration'])
-      });
-    }
-    catch(error)
-    {
-      console.log(error)
-    }
-
-    this.user=firebase.auth().currentUser;
-    this.email=firebase.auth().currentUser.email;
-    console.log(this.user)
+  onLoginGoogle(){
+   this.loginservice.loginGoogle().then(res =>{
+          this.router.navigate(['/inicio'])
+    });
   }
 
  ingresar(){
