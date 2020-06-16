@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MuniComponent } from '../muni/muni.component';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sites-show',
@@ -9,14 +9,22 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class SitesShowComponent implements OnInit {
 
-  listSitios: Array<any> = [];
+  @Input() listSitios: Array<any> = [];
+  @Input() site:any;
+  siteForm: FormGroup;
 
-  constructor(private muni:MuniComponent, private router:Router, private route:ActivatedRoute) { 
-    console.log('sites= '+this.route.snapshot.paramMap.get('sites'));
+
+  constructor(private formBuilder: FormBuilder,private router:Router, private route:ActivatedRoute) { 
+    
   }
 
   ngOnInit(): void {
-    this.muni.listSitios= this.listSitios;
+    console.log(this.site.name);
   }
+
+  ngOnChanges(): void {
+    this.ngOnInit();
+  }
+
 
 }

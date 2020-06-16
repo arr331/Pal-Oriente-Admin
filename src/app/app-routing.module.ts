@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'administration', component: AdministrationComponent},
   {path: 'subregiones', component: SubregionComponent},
   {path: 'subregiones/altiplano', component: MuniComponent},
-  {path: 'subregiones/altiplano/mun:sites', component: SitesShowComponent},
+  {path: 'subregiones/altiplano/mun', component: SitesShowComponent},
   {path: 'm', component: MunicipalityComponent},
   {path: '**', redirectTo: 'inicio', pathMatch: 'full'}
 ];
