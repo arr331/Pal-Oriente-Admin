@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../clases/user';
-import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +25,10 @@ export class LoginService {
   
   isAuth(){   
     return this.afAuth.authState.pipe(map(auth => auth));
-    //return firebase.auth().currentUser;
+  }
+
+  logOut() {
+    return this.afAuth.auth.signOut();
   }
 
   logIn(email: string,password: string): Observable<User>{

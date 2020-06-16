@@ -11,17 +11,17 @@
         <li routerLink="/info">Información</li>
         <li routerLink="/contactenos">Contáctenos</li>
     </div>
-    <div class="login">
-        <button type="button" data-toggle="modal" data-target="#login" class="btn btn-outline-success"><i
-                class="fa fa-user" aria-hidden="true"></i> Acceder</button>
+    <div *ngIf="!user" class="login">
+        <button type="button" routerLink="/login" class="btn btn-outline-success"><i class="fa fa-user"
+                aria-hidden="true"></i> Acceder</button>
     </div>
-</div>
-
-<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <app-login></app-login>
+    <div *ngIf="user" class="dropdown login">
+        <button class="btn btn-info dropdown-toggle" type="button" id="drop" data-toggle="dropdown"
+            style="background: #363636;" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-user"
+                aria-hidden="true"></i> {{user}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="drop">
+            <a (click)= "logOut()" class="dropdown-item"><i class="fa fa-power-off" aria-hidden="true"></i> Cerrar sesión</a>
         </div>
     </div>
 </div>

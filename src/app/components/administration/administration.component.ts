@@ -16,9 +16,9 @@ export class AdministrationComponent implements OnInit {
   user:any;
 
   constructor(private loginservice:LoginService) {
-    this.nameUser= firebase.auth().currentUser.displayName;
-    this.image= firebase.auth().currentUser.photoURL;
-    this.email= firebase.auth().currentUser.email;
+    // this.nameUser= firebase.auth().currentUser.displayName;
+    // this.image= firebase.auth().currentUser.photoURL;
+    // this.email= firebase.auth().currentUser.email;
    }
 
   ngOnInit(): void {

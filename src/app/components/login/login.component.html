@@ -1,5 +1,7 @@
-<div class="container" >
-  <h3 style="margin-top: 15px;">Iniciar sesión</h3>
+<div class="container">
+  <button *ngIf="isNew" class="btn btn-outline-dark btn-back" (click)="isNew = false"><i class="fa fa-chevron-left"
+      aria-hidden="true"></i></button>
+  <h3 class="center" style="margin-top: 15px;">{{isNew ? 'Nuevo usuario' : 'Iniciar sesión'}}</h3>
   <hr>
   <form [formGroup]="logInForm" class="was-validated">
     <div class="mb-3">
@@ -8,20 +10,32 @@
     </div>
     <div class="mb-3">
       <label>Contraseña</label>
-      <input type="password" formControlName="password" class="form-control" placeholder="Ingrese la contraseña" required>
+      <input type="password" formControlName="password" class="form-control" placeholder="Ingrese la contraseña"
+        required>
     </div>
-    <div class="custom-control custom-checkbox mb-3">
+    <div *ngIf="isNew" class="mb-3">
+      <label>Repetir contraseña</label>
+      <input type="password" formControlName="password" class="form-control" placeholder="Ingrese la contraseña"
+        required>
+    </div>
+    <div *ngIf="!isNew" class="custom-control custom-checkbox mb-3">
       <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-      <label class="custom-control-label" for="customControlValidation1" style="color: black;">Recordar contraseña</label>
+      <label class="custom-control-label" for="customControlValidation1" style="color: black;">Recordar
+        contraseña</label>
     </div>
   </form>
   <hr>
-  <div class="mb-3">
-    <button (click)="ingresar()" class="btn btn-lg btn-block" style="background: #22B547; color: white;">Ingresar</button>
-  </div>
-  <div class="container-fluid mb-3">
-    <button (click)="onLoginGoogle()" class="btn btn-danger pull-right"><i class="fa fa-google"
-        aria-hidden="true"></i>  Acceder con Google</button>
-    <button class="btn btn-outline-dark">Registrarme</button>
+  <ng-container *ngIf="!isNew">
+    <div class="mb-3">
+      <button class="btn btn-lg btn-block" style="background: #22B547; color: white;">Ingresar</button>
+    </div>
+    <div class="container-fluid mb-3">
+      <button (click)="onLoginGoogle()" class="btn btn-danger pull-right"><i class="fa fa-google"
+          aria-hidden="true"></i> Acceder con Google</button>
+      <button class="btn btn-outline-dark" (click)="isNew = true">Registrarme</button>
+    </div>
+  </ng-container>
+  <div class="mb-3" *ngIf="isNew">
+    <button class="btn btn-primary btn-lg btn-block">Crear cuenta</button>
   </div>
 </div>

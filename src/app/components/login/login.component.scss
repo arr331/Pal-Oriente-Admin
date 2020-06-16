@@ -1,3 +1,14 @@
+.container{
+        width: 33rem;
+        border: #cccccc 2px solid;
+        border-radius: 20px;
+}
+.btn-back {
+    font-size: 20px;
+    float: left;
+    margin-top: 23px;
+    padding: 0 8px;
+}
 .was-validated .form-control:invalid{
     border-color: #cccccc;
 }
