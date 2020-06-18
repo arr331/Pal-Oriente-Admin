@@ -28,6 +28,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MuniComponent } from './components/muni/muni.component';
 import { SitesShowComponent } from './components/sites-show/sites-show.component';
 import { ItemInfoComponent } from './components/item-info/item-info.component';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ItemInfoComponent } from './components/item-info/item-info.component';
     SubregionComponent,
     MuniComponent,
     SitesShowComponent,
-    ItemInfoComponent
+    ItemInfoComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

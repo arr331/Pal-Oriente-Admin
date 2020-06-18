@@ -14,9 +14,15 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginservice.isAuth().subscribe(answer => answer ? this.user = answer.displayName.split(" ")[0] : '' );
+    this.user= localStorage.getItem("nameUser");
+  }
+
+  ngOnChanges(): void {
+    this.ngOnInit();
   }
 
   logOut() {
+    localStorage.removeItem("nameUser");
     this.loginservice.logOut().then(res =>  {
       this.user = null;
       this.router.navigate(['/inicio']);

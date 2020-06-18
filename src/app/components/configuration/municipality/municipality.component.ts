@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MunicipalityService } from 'src/app/services/municipality.service';
 import { DataServiceService } from 'src/app/services/data-service.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -24,7 +25,7 @@ export class MunicipalityComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private municipalityService: MunicipalityService,
-    private dateService: DataServiceService, private imageCompress: NgxImageCompressService) { }
+    private dateService: DataServiceService, private imageCompress: NgxImageCompressService, private router: Router) { }
 
   ngOnInit(): void {
     this.dateService.getMunicipalities().valueChanges().subscribe((answer) => {
@@ -156,5 +157,9 @@ export class MunicipalityComponent implements OnInit {
     $('#modalSites').modal('hide');
     $('#modalCreateSite').modal('show');
     this.clearMpio();
+  }
+
+  usersManager(){
+    this.router.navigate(['/administration/users']);
   }
 }

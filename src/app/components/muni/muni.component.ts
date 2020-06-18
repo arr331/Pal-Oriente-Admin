@@ -3,8 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { DataServiceService } from 'src/app/services/data-service.service';
 import { MunicipalityService } from 'src/app/services/municipality.service';
 import { Router } from '@angular/router';
-import { SitesShowComponent } from '../sites-show/sites-show.component';
-import { Sitio } from 'src/app/clases/sitio';
+
 
 @Component({
   selector: 'app-muni',
@@ -16,7 +15,6 @@ export class MuniComponent implements OnInit {
   listMunicipalities: Array<any> = [];
   municipality;
   listSitios: Array<any> = [];
-  site: Sitio;
   hola: any = "yesid";
 
   constructor(private formBuilder: FormBuilder, private municipalityService: MunicipalityService,
@@ -33,9 +31,6 @@ export class MuniComponent implements OnInit {
     this.municipality= mpio;
     this.listSitios= [];
     Object.keys(mpio.info).forEach((m) => {
-      
-      this.site=this.municipality.info[m];
-      //console.log(this.site);
       this.listSitios.push(this.municipality.info[m]);
     });
     

@@ -1,4 +1,4 @@
-<div class="header">
+<!-- <div class="header">
     <div class="logo">
         <img src="assets/logo.jpg" width="70px" height="70px" class="app-logo" alt="Logotipo">
     </div>
@@ -10,6 +10,36 @@
         <li routerLink="/subregiones">Regiones</li>
         <li routerLink="/info">Información</li>
         <li routerLink="/contactenos">Contáctenos</li>
+    </div>
+
+    <div *ngIf="!user" class="login">
+        <button type="button" routerLink="/login" class="btn btn-outline-success"><i class="fa fa-user"
+                aria-hidden="true"></i> Acceder</button>
+    </div>
+    <div *ngIf="user" class="dropdown login">
+        <button class="btn btn-info dropdown-toggle" type="button" id="drop" data-toggle="dropdown"
+            style="background: #363636;" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-user"
+                aria-hidden="true"></i> {{user}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="drop">
+            <a (click)= "logOut()" class="dropdown-item"><i class="fa fa-power-off" aria-hidden="true"></i> Cerrar sesión</a>
+        </div>
+    </div>
+</div> -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="menuMain">
+    <a class="navbar-brand"><img src="assets/logo.jpg" width="70px" height="70px" class="app-logo" alt="Logotipo"></a>
+    <a class="navbar-brand" class="tittle" routerLink="/inicio"><h2>Discover Oriente</h2></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav" class="menu">
+        <li><a class="nav-item nav-link active" routerLink="/inicio">Inicio<span class="sr-only">(current)</span></a></li>
+        <li><a class="nav-item nav-link" routerLink="/subregiones">Regiones</a></li>
+        <li> <a class="nav-item nav-link" routerLink="/info">Información</a></li>
+        <li><a class="nav-item nav-link" routerLink="/contactenos">Contáctenos</a></li>
+      </div>
     </div>
     <div *ngIf="!user" class="login">
         <button type="button" routerLink="/login" class="btn btn-outline-success"><i class="fa fa-user"
@@ -24,4 +54,5 @@
             <a (click)= "logOut()" class="dropdown-item"><i class="fa fa-power-off" aria-hidden="true"></i> Cerrar sesión</a>
         </div>
     </div>
-</div>
+  </nav>
+

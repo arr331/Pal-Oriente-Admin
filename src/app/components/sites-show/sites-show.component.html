@@ -1,14 +1,10 @@
+<h2>Lista de sitios</h2>
 <ul class="list-unstyled" *ngFor="let site of listSitios">
     <li class="media" id="imagelistMun">
       <img src="{{site.image}}" class="mr-3" alt="imagen{{site}}">
       <div class="media-body" id="texto">
         <h5 class="mt-0 mb-1">{{site.name}}</h5>
         {{site.description}}
-      </div>
-      <div class="btn-group-vertical" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary">Sitios</button>
-        <button type="button" class="btn btn-success">Celebraciones</button>
-        <button type="button" class="btn btn-danger">info del municipio</button>
       </div>
     </li>
 </ul>

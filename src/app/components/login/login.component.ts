@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import * as firebase from 'firebase/app';
 import { User } from 'src/app/clases/user';
 
 declare var $: any;
@@ -44,6 +43,7 @@ export class LoginComponent implements OnInit {
     this.loginservice.logIn(this.logInForm.value['email'], this.logInForm.value['password']).subscribe((response) => {
       console.log(response);
       this.user = response;
+      localStorage.setItem("nameUser",this.user.nameUser);
 
       if (this.user != null) {
         this.router.navigate(['/administration']);

@@ -22,6 +22,7 @@ export class SitesShowComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.site);
     console.log(this.hola);
+    console.log(this.listSitios[0]);
   }
 
   ngOnChanges(): void {

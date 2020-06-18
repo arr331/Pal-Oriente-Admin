@@ -51,7 +51,18 @@ export class LoginService {
    return this.httpClient.post<User>('http://localhost:8080/controller-user/user',user,{headers: headers});
   }
 
-  setUser(user){
+  getUsers(): Observable<User[]>{
+    return this.httpClient.get<User[]>('http://localhost:8080/controller-user/users');
+  }
+
+  UpdateUser(user:User): Observable<any>{
+    let headers= new HttpHeaders().set('Content-type','application/json')
+
+   return this.httpClient.put<any>('http://localhost:8080/controller-user/user/'+user.id,user,{headers: headers});
+  }
+
+
+  setUser(user): void{
     let user_string= JSON.stringify(user);
     localStorage.setItem("currentUser",user_string);
   }
@@ -72,8 +83,12 @@ export class LoginService {
       return user;
     }
     else{
-      
+      return null;
     }
+  }
+
+  logoutUser(){
+    let accessToken= localStorage.getItem("accessToken");
   }
 
 }

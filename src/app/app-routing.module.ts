@@ -11,6 +11,7 @@ import { MuniComponent } from './components/muni/muni.component';
 import { SitesShowComponent } from './components/sites-show/sites-show.component';
 import { LoginComponent } from './components/login/login.component';
 import { ItemInfoComponent } from './components/item-info/item-info.component';
+import { UsersComponent } from './components/users/users.component';
 
 const redirect = () => redirectUnauthorizedTo(['inicio']);
 
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'info/item/:numItem', component: ItemInfoComponent },
   { path: 'administration', component: AdministrationComponent },
   { path: 'subregiones', component: SubregionComponent },
+  { path: 'administration/users', component: UsersComponent},
   { path: 'subregiones/altiplano', component: MuniComponent },
   { path: 'subregiones/altiplano/mun', component: SitesShowComponent },
   { path: '**', redirectTo: 'inicio', pathMatch: 'full' }

@@ -18,12 +18,12 @@
     </div>
     <div class="mb-3">
       <label>Contraseña</label>
-      <input type="password" formControlName="password" class="form-control" placeholder="Ingrese la contraseña"
+      <input type="password" formControlName="password" ngModel pattern="^[a-z0-9_-]{5,16}$" class="form-control" placeholder="Ingrese la contraseña"
         required>
     </div>
     <div *ngIf="isNew" class="mb-3">
       <label>Repetir contraseña</label>
-      <input type="password" formControlName="password" class="form-control" placeholder="Ingrese otra vez la contraseña"
+      <input type="password" formControlName="password" ngModel pattern="^[a-z0-9_-]{5,16}$" class="form-control" placeholder="Ingrese otra vez la contraseña"
         required>
     </div>
     <div *ngIf="!isNew" class="custom-control custom-checkbox mb-3">
