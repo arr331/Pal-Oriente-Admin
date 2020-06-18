@@ -22,11 +22,6 @@ export class MunicipalityComponent implements OnInit {
   site: any;
   editSite = false;
 
-  fields = {
-    name: 'Nombre del municipio',
-    description: 'Descripción',
-    image: 'Imagen',
-  };
 
   constructor(private formBuilder: FormBuilder, private municipalityService: MunicipalityService,
     private dateService: DataServiceService, private imageCompress: NgxImageCompressService) { }
@@ -46,7 +41,6 @@ export class MunicipalityComponent implements OnInit {
   showInfo(mpio) {
     this.municipality = mpio;
     this.listSites(mpio);
-
     $('#modal').modal('show');
   }
 

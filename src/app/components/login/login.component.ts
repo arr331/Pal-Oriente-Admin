@@ -14,83 +14,71 @@ declare var $: any;
 })
 export class LoginComponent implements OnInit {
   isNew: boolean;
-  user= new User();
+  user = new User();
   logInForm: FormGroup;
   createForm: FormGroup;
 
-  createFormGroup(){
-    return new FormGroup({
-      email: new FormControl('',[Validators.required]),
-      nameUser: new FormControl('',[Validators.required]),
-      lastUser: new FormControl('',[Validators.required]),
-      password:  new FormControl('',[Validators.required, Validators.minLength(5)])
-    })
-  };
-
-
-  constructor(private formBuilder: FormBuilder, private loginservice:LoginService, private router:Router) { 
-    this.logInForm= this.createFormGroup();
+  constructor(private formBuilder: FormBuilder, private loginservice: LoginService, private router: Router) {
   }
 
   ngOnInit(): void {
+    this.logInForm = this.formBuilder.group({
+      email: ['', Validators.required],
+      nameUser: ['', Validators.required],
+      lastUser: ['', Validators.required],
+      password: ['', Validators.required]
+    });
   }
 
-  onLoginGoogle(){
-   this.loginservice.loginGoogle().then(res =>{
-          this.router.navigate(['/inicio'])
+  onLoginGoogle() {
+    this.loginservice.loginGoogle().then(res => {
+      this.router.navigate(['/inicio'])
     });
   }
 
 
- ingresar(){
-      console.log(this.logInForm.value['email']);
-      console.log(this.logInForm.value['password']);
-      
-    this.loginservice.logIn(this.logInForm.value['email'],this.logInForm.value['password']).subscribe((response)=>{
-      console.log(response);
-      this.user= response;
+  ingresar() {
+    console.log(this.logInForm.value['email']);
+    console.log(this.logInForm.value['password']);
 
-      if(this.user!=null){
+    this.loginservice.logIn(this.logInForm.value['email'], this.logInForm.value['password']).subscribe((response) => {
+      console.log(response);
+      this.user = response;
+
+      if (this.user != null) {
         this.router.navigate(['/administration']);
         console.log(this.user);
       }
-      else{
+      else {
         console.log("Estoy nulo");
       }
 
     },
-    error => alert(error));
+      error => alert(error));
 
   }
 
-  goRegister(){
-    this.isNew= true;
+  goRegister() {
+    this.isNew = true;
   }
 
- 
-
-  formUser(): void{
-    if(this.logInForm.valid){
-      this.user.email=this.logInForm.value['email'];
-      this.user.nameUser=this.logInForm.value['nameUser'];
-      this.user.lastUser=this.logInForm.value['lastUser'];
-      this.user.password=this.logInForm.value['password'];
-    
-    this.createUser();
+  formUser(): void {
+    if (this.logInForm.valid) {
+      this.user = { ...this.logInForm.value };
+      this.createUser();
     }
-    else{
+    else {
       alert("Formulario Invalido");
     }
-    
+
   }
 
-  createUser():void{
-      this.loginservice.createUser(this.user).subscribe((response)=>{
-        this.user= response;
-      });
+  createUser(): void {
+    this.loginservice.createUser(this.user).subscribe((response) => {
+      this.user = response;
+    });
 
-      alert("Usuario creado correctamente");
+    alert("Usuario creado correctamente");
   }
-
 
 }
