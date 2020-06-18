@@ -27,6 +27,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MuniComponent } from './components/muni/muni.component';
 import { SitesShowComponent } from './components/sites-show/sites-show.component';
+import { ItemInfoComponent } from './components/item-info/item-info.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { SitesShowComponent } from './components/sites-show/sites-show.component
     AdministrationComponent,
     SubregionComponent,
     MuniComponent,
-    SitesShowComponent
+    SitesShowComponent,
+    ItemInfoComponent
   ],
   imports: [
     BrowserModule,

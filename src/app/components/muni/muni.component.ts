@@ -17,6 +17,7 @@ export class MuniComponent implements OnInit {
   municipality;
   listSitios: Array<any> = [];
   site: Sitio;
+  hola: any = "yesid";
 
   constructor(private formBuilder: FormBuilder, private municipalityService: MunicipalityService,
     private dateService: DataServiceService, private router:Router) { }
@@ -38,7 +39,7 @@ export class MuniComponent implements OnInit {
       this.listSitios.push(this.municipality.info[m]);
     });
     
-    this.router.navigate(['/subregiones/altiplano/mun']);
+    //this.router.navigate(['/subregiones/altiplano/mun']);
 
   }
 

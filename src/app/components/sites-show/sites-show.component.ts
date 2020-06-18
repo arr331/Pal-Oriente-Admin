@@ -11,6 +11,7 @@ export class SitesShowComponent implements OnInit {
 
   @Input() listSitios: Array<any> = [];
   @Input() site:any;
+  @Input() hola: string;
   siteForm: FormGroup;
 
 
@@ -19,7 +20,8 @@ export class SitesShowComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.site.name);
+    console.log(this.site);
+    console.log(this.hola);
   }
 
   ngOnChanges(): void {

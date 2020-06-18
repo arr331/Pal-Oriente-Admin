@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import * as firebase from 'firebase/app';
+import { User } from 'src/app/clases/user';
+
 declare var $: any;
 
 @Component({
@@ -12,17 +14,19 @@ declare var $: any;
 })
 export class LoginComponent implements OnInit {
   isNew: boolean;
-  user: any;
-  email:string="yesid";
-  pass:string="123";
+  user= new User();
   logInForm: FormGroup;
+  createForm: FormGroup;
 
   createFormGroup(){
     return new FormGroup({
-      email: new FormControl(''),
-      password:  new FormControl('')
+      email: new FormControl('',[Validators.required]),
+      nameUser: new FormControl('',[Validators.required]),
+      lastUser: new FormControl('',[Validators.required]),
+      password:  new FormControl('',[Validators.required, Validators.minLength(5)])
     })
-  }
+  };
+
 
   constructor(private formBuilder: FormBuilder, private loginservice:LoginService, private router:Router) { 
     this.logInForm= this.createFormGroup();
@@ -36,6 +40,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/inicio'])
     });
   }
+
 
  ingresar(){
       console.log(this.logInForm.value['email']);
@@ -53,8 +58,39 @@ export class LoginComponent implements OnInit {
         console.log("Estoy nulo");
       }
 
-    });
+    },
+    error => alert(error));
 
   }
+
+  goRegister(){
+    this.isNew= true;
+  }
+
+ 
+
+  formUser(): void{
+    if(this.logInForm.valid){
+      this.user.email=this.logInForm.value['email'];
+      this.user.nameUser=this.logInForm.value['nameUser'];
+      this.user.lastUser=this.logInForm.value['lastUser'];
+      this.user.password=this.logInForm.value['password'];
+    
+    this.createUser();
+    }
+    else{
+      alert("Formulario Invalido");
+    }
+    
+  }
+
+  createUser():void{
+      this.loginservice.createUser(this.user).subscribe((response)=>{
+        this.user= response;
+      });
+
+      alert("Usuario creado correctamente");
+  }
+
 
 }
