@@ -38,14 +38,15 @@ export class UsersComponent implements OnInit {
   }
 
   openModal(user){
-    this.id= user.id;
+    this.id= user.idUser;
+    console.log(user.idUser);
     $('#modal').modal('show');
   }
 
   
   updateUser(){
       this.user= { ...this.logInForm.value };
-      this.user.id= this.id;
+      this.user.idUser= this.id;
       this.loginservice.UpdateUser(this.user).subscribe((response)=>{
         alert('Actualizado');
       })

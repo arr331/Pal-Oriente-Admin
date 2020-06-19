@@ -58,7 +58,7 @@ export class LoginService {
   UpdateUser(user:User): Observable<any>{
     let headers= new HttpHeaders().set('Content-type','application/json')
 
-   return this.httpClient.put<any>('http://localhost:8080/controller-user/user/'+user.id,user,{headers: headers});
+   return this.httpClient.put<any>('http://localhost:8080/controller-user/user',user,{headers: headers});
   }
 
 

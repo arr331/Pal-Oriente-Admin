@@ -2,13 +2,31 @@
     <ul class="list-group">
       <li class="list-group-item active list-group-horizontal">Usuarios</li>
     </ul>
-    <ul class="list-group list-group-horizontal" *ngFor="let user of listUsers">
+    <table class="table" >
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Codigo</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of listUsers">
+            <th scope="row">{{user.idUser}}</th>
+            <td>{{user.nameUser}}</td>
+            <td>{{user.lastUser}}</td>
+            <td>{{user.email}}</td>
+            <li class="list-group-item list-group-item-action actions" (click)="openModal(user)" style="width: 7rem;"><button
+                class="btn-sm btn-success">Actualizar</button></li>
+          </tr>
+        </tbody>
+        </table>
+    <!-- <ul class="list-group list-group-horizontal" *ngFor="let user of listUsers">
       <li class="list-group-item list-group-item-action">{{user.nameUser}}</li>
       <li class="list-group-item list-group-item-action actions" (click)="openModal(user)" style="width: 7rem;"><button
           class="btn-sm btn-success">Actualizar</button></li>
-      <!-- <li class="list-group-item list-group-item-action actions" (click)="deleteUser(mpio)" style="width: 7rem;"><button
-          class="btn-sm btn-danger">Eliminar</button></li> -->
-    </ul>
+    </ul> -->
   </div>
 
   <div class="modal" id="modal" tabindex="-1" role="dialog">
