@@ -29,6 +29,7 @@ import { MuniComponent } from './components/muni/muni.component';
 import { SitesShowComponent } from './components/sites-show/sites-show.component';
 import { ItemInfoComponent } from './components/item-info/item-info.component';
 import { UsersComponent } from './components/users/users.component';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { UsersComponent } from './components/users/users.component';
     HttpClientModule,
     FormsModule,
     AngularFireStorageModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    PerfectScrollbarModule
   ],
   providers: [NgxImageCompressService, AngularFireAuthGuard],
   bootstrap: [AppComponent]

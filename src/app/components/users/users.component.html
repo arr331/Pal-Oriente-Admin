@@ -1,68 +1,73 @@
 <div class="container">
-    <ul class="list-group">
-      <li class="list-group-item active list-group-horizontal">Usuarios</li>
-    </ul>
-    <table class="table" >
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Codigo</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">email</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of listUsers">
-            <th scope="row">{{user.idUser}}</th>
-            <td>{{user.nameUser}}</td>
-            <td>{{user.lastUser}}</td>
-            <td>{{user.email}}</td>
-            <li class="list-group-item list-group-item-action actions" (click)="openModal(user)" style="width: 7rem;"><button
-                class="btn-sm btn-success">Actualizar</button></li>
-          </tr>
-        </tbody>
-        </table>
-    <!-- <ul class="list-group list-group-horizontal" *ngFor="let user of listUsers">
+  <ul class="list-group">
+    <li class="list-group-item active list-group-horizontal">Usuarios</li>
+  </ul>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Codigo</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">email</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of listUsers">
+        <th scope="row">{{user.idUser}}</th>
+        <td>{{user.nameUser}}</td>
+        <td>{{user.lastUser}}</td>
+        <td>{{user.email}}</td>
+        <td (click)="openModal(user)"><button type="button" class="btn btn-outline-info btn-sm"><i class="fa fa-pencil"
+              aria-hidden="true"></i> <strong>Actualizar</strong></button></td>
+        <!-- <li class="list-group-item list-group-item-action actions" (click)="openModal(user)" style="width: 7rem;"><button
+                class="btn-sm btn-success">Actualizar</button></li> -->
+      </tr>
+    </tbody>
+  </table>
+  <!-- <ul class="list-group list-group-horizontal" *ngFor="let user of listUsers">
       <li class="list-group-item list-group-item-action">{{user.nameUser}}</li>
       <li class="list-group-item list-group-item-action actions" (click)="openModal(user)" style="width: 7rem;"><button
           class="btn-sm btn-success">Actualizar</button></li>
     </ul> -->
-  </div>
+</div>
 
-  <div class="modal" id="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form [formGroup]="logInForm" class="was-validated">
-                <div class="mb-3">
-                  <label>Correo electrónico</label>
-                  <input type="text" formControlName="email" ngModel pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" placeholder="Ingrese el correo" required>
-                </div>
-                <div  class="mb-3">
-                  <label>Nombre</label>
-                  <input type="text" formControlName="nameUser" class="form-control" placeholder="Ingrese su nombre" required>
-                </div>
-                <div class="mb-3">
-                  <label>Apellido</label>
-                  <input type="text" formControlName="lastUser" class="form-control" placeholder="Ingrese su apellido" required>
-                </div>
-                <div class="mb-3">
-                  <label>Contraseña</label>
-                  <input type="password" formControlName="password" ngModel pattern="^[a-z0-9_-]{5,16}$" class="form-control" placeholder="Ingrese la contraseña"
-                    required>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" (click)="updateUser()" class="btn btn-primary">Save changes</button>
-        </div>
+<div class="modal" id="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="logInForm" class="was-validated">
+          <div class="mb-3">
+            <label>Correo electrónico</label>
+            <input type="text" formControlName="email" ngModel pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+              class="form-control" placeholder="Ingrese el correo" required>
+          </div>
+          <div class="mb-3">
+            <label>Nombre</label>
+            <input type="text" formControlName="nameUser" class="form-control" placeholder="Ingrese su nombre" required>
+          </div>
+          <div class="mb-3">
+            <label>Apellido</label>
+            <input type="text" formControlName="lastUser" class="form-control" placeholder="Ingrese su apellido"
+              required>
+          </div>
+          <div class="mb-3">
+            <label>Contraseña</label>
+            <input type="password" formControlName="password" ngModel pattern="^[a-z0-9_-]{5,16}$" class="form-control"
+              placeholder="Ingrese la contraseña" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" (click)="updateUser()" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
+</div>
