@@ -99,7 +99,6 @@ export class MunicipalityComponent implements OnInit {
     this.imageBlob = this.dataURItoBlob((await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]);
   }
 
-
   dataURItoBlob(dataURI) {
     const byteString = window.atob(dataURI);
     const arrayBuffer = new ArrayBuffer(byteString.length);
@@ -142,9 +141,6 @@ export class MunicipalityComponent implements OnInit {
     $('#modalCreateSite').modal('show');
   }
 
-  deleteMun(mpio) {
-
-  }
   showSites() {
     this.listSites(this.municipality);
     $('#modalSites').modal('show');

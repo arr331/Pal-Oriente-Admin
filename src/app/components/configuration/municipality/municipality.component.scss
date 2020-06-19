@@ -2,5 +2,16 @@
     background: #e5edf8;
 }
 .container{
-    margin-top: 30px;
+    margin-top: 15px;
+}
+.icon-edit {
+    width: 7rem;
+    padding: 0;
+    text-align: center;
+    color: black; 
+    font-size: 40px;
+}
+.hover:hover{
+    background: #cdcde4;
+    cursor: pointer;
 }

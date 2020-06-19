@@ -1,20 +1,20 @@
 <div class="container">
-  <button type="button" (click)="newMun()" class="btn btn-primary">Crear Municipio</button>
-  <button type="button" (click)="usersManager()" class="btn btn-success">Gestionar Usuarios</button>
+  <button type="button" (click)="newMun()" class="btn btn-outline-primary" style="margin-right: 30px;"><i
+      class="fa fa-plus" aria-hidden="true"></i> Crear Municipio</button>
+  <button type="button" (click)="usersManager()" class="btn btn-outline-success"><i class="fa fa-users"
+      aria-hidden="true"></i> Gestionar Usuarios</button>
 </div>
 
 
 <div class="container">
   <ul class="list-group">
-    <li class="list-group-item active list-group-horizontal">Municipios</li>
+    <li class="list-group-item active list-group-horizontal" style="background: #282828;">Municipios</li>
   </ul>
-  <ul class="list-group list-group-horizontal" *ngFor="let mpio of listMunicipalities">
-    <li (click)="showInfo(mpio)" class="list-group-item list-group-item-action">
+  <ul class="list-group list-group-horizontal list-group-flush" *ngFor="let mpio of listMunicipalities">
+    <li (click)="showInfo(mpio)" class="list-group-item list-group-item-action hover">
       {{mpio.name}}</li>
-    <li class="list-group-item list-group-item-action actions" (click)="updateMun(mpio)" style="width: 7rem;"><button
-        class="btn-sm btn-success">Actualizar</button></li>
-    <li class="list-group-item list-group-item-action actions" (click)="deleteMun(mpio)" style="width: 7rem;"><button
-        class="btn-sm btn-danger">Eliminar</button></li>
+    <li class="list-group-item center hover" style="width: 7rem; padding: 0; text-align: center;">
+      <i (click)="updateMun(mpio)" class="fa fa-pencil icon-edit" aria-hidden="true"></i></li>
   </ul>
 </div>
 
@@ -36,7 +36,6 @@
                 width="300px" height="180px" alt="error al cargar"></li>
             <li class="list-group-item list-group-item-action">Descripcion {{sitio.name}}: {{sitio.description}}</li>
           </ng-container>
-
         </ul>
       </div>
       <div class="modal-footer">
@@ -50,55 +49,54 @@
   aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-body">
-        <div class="container">
-          <h5>{{update ? 'Actualizar municipio': 'Crear municipio'}}</h5>
-          <hr>
+      <div class="container">
+        <h3><i class="fa fa-{{update ? 'pencil' : 'plus'}}" aria-hidden="true"></i>
+          {{update ? 'Actualizar municipio': 'Crear municipio'}}</h3>
+        <hr>
+        <form [formGroup]="municipalityForm">
+          <div class="mb-3" style="text-align: center;">
+            <img src="{{municipality.image}}" *ngIf="update" width="300px" height="180px" alt="no se cargo">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Nombre del municipio</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Ingrese el nombre del municipio" required
+              formControlName="name">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Descripción</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Ingrese la descripción del municipio"
+              formControlName="description">
+          </div>
 
-          <form [formGroup]="municipalityForm">
-            <div style="text-align: center;">
-              <img src="{{municipality.image}}" *ngIf="update" width="300px" height="180px" alt="no se cargo">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
             </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Nombre del municipio</span>
-              </div>
-              <input type="text" class="form-control" required formControlName="name">
+            <div class="custom-file">
+              <input type="file" accept=".png, .jpg" (change)="upload($event)" class="custom-file-input"
+                id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+              <label class="custom-file-label" for="inputGroupFile01">Elegir archivo</label>
+              <input type="text" class="form-control" value="{{url}}" formControlName="image">
             </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Descripción</span>
-              </div>
-              <input type="text" class="form-control" formControlName="description">
-            </div>
+          </div>
 
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
-              </div>
-              <div class="custom-file">
-                <input type="file" accept=".png, .jpg" (change)="upload($event)" class="custom-file-input"
-                  id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                <label class="custom-file-label" for="inputGroupFile01">Elegir archivo</label>
-                <input type="text" class="form-control" value="{{url}}" formControlName="image">
-              </div>
+          <div class="row" *ngIf="update">
+            <div class="col-md-3">
+              <button type="button" (click)="addSite()" class="btn btn-success">Agregar sitio</button>
             </div>
-
-            <div class="row" *ngIf="update">
-              <div class="col-md-3">
-                <button type="button" (click)="addSite()" class="btn btn-success">Agregar sitio</button>
-              </div>
-              <!-- *ngIf="sites" -->
-              <div class="col-md-3">
-                <button type="button" (click)= "showSites()" class="btn btn-primary">Editar sitios</button> 
-                <!-- <button type="button" data-toggle="modal" data-target="#modalSites" class="btn btn-primary">Editar sitios</button>  -->
-              </div>
+            <div class="col-md-3">
+              <button type="button" (click)="showSites()" class="btn btn-primary">Editar sitios</button>
             </div>
-          </form>
-          <hr>
-          <button type="button" class="btn btn-danger btn-sm pull-right" (click)="clearMpio()"
-            data-dismiss="modal">Cerrar</button>
-          <button type="button" (click)="saveMpio()" class="btn btn-success btn-sm pull-right">Aceptar</button>
+          </div>
+        </form>
+        <hr>
+        <div class="container-fluid mb-3">
+          <button type="button" class="btn btn-danger" (click)="clearMpio()" data-dismiss="modal">Cerrar</button>
+          <button type="button" (click)="saveMpio()" class="btn btn-success pull-right">Guardar</button>
         </div>
       </div>
     </div>
@@ -108,24 +106,24 @@
 
 
 
-<div class="modal fade bd-example-modal-lg"  id="modalCreateSite" tabindex="-1" role="dialog"
+<div class="modal fade bd-example-modal-lg" id="modalCreateSite" tabindex="-1" role="dialog"
   aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-body" *ngIf= "municipality">
-        <app-site [municipality]= "municipality.idMun" [site] = "site" [update] = "editSite"></app-site>
+      <div class="modal-body" *ngIf="municipality">
+        <app-site [municipality]="municipality.idMun" [site]="site" [update]="editSite"></app-site>
       </div>
     </div>
   </div>
 </div>
 
-<div  *ngIf= "municipality" class="modal fade bd-example-modal-lg"  id="modalSites">
+<div *ngIf="municipality" class="modal fade bd-example-modal-lg" id="modalSites">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <ul class="list-group">
           <li class="list-group-item active">Sitios de {{municipality.name}}</li>
-          <li class="list-group-item" (click)= "updateSite(site)" *ngFor = "let site of listSitios">{{site.name}}</li>
+          <li class="list-group-item" (click)="updateSite(site)" *ngFor="let site of listSitios">{{site.name}}</li>
         </ul>
       </div>
       <div class="modal-footer">
@@ -133,4 +131,4 @@
       </div>
     </div>
   </div>
-</div> 
+</div>

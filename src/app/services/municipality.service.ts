@@ -58,11 +58,11 @@ export class MunicipalityService {
 
 
   async uploadImg(event) {
-    // const filePath = `ZZ/portadas/${this.id}`;
-    const filePath = `ZZ`;
+    const filePath = `ZZ/portadas/${this.id}`;
+    // const filePath = `ZZ`; 
     const ref = this.storage.ref(filePath);
     await ref.put(event).then(function(snapshot) {
-      console.log('Uploaded a blob or file!');
+      console.log('Se carg+o la imagen correctamente');
     });
     return await ref.getDownloadURL().toPromise();
   }
