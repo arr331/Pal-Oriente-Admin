@@ -22,7 +22,7 @@ export class MunicipalityComponent implements OnInit {
   localUrl;
   site: any;
   celebration: any;
-  editCelebration= false;
+  editCelebration = false;
   editSite = false;
 
 
@@ -33,21 +33,24 @@ export class MunicipalityComponent implements OnInit {
     this.dateService.getMunicipios().valueChanges().subscribe((answer) => {
       this.listMunicipalities = answer;
     });
+    this.buildForm();
+  }
 
+  buildForm() {
     this.municipalityForm = this.formBuilder.group({
       name: ['', Validators.required],
-      description: [''],
+      description: ['', Validators.required],
       economy: [''],
       habitants: [''],
       history: [''],
       weather: [''],
       image: [''],
     });
-
   }
+
   showInfo(mpio) {
     this.municipality = mpio;
-    this.listSites(mpio);
+    mpio.sites ? this.listSites(mpio) : '';
     $('#modal').modal('show');
   }
 
@@ -63,42 +66,47 @@ export class MunicipalityComponent implements OnInit {
     $('#modalCreate').modal('show');
   }
 
+  updateMun(mpio) {
+    this.update = true;
+    this.municipality = mpio;
+    this.fillForm();
+    $('#modalCreate').modal('show');
+  }
+
+  fillForm() {
+    this.municipalityForm.get('name').setValue(this.municipality.name);
+    this.municipalityForm.get('description').setValue(this.municipality.description);
+    this.municipalityForm.get('image').setValue(this.municipality.image);
+  }
+
   async saveMpio() {
-    if (!this.update && this.municipalityForm.get('name').value) {
+    if (this.municipalityForm.valid) {
+      const mpio = this.municipalityService.buildMunicipality(this.municipalityForm.value, this.update ? this.municipality.idMun : '');
+      if (this.url) {
         var reader = new FileReader();
-        reader.onload = async event => {
-          await this.compressFile(event.target.result);    
-         const mpio = this.municipalityService.buildMunicipality(this.municipalityForm.value);
-          this.municipalityService.uploadImg(this.imageBlob).then(answer => {
-            mpio.image = answer;
-            this.municipalityService.addMunicipality(mpio);
-            this.reset('Municipio creado')
-          });      
-        }
-        reader.readAsDataURL(this.url.target.files[0]); 
-    } else if (this.update && this.municipalityForm.get('name').value) {
-      this.municipality = this.municipalityService.updateMunicipality(this.municipalityForm.value, this.municipality);
-      if (!this.url) {
-        this.municipalityService.update(this.municipality);
-        this.reset('Municipio Actualizado');
-      } else {
-        var reader  = new FileReader();
         reader.onload = async event => {
           await this.compressFile(event.target.result);
           this.municipalityService.uploadImg(this.imageBlob).then(answer => {
-            this.municipality.image = answer; 
-            this.municipalityService.update(this.municipality)
-            this.reset('Municipio Actualizado');
+            mpio.image = answer;
+            this.municipalityService.saveMunicipality(mpio);
+            this.reset('Municipio creado')
           });
         }
-        reader.readAsDataURL(this.url.target.files[0]); 
+        reader.readAsDataURL(this.url.target.files[0]);
+      } else {
+        this.municipalityService.saveMunicipality(mpio);
+        this.reset('Municipio Actualizado');
       }
+    } else {
+      console.log('llenar');
     }
   }
 
 
   upload(img) {
     this.url = img;
+    console.log(this.url, 'sd');
+
   }
 
   async compressFile(image) {
@@ -122,24 +130,10 @@ export class MunicipalityComponent implements OnInit {
     this.url = null;
     this.imageBlob = null;
     $('#modalCreate').modal('hide');
+    this.buildForm();
   }
 
-  clearMpio() {
-    this.municipalityForm.reset();
-  }
 
-  updateMun(mpio) {
-    this.update = true;
-    this.municipality = mpio;
-    this.fillForm();
-    $('#modalCreate').modal('show');
-  }
-
-  fillForm() {
-    this.municipalityForm.get('name').setValue(this.municipality.name);
-    this.municipalityForm.get('description').setValue(this.municipality.description);
-    this.municipalityForm.get('image').setValue(this.municipality.image);
-  }
 
   addSite() {
     $('#modalCreate').modal('hide');
@@ -166,10 +160,9 @@ export class MunicipalityComponent implements OnInit {
     $('#modalCreate').modal('hide');
     $('#modalSites').modal('hide');
     $('#modalCreateSite').modal('show');
-    this.clearMpio();
   }
 
-  usersManager(){
+  usersManager() {
     this.router.navigate(['/administration/users']);
   }
 }

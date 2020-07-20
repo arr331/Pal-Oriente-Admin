@@ -59,14 +59,14 @@
           </div>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Nombre del municipio</span>
+              <span class="input-group-text">Nombre del municipio</span>
             </div>
             <input type="text" class="form-control" placeholder="Ingrese el nombre del municipio" required
               formControlName="name">
           </div>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Descripción</span>
+              <span class="input-group-text">Descripción</span>
             </div>
             <input type="text" class="form-control" placeholder="Ingrese la descripción del municipio"
               formControlName="description">
@@ -74,15 +74,13 @@
 
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Economía</span>
+              <span class="input-group-text">Economía</span>
             </div>
-            <input type="text" class="form-control" placeholder="Ingrese la economía tipica"
-              formControlName="economy">
+            <input type="text" class="form-control" placeholder="Ingrese la economía tipica" formControlName="economy">
           </div>
-
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Habitantes</span>
+              <span class="input-group-text">Habitantes</span>
             </div>
             <input type="text" class="form-control" placeholder="Ingrese la cantidad de habitantes del municipio"
               formControlName="habitants">
@@ -90,7 +88,7 @@
 
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Historia</span>
+              <span class="input-group-text">Historia</span>
             </div>
             <input type="text" class="form-control" placeholder="Ingrese la reseña historica del municipio"
               formControlName="history">
@@ -98,7 +96,7 @@
 
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Clima</span>
+              <span class="input-group-text">Clima</span>
             </div>
             <input type="text" class="form-control" placeholder="Ingrese la temperatura promedio"
               formControlName="weather">
@@ -111,7 +109,7 @@
             <div class="custom-file">
               <input type="file" accept=".png, .jpg" (change)="upload($event)" class="custom-file-input"
                 id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-              <label class="custom-file-label" for="inputGroupFile01">Elegir archivo</label>
+              <label class="custom-file-label" for="inputGroupFile01">{{url ? url.target.files[0].name : 'Elegir archivo'}}</label>
               <input type="text" class="form-control" value="{{url}}" formControlName="image">
             </div>
           </div>
@@ -130,7 +128,7 @@
         </form>
         <hr>
         <div class="container-fluid mb-3">
-          <button type="button" class="btn btn-danger" (click)="clearMpio()" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
           <button type="button" (click)="saveMpio()" class="btn btn-success pull-right">Guardar</button>
         </div>
       </div>
@@ -156,7 +154,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body" *ngIf="municipality">
-        <app-celebration [municipality]="municipality.idMun" [celebration]="celebration" [update]="editCelebration"></app-celebration>
+        <app-celebration [municipality]="municipality.idMun" [celebration]="celebration" [update]="editCelebration">
+        </app-celebration>
       </div>
     </div>
   </div>
