@@ -26,7 +26,7 @@ export class SiteComponent implements OnInit, OnChanges {
     image: 'Imagen',
     x: 'X',
     y: 'Y',
-    galery: 'Galeria'
+    //galery: 'Galeria'
   };
 
   constructor(private formBuilder: FormBuilder, private storage: AngularFireStorage,
@@ -39,7 +39,7 @@ export class SiteComponent implements OnInit, OnChanges {
       image: [''],
       x: [''],
       y: [''],
-      galery: ['']
+      //galery: ['']
     });
     this.update && this.site ? this.fillform() : '';
   }
@@ -59,7 +59,7 @@ export class SiteComponent implements OnInit, OnChanges {
   saveSite(){
     if(!this.update && this.siteForm.get('name').value){
       const site =  this.siteService.buildSite(this.siteForm.value, this.municipality);
-      this.files ?  this.siteService.uploadGalery(this.files) : '';
+      //this.files ?  this.siteService.uploadGalery(this.files) : '';
       this.siteService.uploadImg(this.url).then(answer => {
         site.image = answer;
         this.siteService.addSite(site, this.municipality);

@@ -7,3 +7,14 @@
 h3,h2{
     text-align: center;
 }
+
+.abs-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .formContact{
+    align-content: center;
+}

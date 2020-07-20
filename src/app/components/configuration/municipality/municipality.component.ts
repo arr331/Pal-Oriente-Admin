@@ -21,6 +21,8 @@ export class MunicipalityComponent implements OnInit {
   imageBlob: any;
   localUrl;
   site: any;
+  celebration: any;
+  editCelebration= false;
   editSite = false;
 
 
@@ -28,13 +30,17 @@ export class MunicipalityComponent implements OnInit {
     private dateService: DataServiceService, private imageCompress: NgxImageCompressService, private router: Router) { }
 
   ngOnInit(): void {
-    this.dateService.getMunicipalities().valueChanges().subscribe((answer) => {
+    this.dateService.getMunicipios().valueChanges().subscribe((answer) => {
       this.listMunicipalities = answer;
     });
 
     this.municipalityForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: [''],
+      economy: [''],
+      habitants: [''],
+      history: [''],
+      weather: [''],
       image: [''],
     });
 
@@ -47,8 +53,8 @@ export class MunicipalityComponent implements OnInit {
 
   listSites(mpio) {
     this.listSitios = [];
-    Object.keys(mpio.info).forEach((m) => {
-      this.listSitios.push(this.municipality.info[m]);
+    Object.keys(mpio.sites).forEach((m) => {
+      this.listSitios.push(this.municipality.sites[m]);
     });
   }
 
@@ -62,7 +68,7 @@ export class MunicipalityComponent implements OnInit {
         var reader = new FileReader();
         reader.onload = async event => {
           await this.compressFile(event.target.result);    
-          const mpio = this.municipalityService.buildMunicipality(this.municipalityForm.value);
+         const mpio = this.municipalityService.buildMunicipality(this.municipalityForm.value);
           this.municipalityService.uploadImg(this.imageBlob).then(answer => {
             mpio.image = answer;
             this.municipalityService.addMunicipality(mpio);
@@ -137,8 +143,16 @@ export class MunicipalityComponent implements OnInit {
 
   addSite() {
     $('#modalCreate').modal('hide');
+    console.log('ENTRE A SITIOS');
     this.municipalityForm.reset();
     $('#modalCreateSite').modal('show');
+  }
+
+  addCelebration() {
+    $('#modalCreate').modal('hide');
+    console.log('ENTRE A CELEBRACIONES');
+    this.municipalityForm.reset();
+    $('#modalCreateCelebration').modal('show');
   }
 
   showSites() {

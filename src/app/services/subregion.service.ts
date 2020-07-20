@@ -18,6 +18,10 @@ export class SubregionService {
   getPlaceInfo(){
     return (this.list= this.fireBase.list('PLACEINFO'));
   }
+
+  getNotices(){
+    return (this.list=this.fireBase.list('NEWS'))
+  }
   
 
 }

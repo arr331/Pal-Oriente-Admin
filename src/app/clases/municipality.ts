@@ -2,7 +2,12 @@ export class Municipality {
     name: string;
     description: string;
     image: string;
-    info: any;
+    sites: any;
+    celebrations: any;
+    economy: string;
+    habitants: string;
+    history: string;
+    weather: string;
     idMun: string;
 
     // constructor(name: string, description: string, image: string, idMun: string){

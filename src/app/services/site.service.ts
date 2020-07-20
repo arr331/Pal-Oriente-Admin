@@ -13,7 +13,7 @@ export class SiteService {
   constructor(private fireBase: AngularFireDatabase , private storage: AngularFireStorage) { }
 
   addSite(site, id){
-    this.fireBase.list(`ZZ/${id}/info`).set(site.idSite, site);
+    this.fireBase.list(`ALTIPLANO/MUNICIPALITIES/${id}/sites`).set(site.idSite, site);
   }
 
   buildSite(form, idMun): Sitio {

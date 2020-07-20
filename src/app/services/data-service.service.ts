@@ -13,6 +13,10 @@ export class DataServiceService {
     return (this.list = this.fireBase.list('ZZ'));
   }
 
+  getMunicipios() {
+    return (this.list = this.fireBase.list('ALTIPLANO/MUNICIPALITIES'));
+  }
+
   getID(id) {
     return (this.list = this.fireBase.list('ZZ', (re) =>
       re.orderByChild('id').equalTo(id)

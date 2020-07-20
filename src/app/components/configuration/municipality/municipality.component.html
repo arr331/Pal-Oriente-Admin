@@ -74,6 +74,38 @@
 
           <div class="input-group mb-3">
             <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Economía</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Ingrese la economía tipica"
+              formControlName="economy">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Habitantes</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Ingrese la cantidad de habitantes del municipio"
+              formControlName="habitants">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Historia</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Ingrese la reseña historica del municipio"
+              formControlName="history">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Clima</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Ingrese la temperatura promedio"
+              formControlName="weather">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
             </div>
             <div class="custom-file">
@@ -87,6 +119,9 @@
           <div class="row" *ngIf="update">
             <div class="col-md-3">
               <button type="button" (click)="addSite()" class="btn btn-success">Agregar sitio</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" (click)="addCelebration()" class="btn btn-success">Agregar celebración</button>
             </div>
             <div class="col-md-3">
               <button type="button" (click)="showSites()" class="btn btn-primary">Editar sitios</button>
@@ -104,14 +139,24 @@
 </div>
 
 
-
-
 <div class="modal fade bd-example-modal-lg" id="modalCreateSite" tabindex="-1" role="dialog"
   aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body" *ngIf="municipality">
         <app-site [municipality]="municipality.idMun" [site]="site" [update]="editSite"></app-site>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" id="modalCreateCelebration" tabindex="-1" role="dialog"
+  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body" *ngIf="municipality">
+        <app-celebration [municipality]="municipality.idMun" [celebration]="celebration" [update]="editCelebration"></app-celebration>
       </div>
     </div>
   </div>

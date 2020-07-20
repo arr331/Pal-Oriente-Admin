@@ -14,7 +14,7 @@ export class MunicipalityService {
   constructor(private fireBase: AngularFireDatabase, private storage: AngularFireStorage) { }
 
   addMunicipality(mpio) {
-    this.fireBase.list('ZZ').set(mpio.idMun, mpio);
+    this.fireBase.list('ALTIPLANO/MUNICIPALITIES').set(mpio.idMun, mpio);
   }
 
   update(mpio) {
@@ -30,7 +30,12 @@ export class MunicipalityService {
       name: form.name,
       description: form.description,
       image: form.image,
-      info: '',
+      sites: '',
+      celebrations: '',
+      economy: form.economy,
+      habitants: form.habitants,
+      history: form.history,
+      weather: form.weather,
       idMun: this.id
     };
 

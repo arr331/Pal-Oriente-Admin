@@ -30,6 +30,8 @@ import { SitesShowComponent } from './components/sites-show/sites-show.component
 import { ItemInfoComponent } from './components/item-info/item-info.component';
 import { UsersComponent } from './components/users/users.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { NoticesComponent } from './components/notices/notices.component';
+import { CelebrationComponent } from './components/configuration/celebration/celebration.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     MuniComponent,
     SitesShowComponent,
     ItemInfoComponent,
-    UsersComponent
+    UsersComponent,
+    NoticesComponent,
+    CelebrationComponent
   ],
   imports: [
     BrowserModule,

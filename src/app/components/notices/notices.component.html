@@ -1,0 +1,12 @@
+<br>
+<h2 class="center">Últimas Noticias</h2>
+
+<ul class="list-unstyled" *ngFor="let notice of listNotices">
+    <li class="media" id="imagelistNotice">
+      <img src="{{notice.image}}" class="mr-3" alt="imagen{{notice}}">
+      <div class="media-body" id="texto">
+        <h5 class="mt-0 mb-1">{{notice.title}}</h5>
+        {{notice.outline}}
+      </div>
+    </li>
+</ul>

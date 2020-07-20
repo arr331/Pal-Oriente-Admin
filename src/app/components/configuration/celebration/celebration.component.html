@@ -1,0 +1,50 @@
+<div class="container">
+    <h5>Crear Celebración</h5>
+    <hr>
+
+    <form [formGroup]="celebrationForm">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Nombre de la celebración</span>
+            </div>
+            <input type="text" class="form-control" required formControlName="name">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Descripción</span>
+            </div>
+            <input type="text" class="form-control" formControlName="description">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
+            </div>
+            <div class="custom-file">
+                <input type="file" accept=".png, .jpg, .jpeg" (change)="uploadImage($event)" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                <label class="custom-file-label" for="inputGroupFile01">Elegir archivo</label>
+                <input type="text" class="form-control" formControlName="image">
+            </div>
+        </div>
+        <div class="activity" formArrayName="activities">   <h3>Actividades</h3>
+           <div *ngFor="let activity of activities.controls; index as i">
+                <ng-container class="input-group mb-3" [formGroupName]="i">
+                    <input class="form-control" formControlName="nameActivity" />
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
+                    </div>
+                    <div class="custom-file">
+                        <input formControlName="imageActivity" type="file" accept=".png, .jpg, .jpeg" (change)="uploadImageActivity($event)" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">Elegir archivo</label>
+                        <!-- <input type="text" class="form-control" formControlName="image"/> -->
+                    </div>
+                </ng-container>
+           </div>
+            <button mat-raised-button class="btn btn-primary" type="button" (click)="addActivity()">Añadir actividad</button>
+          </div>
+    </form>
+
+    <hr>
+    <button type="button" class="btn btn-danger" (click)="clearSite()">Cancelar</button>
+    <button type="button" class="btn btn-success pull-left" (click)="saveCelebration()">Aceptar</button>
+</div>
