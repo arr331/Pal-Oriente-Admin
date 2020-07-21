@@ -1,58 +1,59 @@
 <div class="container">
     <h5>Crear sitio</h5>
     <hr>
-
     <form [formGroup]="siteForm">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Nombre del Sitio</span>
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <label>Nombre del sitio</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Ingrese el nombre del sitio"
+                    formControlName="name">
             </div>
-            <input type="text" class="form-control" required formControlName="name">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Descripción</span>
-            </div>
-            <input type="text" class="form-control" formControlName="description">
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Coordeada x</span>
-            </div>
-            <input type="text" class="form-control" formControlName="x">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Coordeada y</span>
-            </div>
-            <input type="text" class="form-control" formControlName="y">
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
-            </div>
-            <div class="custom-file">
-                <input type="file" accept=".png, .jpg, .jpeg" (change)="uploadImage($event)" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                <label class="custom-file-label" for="inputGroupFile01">Elegir archivo</label>
-                <input type="text" class="form-control" formControlName="image">
+            <div class="col-md-4">
+                <label>Estado</label>
+                <select class="custom-select custom-select-sm" formControlName="state">
+                    <option [ngValue]="true">Activo</option>
+                    <option [ngValue]="false">Inactivo</option>
+                </select>
             </div>
         </div>
-
-        <!-- <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroupFileAddon01">Cargar imágenes</span>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label>Descripción</label>
+                <textarea type="text" class="form-control form-control-sm"
+                    placeholder="Ingrese la descripción del sitio" formControlName="description"></textarea>
             </div>
-            <div class="custom-file">
-                <input type="file" multiple=true class="form-control" (change)="uploadGallery($event)"
-                    formControlName="galery">
-
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label>Coordenada x</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Latitud" formControlName="x">
             </div>
-        </div> -->
+            <div class="col-md-3">
+                <label>Coordenada x</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Longitud" formControlName="y">
+            </div>
+            <div class="col-md-6">
+                <label>Cargar foto</label>
+                <div class="custom-file form-control-sm">
+                    <input type="file" accept=".png, .jpg" (change)="url = $event" class="custom-file-input">
+                    <label class="custom-file-label">{{url ? url.target.files[0].name : 'Elegir archivo'}}</label>
+                </div>
+            </div>
+        </div>
     </form>
-
     <hr>
-    <button type="button" class="btn btn-danger" (click)="clearSite()">Cancelar</button>
-    <button type="button" class="btn btn-success pull-left" (click)="saveSite()">Aceptar</button>
+    <div class="container-fluid">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <button type="button" (click)="saveSite()" class="btn btn-success pull-right">Guardar</button>
+    </div>
 </div>
+<!-- <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupFileAddon01">Cargar imágenes</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" multiple=true class="form-control" (change)="uploadGallery($event)"
+                                formControlName="galery">
+                
+                        </div>
+                    </div> -->

@@ -1,8 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AngularFireStorage } from 'angularfire2/storage';
-import { Observable } from 'rxjs';
 import { SiteService } from 'src/app/services/site.service';
+import { NgxImageCompressService } from 'ngx-image-compress';
 declare var $: any;
 
 @Component({
@@ -14,99 +13,80 @@ export class SiteComponent implements OnInit, OnChanges {
   siteForm: FormGroup;
   files: FileList;
   file: File;
-  url: Observable<string>;
+  url: any;
+  imageBlob: any;
 
-  @Input() municipality: any;
-  @Input() site: any;
-  @Input() update: any;
+  @Input() mpioId: any;
 
-  fields = {
-    name: 'Nombre del municipio',
-    description: 'Descripción',
-    image: 'Imagen',
-    x: 'X',
-    y: 'Y',
-    //galery: 'Galeria'
-  };
+  constructor(private formBuilder: FormBuilder, private siteService: SiteService, private imageCompress: NgxImageCompressService) { }
 
-  constructor(private formBuilder: FormBuilder, private storage: AngularFireStorage,
-              private siteService: SiteService) { }
+  ngOnInit() {
+    this.buildForm();
+  }
 
-  ngOnInit(): void {
+  buildForm() {
     this.siteForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: [''],
       image: [''],
       x: [''],
       y: [''],
-      //galery: ['']
+      state: [true]
     });
-    this.update && this.site ? this.fillform() : '';
   }
 
-  ngOnChanges(): void {
+  ngOnChanges() {
     this.ngOnInit();
   }
 
-  fillform() {
-    this.siteForm.get('name').setValue(this.site.name);
-    this.siteForm.get('description').setValue(this.site.description);
-    this.siteForm.get('image').setValue(this.site.image);
-    this.siteForm.get('x').setValue(this.site.x);
-    this.siteForm.get('y').setValue(this.site.y);
-  }
-
-  saveSite(){
-    if(!this.update && this.siteForm.get('name').value){
-      const site =  this.siteService.buildSite(this.siteForm.value, this.municipality);
-      //this.files ?  this.siteService.uploadGalery(this.files) : '';
-      this.siteService.uploadImg(this.url).then(answer => {
-        site.image = answer;
-        this.siteService.addSite(site, this.municipality);
-        this.reset('Sitio Guardado');
-      });
-    } else if (this.update && this.site && this.siteForm.get('name').value) {
-      this.site = this.siteService.updateSite(this.siteForm.value, this.site, this.municipality);
-      this.files ? this.siteService.uploadGalery(this.files) : '';
-      if (!this.url) {
-        this.siteService.addSite(this.site, this.municipality);
-        this.reset('Sitio Actualizado');
+  saveSite() {
+    if (this.siteForm.valid) {
+      const site = this.siteService.buildSite(this.siteForm.value, this.mpioId, '');
+      if (this.url) {
+        var reader = new FileReader();
+        reader.onload = async event => {
+          await this.compressFile(event.target.result);
+          this.siteService.uploadImg(this.imageBlob).then(answer => {
+            site.image = answer;
+            this.siteService.addSite(site);
+            this.reset('Municipio creado')
+          });
+        }
+        reader.readAsDataURL(this.url.target.files[0]);
       } else {
-        this.siteService.uploadImg(this.url).then(answer => {
-          this.site.image = answer;
-          this.siteService.addSite(this.site, this.municipality);
-          this.reset('Sitio Actualizado');
-        });
+        this.siteService.addSite(site);
+        this.reset('Municipio Actualizado');
       }
+    } else {
+      console.log('llenar');
     }
   }
 
   reset(msj) {
     console.log(msj);
-    this.ngOnInit();
+    this.buildForm();
     this.url = null;
     this.files = null;
     $('#modalCreateSite').modal('hide');
   }
 
-  clearSite() {
-    this.siteForm.reset();
-    $('#modalCreateSite').modal('hide');
-  }
-
-  uploadImage(img){
-    this.url = img;
-  }
-
   uploadGallery(imgs) {
     this.files = imgs.target.files
     console.log(this.files, 'carpeta');
-    
   }
-  // upload(img){
-  //   this.file = img.target.files[0];    
-  // }
-  // importImages(imgs) {
-  //   this.files = imgs.target.files
-  // }
+
+  async compressFile(image) {
+    this.imageBlob = this.dataURItoBlob((await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]);
+  }
+
+  dataURItoBlob(dataURI) {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });
+    return blob;
+  }
 }

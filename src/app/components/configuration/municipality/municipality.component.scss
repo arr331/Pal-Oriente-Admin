@@ -5,13 +5,21 @@
     margin-top: 15px;
 }
 .icon-edit {
-    width: 7rem;
     padding: 0;
     text-align: center;
     color: black; 
-    font-size: 40px;
+    font-size: 35px;
 }
 .hover:hover{
     background: #cdcde4;
     cursor: pointer;
+}
+.cover-img {
+    width: 420px;
+    height: 260px;
+    border-radius: 10px;
+    border: 2px solid;
+}
+.center-item {
+    text-align: center;
 }

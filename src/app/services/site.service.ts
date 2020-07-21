@@ -12,43 +12,23 @@ export class SiteService {
 
   constructor(private fireBase: AngularFireDatabase , private storage: AngularFireStorage) { }
 
-  addSite(site, id){
-    this.fireBase.list(`ALTIPLANO/MUNICIPALITIES/${id}/sites`).set(site.idSite, site);
+  addSite(site){
+    this.fireBase.list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/sites`).update(site.idSite, site);
   }
 
-  buildSite(form, idMun): Sitio {
-    this.idSite = this.fireBase.createPushId();
-    this.idMun = idMun;
-    const site: Sitio = {
-      name: form.name,
-      description: form.description,
-      image: form.image,
-      x: form.x,
-      y: form.y,
-      idSite: this.idSite
-    };
+  buildSite(form, idMun, id) {
+    this.idMun = idMun
+    this.idSite = id ? id : this.fireBase.createPushId();
+    const site = { idSite: this.idSite, ...form};
     return site;
-  }
-  
-  updateSite(form, site, idMun): Sitio {
-    this.idSite = site.idSite;
-    this.idMun = idMun;
-    const updateSite: Sitio = {
-      name: form.name,
-      description: form.description,
-      image: form.image,
-      x: form.x,
-      y: form.y,
-      idSite: site.idSite
-    };
-    return updateSite;
   }
 
   async uploadImg(img) {
-    const file = img.target.files[0];
-    const filePath = `ZZ/sites/${this.idMun}/portadas/${this.idSite}`;
+    const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/portada`;
     const ref = this.storage.ref(filePath);
-    await this.storage.upload(filePath, file);
+    await ref.put(img).then(function (snapshot) {
+      console.log('Se carg+o la imagen correctamente site');
+    });
     return await ref.getDownloadURL().toPromise();
   }
 

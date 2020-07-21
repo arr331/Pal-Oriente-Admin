@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MunicipalityService } from 'src/app/services/municipality.service';
 import { DataServiceService } from 'src/app/services/data-service.service';
@@ -12,11 +12,11 @@ declare var $: any;
   styleUrls: ['./municipality.component.scss']
 })
 export class MunicipalityComponent implements OnInit {
-  listMunicipalities: Array<any> = [];
-  municipality;
-  listSitios: Array<any> = [];
-  update = false;
   municipalityForm: FormGroup;
+  listMunicipalities: Array<any> = [];
+  listSitios: Array<any> = [];
+  municipality;
+  isNew= true;
   url: any;
   imageBlob: any;
   localUrl;
@@ -45,6 +45,7 @@ export class MunicipalityComponent implements OnInit {
       history: [''],
       weather: [''],
       image: [''],
+      state: [true]
     });
   }
 
@@ -61,27 +62,19 @@ export class MunicipalityComponent implements OnInit {
     });
   }
 
-  newMun() {
-    this.update = false;
-    $('#modalCreate').modal('show');
-  }
-
-  updateMun(mpio) {
-    this.update = true;
+  newMun(isNew, mpio) {
+    this.isNew = isNew;
     this.municipality = mpio;
-    this.fillForm();
+    mpio ? this.municipalityForm.setValue({
+      name: mpio.name, description: mpio.description, economy: mpio.economy, habitants: mpio.habitants,
+      history: mpio.history, weather: mpio.weather, image: mpio.image, state: mpio.state
+    }) : this.buildForm();
     $('#modalCreate').modal('show');
-  }
-
-  fillForm() {
-    this.municipalityForm.get('name').setValue(this.municipality.name);
-    this.municipalityForm.get('description').setValue(this.municipality.description);
-    this.municipalityForm.get('image').setValue(this.municipality.image);
   }
 
   async saveMpio() {
     if (this.municipalityForm.valid) {
-      const mpio = this.municipalityService.buildMunicipality(this.municipalityForm.value, this.update ? this.municipality.idMun : '');
+      const mpio = this.municipalityService.buildMunicipality(this.municipalityForm.value, this.isNew ? '' : this.municipality.idMun);
       if (this.url) {
         var reader = new FileReader();
         reader.onload = async event => {
@@ -102,11 +95,11 @@ export class MunicipalityComponent implements OnInit {
     }
   }
 
-
-  upload(img) {
-    this.url = img;
-    console.log(this.url, 'sd');
-
+  reset(msj) {
+    this.url = null;
+    this.imageBlob = null;
+    $('#modalCreate').modal('hide');
+    this.buildForm();
   }
 
   async compressFile(image) {
@@ -123,17 +116,6 @@ export class MunicipalityComponent implements OnInit {
     const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
   }
-
-  reset(msj) {
-    console.log(msj);
-    this.ngOnInit();
-    this.url = null;
-    this.imageBlob = null;
-    $('#modalCreate').modal('hide');
-    this.buildForm();
-  }
-
-
 
   addSite() {
     $('#modalCreate').modal('hide');

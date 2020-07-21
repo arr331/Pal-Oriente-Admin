@@ -1,21 +1,29 @@
 <div class="container">
-  <button type="button" (click)="newMun()" class="btn btn-outline-primary" style="margin-right: 30px;"><i
+  <button type="button" (click)="newMun(true, '')" class="btn btn-outline-primary" style="margin-right: 30px;"><i
       class="fa fa-plus" aria-hidden="true"></i> Crear Municipio</button>
   <button type="button" (click)="usersManager()" class="btn btn-outline-success"><i class="fa fa-users"
       aria-hidden="true"></i> Gestionar Usuarios</button>
 </div>
 
-
 <div class="container">
-  <ul class="list-group">
-    <li class="list-group-item active list-group-horizontal" style="background: #282828;">Municipios</li>
-  </ul>
-  <ul class="list-group list-group-horizontal list-group-flush" *ngFor="let mpio of listMunicipalities">
-    <li (click)="showInfo(mpio)" class="list-group-item list-group-item-action hover">
-      {{mpio.name}}</li>
-    <li class="list-group-item center hover" style="width: 7rem; padding: 0; text-align: center;">
-      <i (click)="updateMun(mpio)" class="fa fa-pencil icon-edit" aria-hidden="true"></i></li>
-  </ul>
+  <table class="table table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Municipio</th>
+        <th scope="col" class="center-item">Editar</th>
+        <th scope="col" class="center-item">Sitios</th>
+        <th scope="col" class="center-item">Celebración</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let mpio of listMunicipalities" class="hover">
+        <td (click)="showInfo(mpio)" style="width: 70%;">{{mpio.name}}</td>
+        <td class="center-item"><i (click)="newMun(false, mpio)" class="fa fa-pencil icon-edit" aria-hidden="true"></i></td>
+        <td class="center-item"><i (click)="addSite()" class="fa fa-globe icon-edit" style="color:#3a5ee1;" aria-hidden="true"></i></td>
+        <td class="center-item"><i (click)="addCelebration()" class="fa fa-question icon-edit" aria-hidden="true"></i></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -45,87 +53,76 @@
   </div>
 </div>
 
-<div class="modal fade bd-example-modal-lg" id="modalCreate" tabindex="-1" role="dialog"
+<div class="modal fade bd-example-modal-xl" id="modalCreate" tabindex="-1" role="dialog"
   aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="container">
-        <h3><i class="fa fa-{{update ? 'pencil' : 'plus'}}" aria-hidden="true"></i>
-          {{update ? 'Actualizar municipio': 'Crear municipio'}}</h3>
+        <h3><i class="fa fa-{{isNew ? 'plus' : 'pencil'}}" aria-hidden="true"></i>
+          {{isNew ? 'Crear municipio' : 'Actualizar municipio'}}</h3>
         <hr>
-        <form [formGroup]="municipalityForm">
-          <div class="mb-3" style="text-align: center;">
-            <img src="{{municipality.image}}" *ngIf="update" width="300px" height="180px" alt="no se cargo">
-          </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Nombre del municipio</span>
+        <perfect-scrollbar style="max-height: 440px;">
+          <form [formGroup]="municipalityForm" class="container">
+            <div class="row mb-3" *ngIf="!isNew">
+              <div class="col-md-12" style="text-align: center;">
+                <img class="cover-img" src="{{municipality.image}}" alt="no se cargo">
+              </div>
+             
             </div>
-            <input type="text" class="form-control" placeholder="Ingrese el nombre del municipio" required
-              formControlName="name">
-          </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Descripción</span>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label>Nombre del municipio</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Ingrese el nombre del municipio"
+                  formControlName="name">
+              </div>
+              <div class="col-md-4">
+                <label>Habitantes</label>
+                <input type="text" class="form-control form-control-sm"
+                  placeholder="Ingrese la cantidad de habitantes del municipio" formControlName="habitants">
+              </div>
+              <div class="col-md-2">
+                <label>Estado</label>
+                <select class="custom-select custom-select-sm" formControlName="state">
+                  <option [ngValue]="true">Activo</option>
+                  <option [ngValue]="false">Inactivo</option>
+                </select>
+              </div>
             </div>
-            <input type="text" class="form-control" placeholder="Ingrese la descripción del municipio"
-              formControlName="description">
-          </div>
-
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Economía</span>
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label>Historia</label>
+                <textarea type="text" class="form-control form-control-sm"
+                  placeholder="Ingrese la reseña historica del municipio" rows="4" formControlName="history"></textarea>
+              </div>
             </div>
-            <input type="text" class="form-control" placeholder="Ingrese la economía tipica" formControlName="economy">
-          </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Habitantes</span>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label>Descripción</label>
+                <textarea type="text" class="form-control form-control-sm"
+                  placeholder="Ingrese la descripción del municipio" rows="3" formControlName="description"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label>Economía</label>
+                <textarea type="text" class="form-control form-control-sm" rows="3" placeholder="Ingrese la economía tipica"
+                  formControlName="economy"></textarea>
+              </div>
             </div>
-            <input type="text" class="form-control" placeholder="Ingrese la cantidad de habitantes del municipio"
-              formControlName="habitants">
-          </div>
-
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Historia</span>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label>Clima</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Ingrese la temperatura promedio"
+                  formControlName="weather">
+              </div>
+              <div class="col-md-6">
+                <label>Cargar foto</label>
+                <div class="custom-file form-control-sm">
+                  <input type="file" accept=".png, .jpg" (change)="url= $event" class="custom-file-input">
+                  <label class="custom-file-label">{{url ? url.target.files[0].name : 'Elegir archivo'}}</label>
+                </div>
+              </div>
             </div>
-            <input type="text" class="form-control" placeholder="Ingrese la reseña historica del municipio"
-              formControlName="history">
-          </div>
-
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Clima</span>
-            </div>
-            <input type="text" class="form-control" placeholder="Ingrese la temperatura promedio"
-              formControlName="weather">
-          </div>
-
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroupFileAddon01">Cargar foto</span>
-            </div>
-            <div class="custom-file">
-              <input type="file" accept=".png, .jpg" (change)="upload($event)" class="custom-file-input"
-                id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-              <label class="custom-file-label" for="inputGroupFile01">{{url ? url.target.files[0].name : 'Elegir archivo'}}</label>
-              <input type="text" class="form-control" value="{{url}}" formControlName="image">
-            </div>
-          </div>
-
-          <div class="row" *ngIf="update">
-            <div class="col-md-3">
-              <button type="button" (click)="addSite()" class="btn btn-success">Agregar sitio</button>
-            </div>
-            <div class="col-md-3">
-              <button type="button" (click)="addCelebration()" class="btn btn-success">Agregar celebración</button>
-            </div>
-            <div class="col-md-3">
-              <button type="button" (click)="showSites()" class="btn btn-primary">Editar sitios</button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </perfect-scrollbar>
         <hr>
         <div class="container-fluid mb-3">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
@@ -142,7 +139,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body" *ngIf="municipality">
-        <app-site [municipality]="municipality.idMun" [site]="site" [update]="editSite"></app-site>
+        <app-site [mpioId]="municipality.idMun"></app-site>
       </div>
     </div>
   </div>

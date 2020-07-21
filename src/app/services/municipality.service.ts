@@ -29,17 +29,17 @@ export class MunicipalityService {
     });
     return await ref.getDownloadURL().toPromise();
   }
+}
 
-  uploadGalery(images, site) {
-    for (let i = 0; i < images.length; i++) {
-      const id = site;
-      const name = Math.random().toString(36).substring(2);
-      const filePath = `ZZ/${id}/img_${name}`;
-      this.storage.upload(filePath, images[i]);
-    }
-  }
+    // uploadGalery(images, site) {
+    //   for (let i = 0; i < images.length; i++) {
+    //     const id = site;
+    //     const name = Math.random().toString(36).substring(2);
+    //     const filePath = `ZZ/${id}/img_${name}`;
+    //     this.storage.upload(filePath, images[i]);
+    //   }
+    // }
 
-  
   // async uploadImg(img) {
   //   const file = img.target.files[0];    
   //   const filePath = `ZZ`;
@@ -76,8 +76,3 @@ export class MunicipalityService {
   //     const blob = new Blob([int8Array], { type: 'image/jpeg' });
   //     return blob;
   //   }
-
-
-
-
-}
