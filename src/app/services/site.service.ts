@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Sitio } from '../clases/sitio';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireStorage } from 'angularfire2/storage';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class SiteService {
 
   constructor(private fireBase: AngularFireDatabase , private storage: AngularFireStorage) { }
 
-  addSite(site){
+  addSite(site) {
     this.fireBase.list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/sites`).update(site.idSite, site);
   }
 

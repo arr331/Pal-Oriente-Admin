@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MunicipalityService } from 'src/app/services/municipality.service';
-import { DataServiceService } from 'src/app/services/data-service.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Router } from '@angular/router';
 declare var $: any;
@@ -14,23 +13,17 @@ declare var $: any;
 export class MunicipalityComponent implements OnInit {
   municipalityForm: FormGroup;
   listMunicipalities: Array<any> = [];
-  listSitios: Array<any> = [];
   municipality;
-  isNew= true;
+  isNew = true;
   url: any;
   imageBlob: any;
-  localUrl;
-  site: any;
-  celebration: any;
-  editCelebration = false;
-  editSite = false;
-
+  item: string;
 
   constructor(private formBuilder: FormBuilder, private municipalityService: MunicipalityService,
-    private dateService: DataServiceService, private imageCompress: NgxImageCompressService, private router: Router) { }
+    private imageCompress: NgxImageCompressService, private router: Router) { }
 
   ngOnInit(): void {
-    this.dateService.getMunicipios().valueChanges().subscribe((answer) => {
+    this.municipalityService.getMunicipios().valueChanges().subscribe((answer) => {
       this.listMunicipalities = answer;
     });
     this.buildForm();
@@ -49,19 +42,6 @@ export class MunicipalityComponent implements OnInit {
     });
   }
 
-  showInfo(mpio) {
-    this.municipality = mpio;
-    mpio.sites ? this.listSites(mpio) : '';
-    $('#modal').modal('show');
-  }
-
-  listSites(mpio) {
-    this.listSitios = [];
-    Object.keys(mpio.sites).forEach((m) => {
-      this.listSitios.push(this.municipality.sites[m]);
-    });
-  }
-
   newMun(isNew, mpio) {
     this.isNew = isNew;
     this.municipality = mpio;
@@ -69,7 +49,7 @@ export class MunicipalityComponent implements OnInit {
       name: mpio.name, description: mpio.description, economy: mpio.economy, habitants: mpio.habitants,
       history: mpio.history, weather: mpio.weather, image: mpio.image, state: mpio.state
     }) : this.buildForm();
-    $('#modalCreate').modal('show');
+    $('#mpioModal').modal('show');
   }
 
   async saveMpio() {
@@ -98,7 +78,7 @@ export class MunicipalityComponent implements OnInit {
   reset(msj) {
     this.url = null;
     this.imageBlob = null;
-    $('#modalCreate').modal('hide');
+    $('#mpioModal').modal('hide');
     this.buildForm();
   }
 
@@ -115,33 +95,6 @@ export class MunicipalityComponent implements OnInit {
     }
     const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
-  }
-
-  addSite() {
-    $('#modalCreate').modal('hide');
-    console.log('ENTRE A SITIOS');
-    this.municipalityForm.reset();
-    $('#modalCreateSite').modal('show');
-  }
-
-  addCelebration() {
-    $('#modalCreate').modal('hide');
-    console.log('ENTRE A CELEBRACIONES');
-    this.municipalityForm.reset();
-    $('#modalCreateCelebration').modal('show');
-  }
-
-  showSites() {
-    this.listSites(this.municipality);
-    $('#modalSites').modal('show');
-  }
-
-  updateSite(site) {
-    this.site = site;
-    this.editSite = true;
-    $('#modalCreate').modal('hide');
-    $('#modalSites').modal('hide');
-    $('#modalCreateSite').modal('show');
   }
 
   usersManager() {

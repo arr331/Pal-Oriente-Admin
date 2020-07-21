@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="margin-top: 0;">
   <button type="button" (click)="newMun(true, '')" class="btn btn-outline-primary" style="margin-right: 30px;"><i
       class="fa fa-plus" aria-hidden="true"></i> Crear Municipio</button>
   <button type="button" (click)="usersManager()" class="btn btn-outline-success"><i class="fa fa-users"
@@ -10,50 +10,23 @@
     <thead class="thead-dark">
       <tr>
         <th scope="col">Municipio</th>
-        <th scope="col" class="center-item">Editar</th>
         <th scope="col" class="center-item">Sitios</th>
         <th scope="col" class="center-item">Celebración</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let mpio of listMunicipalities" class="hover">
-        <td (click)="showInfo(mpio)" style="width: 70%;">{{mpio.name}}</td>
-        <td class="center-item"><i (click)="newMun(false, mpio)" class="fa fa-pencil icon-edit" aria-hidden="true"></i></td>
-        <td class="center-item"><i (click)="addSite()" class="fa fa-globe icon-edit" style="color:#3a5ee1;" aria-hidden="true"></i></td>
-        <td class="center-item"><i (click)="addCelebration()" class="fa fa-question icon-edit" aria-hidden="true"></i></td>
+        <td (click)="newMun(false, mpio); item = ''" style="width: 70%;">{{mpio.name}}</td>
+        <td class="center-item biggest"><i (click)="municipality = mpio; item = 'site'" class="fa fa-globe icon-edit"
+            style="color:#3a5ee1;" aria-hidden="true"></i></td>
+        <td class="center-item biggest"><i (click)="municipality = mpio; item = 'celebration'" class="fa fa-question icon-edit"
+            aria-hidden="true"></i></td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div *ngIf="municipality" class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Información de {{municipality.name}}</h5>
-      </div>
-      <div class="modal-body">
-        <ul *ngIf="listSitios" class="list-group">
-          <li class="list-group-item list-group-item-action" style="text-align: center;"><img
-              src="{{municipality.image}}" width="300px" height="180px" alt="error al cargar"></li>
-          <li class="list-group-item list-group-item-action">Descripcion de {{municipality.name}}:
-            {{municipality.description}}</li>
-          <ng-container *ngFor="let sitio of listSitios">
-            <li class="list-group-item list-group-item-action">Lugar: {{sitio.name}}</li>
-            <li class="list-group-item list-group-item-action" style="text-align: center;"><img src="{{sitio.image}}"
-                width="300px" height="180px" alt="error al cargar"></li>
-            <li class="list-group-item list-group-item-action">Descripcion {{sitio.name}}: {{sitio.description}}</li>
-          </ng-container>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade bd-example-modal-xl" id="modalCreate" tabindex="-1" role="dialog"
+<div class="modal fade bd-example-modal-xl" id="mpioModal" tabindex="-1" role="dialog"
   aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
@@ -67,7 +40,7 @@
               <div class="col-md-12" style="text-align: center;">
                 <img class="cover-img" src="{{municipality.image}}" alt="no se cargo">
               </div>
-             
+
             </div>
             <div class="row mb-3">
               <div class="col-md-6">
@@ -103,8 +76,8 @@
               </div>
               <div class="col-md-6">
                 <label>Economía</label>
-                <textarea type="text" class="form-control form-control-sm" rows="3" placeholder="Ingrese la economía tipica"
-                  formControlName="economy"></textarea>
+                <textarea type="text" class="form-control form-control-sm" rows="3"
+                  placeholder="Ingrese la economía tipica" formControlName="economy"></textarea>
               </div>
             </div>
             <div class="row mb-3">
@@ -134,42 +107,15 @@
 </div>
 
 
-<div class="modal fade bd-example-modal-lg" id="modalCreateSite" tabindex="-1" role="dialog"
-  aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body" *ngIf="municipality">
-        <app-site [mpioId]="municipality.idMun"></app-site>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade bd-example-modal-lg" id="modalCreateCelebration" tabindex="-1" role="dialog"
-  aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body" *ngIf="municipality">
-        <app-celebration [municipality]="municipality.idMun" [celebration]="celebration" [update]="editCelebration">
-        </app-celebration>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="municipality" class="modal fade bd-example-modal-lg" id="modalSites">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <ul class="list-group">
-          <li class="list-group-item active">Sitios de {{municipality.name}}</li>
-          <li class="list-group-item" (click)="updateSite(site)" *ngFor="let site of listSitios">{{site.name}}</li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button btn-sm" class="btn btn-primary" data-dismiss="modalSites">Cancelar</button>
-      </div>
-    </div>
-  </div>
+<div class="container" *ngIf="municipality">
+  <hr>
+  <ng-container [ngSwitch]="item">
+    <ng-container *ngSwitchCase="'site'">
+      <app-site [municipality]="{idMun: municipality.idMun, sites: municipality.sites}"></app-site>
+    </ng-container>
+    <!-- <ng-container *ngSwitchCase="'celebration'">
+      <app-celebration [municipality]="municipality.idMun" [celebration]="celebration" [update]="editCelebration">
+      </app-celebration>
+    </ng-container> -->
+  </ng-container>
 </div>

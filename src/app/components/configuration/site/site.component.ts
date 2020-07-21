@@ -11,17 +11,28 @@ declare var $: any;
 })
 export class SiteComponent implements OnInit, OnChanges {
   siteForm: FormGroup;
+  listSites: Array<any> = [];
+  site: any;
   files: FileList;
   file: File;
   url: any;
   imageBlob: any;
 
-  @Input() mpioId: any;
+  @Input() municipality: any;
 
   constructor(private formBuilder: FormBuilder, private siteService: SiteService, private imageCompress: NgxImageCompressService) { }
 
   ngOnInit() {
+    console.log(this.municipality.sites, 'sites');
+    this.listSites = [];
+    Object.keys(this.municipality.sites).forEach((m) => {
+      this.listSites.push(this.municipality.sites[m]);
+    });
     this.buildForm();
+  }
+
+  ngOnChanges() {
+    this.ngOnInit();
   }
 
   buildForm() {
@@ -35,13 +46,17 @@ export class SiteComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges() {
-    this.ngOnInit();
+  newSite(site) {
+    this.site = site;
+    site ? this.siteForm.setValue({
+      name: site.name, description: site.description, image: site.image, x: site.x, y: site.y, state: site.state
+    }) : this.buildForm();
+    $('#siteModal').modal('show');
   }
 
   saveSite() {
     if (this.siteForm.valid) {
-      const site = this.siteService.buildSite(this.siteForm.value, this.mpioId, '');
+      const site = this.siteService.buildSite(this.siteForm.value, this.municipality.idMun, this.site ? this.site.idSite : '');
       if (this.url) {
         var reader = new FileReader();
         reader.onload = async event => {
@@ -49,25 +64,25 @@ export class SiteComponent implements OnInit, OnChanges {
           this.siteService.uploadImg(this.imageBlob).then(answer => {
             site.image = answer;
             this.siteService.addSite(site);
-            this.reset('Municipio creado')
+            this.reset(site)
           });
         }
         reader.readAsDataURL(this.url.target.files[0]);
       } else {
         this.siteService.addSite(site);
-        this.reset('Municipio Actualizado');
+        this.reset(site);
       }
     } else {
       console.log('llenar');
     }
   }
 
-  reset(msj) {
-    console.log(msj);
+  reset(site) {
+    $('#siteModal').modal('hide');
     this.buildForm();
+    this.site ? this.listSites[this.listSites.indexOf(this.site)] = site : this.listSites.push(site);
     this.url = null;
     this.files = null;
-    $('#modalCreateSite').modal('hide');
   }
 
   uploadGallery(imgs) {

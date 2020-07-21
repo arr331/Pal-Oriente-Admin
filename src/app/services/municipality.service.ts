@@ -14,6 +14,9 @@ export class MunicipalityService {
   saveMunicipality(mpio) {
     this.fireBase.list('ALTIPLANO/MUNICIPALITIES').update(mpio.idMun, mpio);
   }
+  getMunicipios() {
+    return this.fireBase.list('ALTIPLANO/MUNICIPALITIES');
+  }
 
   buildMunicipality(form, id): Municipality {
     this.id = id ? id : this.fireBase.createPushId();
