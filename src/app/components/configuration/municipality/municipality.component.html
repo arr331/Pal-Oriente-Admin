@@ -1,8 +1,6 @@
 <div class="container" style="margin-top: 0;">
-  <button type="button" (click)="newMun(true, '')" class="btn btn-outline-primary" style="margin-right: 30px;"><i
+  <button type="button" (click)="newMun(true, '')" class="btn btn-outline-primary"><i
       class="fa fa-plus" aria-hidden="true"></i> Crear Municipio</button>
-  <button type="button" (click)="usersManager()" class="btn btn-outline-success"><i class="fa fa-users"
-      aria-hidden="true"></i> Gestionar Usuarios</button>
 </div>
 
 <div class="container">
@@ -16,11 +14,11 @@
     </thead>
     <tbody>
       <tr *ngFor="let mpio of listMunicipalities" class="hover">
-        <td (click)="newMun(false, mpio); item = ''" style="width: 70%;">{{mpio.name}}</td>
+        <td (click)="newMun(false, mpio); item = ''" style="width: 85%;">{{mpio.name}}</td>
         <td class="center-item biggest"><i (click)="municipality = mpio; item = 'site'" class="fa fa-globe icon-edit"
             style="color:#3a5ee1;" aria-hidden="true"></i></td>
-        <td class="center-item biggest"><i (click)="municipality = mpio; item = 'celebration'" class="fa fa-question icon-edit"
-            aria-hidden="true"></i></td>
+        <td class="center-item biggest"><i (click)="municipality = mpio; item = 'celebration'"
+            class="fa fa-calendar icon-edit" aria-hidden="true"></i></td>
       </tr>
     </tbody>
   </table>
@@ -106,16 +104,14 @@
   </div>
 </div>
 
-
 <div class="container" *ngIf="municipality">
   <hr>
   <ng-container [ngSwitch]="item">
     <ng-container *ngSwitchCase="'site'">
       <app-site [municipality]="{idMun: municipality.idMun, sites: municipality.sites}"></app-site>
     </ng-container>
-    <!-- <ng-container *ngSwitchCase="'celebration'">
-      <app-celebration [municipality]="municipality.idMun" [celebration]="celebration" [update]="editCelebration">
-      </app-celebration>
-    </ng-container> -->
+    <ng-container *ngSwitchCase="'celebration'">
+      <app-celebration [municipality]="{idMun: municipality.idMun, celebrations: municipality.celebrations}"></app-celebration>
+    </ng-container>
   </ng-container>
 </div>

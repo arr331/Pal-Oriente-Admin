@@ -96,8 +96,4 @@ export class MunicipalityComponent implements OnInit {
     const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
   }
-
-  usersManager() {
-    this.router.navigate(['/administration/users']);
-  }
 }

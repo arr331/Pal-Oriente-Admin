@@ -8,7 +8,6 @@ import { AngularFireModule} from 'angularfire2';
 import { AngularFireAuthGuard} from '@angular/fire/auth-guard';
 import { AngularFireAuthModule} from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
-import { HomeComponent } from './components/home/home.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { MunicipalityComponent } from './components/configuration/municipality/municipality.component';
@@ -36,7 +35,6 @@ import { CelebrationComponent } from './components/configuration/celebration/cel
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent, 
     MunicipalityComponent,
     SiteComponent,
     HeaderComponent,

@@ -23,7 +23,6 @@ export class SiteComponent implements OnInit, OnChanges {
   constructor(private formBuilder: FormBuilder, private siteService: SiteService, private imageCompress: NgxImageCompressService) { }
 
   ngOnInit() {
-    console.log(this.municipality.sites, 'sites');
     this.listSites = [];
     Object.keys(this.municipality.sites).forEach((m) => {
       this.listSites.push(this.municipality.sites[m]);
@@ -104,4 +103,17 @@ export class SiteComponent implements OnInit, OnChanges {
     const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
   }
+
+  // var sorage = this.storage.storage;
+  // var storageRef = sorage.ref('Z');
+
+  // storageRef.listAll().then(result => {
+  //   result.items.forEach(itemRef => {
+  //     itemRef.getDownloadURL().then((url) => {
+  //       console.log(url, 'todas url');
+  //     });
+
+  //     // All the items under listRef.
+  //   });
+  // })
 }

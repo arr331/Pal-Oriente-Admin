@@ -1,9 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { AngularFireStorage } from 'angularfire2/storage';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CelebrationService } from 'src/app/services/celebration.service';
-
+import { NgxImageCompressService } from 'ngx-image-compress';
 declare var $: any;
 
 @Component({
@@ -11,123 +9,152 @@ declare var $: any;
   templateUrl: './celebration.component.html',
   styleUrls: ['./celebration.component.scss']
 })
-export class CelebrationComponent implements OnInit {
 
-  //celebrationForm: FormGroup;
+export class CelebrationComponent implements OnInit, OnChanges {
+  private _celebrationForm: FormGroup;
+  private _activityForm: FormGroup;
+  listCelebration: Array<any> = [];
+  listActivity: Array<any> = [];
+  celebration: any;
+  activity: any;
   files: FileList;
   file: File;
-  url: Observable<string>;
-  urlActivity: Observable<string>;
+  url: any;
+  imageBlob: any;
 
   @Input() municipality: any;
-  @Input() celebration: any;
-  @Input() update: any;
 
-  fields = {
-    name: 'Nombre del municipio',
-    description: 'Descripción',
-    image: 'Imagen',
-  };
-
-  celebrationForm = this.formBuilder.group({
-    name: ['', Validators.required],
-    description: [''],
-    image: [''],
-    activities: new FormArray([new FormGroup({
-      nameActivity: new FormControl(''),
-      imageActivity: new FormControl('')
-    })])
-  });
-
-  constructor(private formBuilder: FormBuilder, private storage: AngularFireStorage, private celebrationService: CelebrationService) { }
+  constructor(private formBuilder: FormBuilder, private celebrationService: CelebrationService, private imageCompress: NgxImageCompressService) { }
 
   ngOnInit(): void {
-    // this.celebrationForm = this.formBuilder.group({
-    //   name: ['', Validators.required],
-    //   description: [''],
-    //   image: [''],
-    //   activities: new FormArray([new FormGroup({
-    //     name: new FormControl(''),
-    //     image: new FormControl('')
-    //   })])
-    // });
-    this.update && this.celebration ? this.fillform() : '';
-
+    this.listCelebration = [];
+    this.listActivity = [];
+    this.celebration = '';
+    this.municipality.celebrations ?
+      Object.keys(this.municipality.celebrations).forEach((m) => {
+        this.listCelebration.push(this.municipality.celebrations[m]);
+      }) : '';
+    this.buildForm();
   }
 
-  ngOnChanges(): void{
+  buildForm() {
+    this.celebrationForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: [''],
+      image: [''],
+      state: [true]
+    });
+    this.activityForm = this.formBuilder.group({
+      name: [''],
+      image: [''],
+      state: [true]
+    });
+  }
+
+  ngOnChanges(): void {
     this.ngOnInit();
   }
 
-  /*addActivity() {
-    (this.celebrationForm.get['activities']).push(new FormGroup({
-      'name': new FormControl('', Validators.required),
-      'image': new FormControl('', Validators.required)
-    }));
-  }*/
+  newCelebration(celebration) {
+    this.celebration = celebration;
+    celebration ? this.celebrationForm.setValue({
+      name: celebration.name, description: celebration.description, image: celebration.image, state: celebration.state
+    }) : this.buildForm();
 
-  activities= this.celebrationForm.get('activities') as FormArray;
-
-  addActivity() {
-    const control = new FormControl('', Validators.required);
-    this.activities.push(control);
+    $('#siteModal').modal('show');
   }
 
-  fillform() {
-    this.celebrationForm.get('name').setValue(this.celebration.name);
-    this.celebrationForm.get('description').setValue(this.celebration.description);
-    this.celebrationForm.get('image').setValue(this.celebration.image);
-  }
-
-  saveCelebration(){
-    if(!this.update && this.celebrationForm.get('name').value){
-      const celebration =  this.celebrationService.buildCelebration(this.celebrationForm.value, this.municipality);
-       this.celebrationService.uploadImg(this.url).then(answer => {
-        celebration.image = answer;
-        this.celebrationService.addCelebration(celebration, this.municipality);
-        this.reset('Celebración Guardado');
-      });
-      const activity= this.celebrationService.buildActivity(this.celebrationForm.get('activities').value[0], this.celebration);
-      this.celebrationService.uploadImgActivity(this.urlActivity).then(answer => {
-        activity.image = answer;
-        this.celebrationService.addActivity(celebration, activity, this.municipality);
-        this.reset('Actividad Guardada');
-      });
-    /*} else if (this.update && this.site && this.celebrationForm.get('name').value) {
-      this.celebration = this.siteService.updateSite(this.celebrationForm.value, this.celebration, this.municipality);
-      this.files ? this.siteService.uploadGalery(this.files) : '';
-      if (!this.url) {
-        this.siteService.addSite(this.celebration, this.municipality);
-        this.reset('Sitio Actualizado');
+  saveCelebration() {
+    if (this.celebrationForm.valid) {
+      const celebration = this.celebrationService.buildCelebration(this.celebrationForm.value, this.municipality.idMun, this.celebration ? this.celebration.idCelebration : '');
+      if (this.url) {
+        var reader = new FileReader();
+        reader.onload = async event => {
+          await this.compressFile(event.target.result);
+          this.celebrationService.uploadImg(this.imageBlob, 0).then(answer => {
+            celebration.image = answer;
+            this.celebrationService.addCelebration(celebration);
+            this.reset(0, celebration, '#siteModal');
+          });
+        }
+        reader.readAsDataURL(this.url.target.files[0]);
       } else {
-        this.siteService.uploadImg(this.url).then(answer => {
-          this.site.image = answer;
-          this.siteService.addSite(this.celebration, this.municipality);
-          this.reset('Sitio Actualizado');
-        });
-      }*/
+        this.celebrationService.addCelebration(celebration);
+        this.reset(0, celebration, '#siteModal');
+      }
+    } else {
+      console.log('llenar');
     }
   }
 
-  reset(msj) {
-    console.log(msj);
-    this.ngOnInit();
+  showActivities(celebration) {
+    this.celebration = celebration;
+    this.listActivity = [];
+    celebration.activities ?
+      Object.keys(celebration.activities).forEach((m) => {
+        this.listActivity.push(celebration.activities[m]);
+      }) : '';
+  }
+
+  saveActivity() {
+    if (this.activityForm.valid) {
+      const activity = this.celebrationService.buildActivity(this.activityForm.value, this.municipality.idMun,
+        this.celebration.idCelebration, this.activity ? this.activity.idActivity : '');
+      if (this.url) {
+        var reader = new FileReader();
+        reader.onload = async event => {
+          await this.compressFile(event.target.result);
+          this.celebrationService.uploadImg(this.imageBlob, 1).then(answer => {
+            activity.image = answer;
+            this.celebrationService.addActivity(activity);
+            this.reset(1, activity, '#activityModal');
+          });
+        }
+        reader.readAsDataURL(this.url.target.files[0]);
+      } else {
+        this.celebrationService.addActivity(activity);
+        this.reset(1, activity, '#activityModal');
+      }
+    } else {
+      console.log('llenar');
+    }
+  }
+
+  newActivity(activity) {
+    this.activity = activity;
+    activity ? this.activityForm.setValue({
+      name: activity.name, image: activity.image, state: activity.state
+    }) : this.buildForm();
+    $('#activityModal').modal('show');
+  }
+
+  reset(wich, item, modal) {
+    $(modal).modal('hide');
+    this.buildForm();
+    wich === 0 ? (this.celebration ? this.listCelebration[this.listCelebration.indexOf(this.celebration)] = item :
+      this.listCelebration.push(item)) : (this.activity ? this.listActivity[this.listActivity.indexOf(this.activity)] = item :
+        this.listActivity.push(item));
     this.url = null;
-    this.files = null;
-    $('#modalCreateCelebration').modal('hide');
   }
 
-  clearSite() {
-    this.celebrationForm.reset();
-    $('#modalCreateCelebration').modal('hide');
+  async compressFile(image) {
+    this.imageBlob = this.dataURItoBlob((await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]);
   }
 
-  uploadImage(img){
-    this.url = img;
+  dataURItoBlob(dataURI) {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });
+    return blob;
   }
 
-  uploadImageActivity(img){
-    this.url = img;
-  }
+  public get celebrationForm(): FormGroup { return this._celebrationForm; }
+  public set celebrationForm(value: FormGroup) { this._celebrationForm = value; }
 
+  public get activityForm(): FormGroup { return this._activityForm; }
+  public set activityForm(value: FormGroup) { this._activityForm = value; }
 }
