@@ -4,14 +4,12 @@ import { redirectUnauthorizedTo, AngularFireAuthGuard } from '@angular/fire/auth
 import { RegionInfoComponent } from './components/region-info/region-info.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { ContactusComponent } from './components/contactus/contactus.component';
-import { AdministrationComponent } from './components/administration/administration.component';
 import { SubregionComponent } from './components/subregion/subregion.component';
 import { MunicipalityComponent } from './components/configuration/municipality/municipality.component';
 import { MuniComponent } from './components/muni/muni.component';
 import { SitesShowComponent } from './components/sites-show/sites-show.component';
 import { LoginComponent } from './components/login/login.component';
 import { ItemInfoComponent } from './components/item-info/item-info.component';
-import { UsersComponent } from './components/users/users.component';
 
 const redirect = () => redirectUnauthorizedTo(['inicio']);
 
@@ -24,9 +22,7 @@ const routes: Routes = [
   { path: 'info', component: RegionInfoComponent },
   { path: 'contactenos', component: ContactusComponent },
   { path: 'info/item/:numItem', component: ItemInfoComponent },
-  { path: 'administration', component: AdministrationComponent },
   { path: 'subregiones', component: SubregionComponent },
-  { path: 'administration/users', component: UsersComponent},
   { path: 'subregiones/altiplano', component: MuniComponent },
   { path: 'subregiones/altiplano/mun', component: SitesShowComponent },
   { path: '**', redirectTo: 'inicio', pathMatch: 'full' }

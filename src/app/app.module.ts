@@ -20,7 +20,6 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { RegionInfoComponent } from './components/region-info/region-info.component';
 import { ContactusComponent } from './components/contactus/contactus.component';
 import { LoginComponent } from './components/login/login.component';
-import { AdministrationComponent } from './components/administration/administration.component';
 import { SubregionComponent } from './components/subregion/subregion.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
@@ -44,7 +43,6 @@ import { CelebrationComponent } from './components/configuration/celebration/cel
     RegionInfoComponent,
     ContactusComponent,
     LoginComponent,
-    AdministrationComponent,
     SubregionComponent,
     MuniComponent,
     SitesShowComponent,
