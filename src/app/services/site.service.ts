@@ -36,7 +36,7 @@ export class SiteService {
    uploadGalery(images) {
     for (let i = 0; i < images.length; i++) {
       const name = this.fireBase.createPushId();
-      const filePath = `ZZ/sites/${this.idMun}/galerias/${this.idSite}/${name}`;
+      const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/${name}`;
        this.storage.upload(filePath, images[i]);
     }
   }

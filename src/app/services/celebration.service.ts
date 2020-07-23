@@ -51,7 +51,7 @@ export class CelebrationService {
 
   async uploadImg(img) {
     const file = img.target.files[0];
-    const filePath = `ZZ/celebrations/${this.idMun}/portadas/${this.idCelebration}`;
+    const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATION/${this.idCelebration}`;
     const ref = this.storage.ref(filePath);
     await this.storage.upload(filePath, file);
     return await ref.getDownloadURL().toPromise();
@@ -60,7 +60,7 @@ export class CelebrationService {
   
   async uploadImgActivity(img) {
     const file = img.target.files[0];
-    const filePath = `ZZ/celebrations/${this.idMun}/portadas/${this.idCelebration}/activities/${this.idActivity}`;
+    const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATION/${this.idCelebration}/activities/${this.idActivity}`;
     const ref = this.storage.ref(filePath);
     await this.storage.upload(filePath, file);
     return await ref.getDownloadURL().toPromise();
