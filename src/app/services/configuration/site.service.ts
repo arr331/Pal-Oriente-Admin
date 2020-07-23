@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Sitio } from '../clases/sitio';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +9,7 @@ export class SiteService {
   idSite;
   idMun;
 
-  constructor(private fireBase: AngularFireDatabase , private storage: AngularFireStorage) { }
+  constructor(private fireBase: AngularFireDatabase, private storage: AngularFireStorage) { }
 
   addSite(site) {
     this.fireBase.list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/sites`).update(site.idSite, site);
@@ -20,7 +18,7 @@ export class SiteService {
   buildSite(form, idMun, id) {
     this.idMun = idMun
     this.idSite = id ? id : this.fireBase.createPushId();
-    const site = { idSite: this.idSite, ...form};
+    const site = { idSite: this.idSite, ...form };
     return site;
   }
 
@@ -33,11 +31,11 @@ export class SiteService {
     return await ref.getDownloadURL().toPromise();
   }
 
-   uploadGalery(images) {
+  uploadGalery(images) {
     for (let i = 0; i < images.length; i++) {
       const name = this.fireBase.createPushId();
       const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/${name}`;
-       this.storage.upload(filePath, images[i]);
+      this.storage.upload(filePath, images[i]);
     }
   }
 }

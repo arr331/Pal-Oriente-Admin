@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { Municipality } from '../clases/municipality';
 import { AngularFireStorage } from 'angularfire2/storage';
 
 @Injectable({
@@ -18,7 +17,7 @@ export class MunicipalityService {
     return this.fireBase.list('ALTIPLANO/MUNICIPALITIES');
   }
 
-  buildMunicipality(form, id): Municipality {
+  buildMunicipality(form, id) {
     this.id = id ? id : this.fireBase.createPushId();
     const municipality = { ...form, idMun: this.id };
     return municipality;

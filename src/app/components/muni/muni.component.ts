@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { DataServiceService } from 'src/app/services/data-service.service';
-import { MunicipalityService } from 'src/app/services/municipality.service';
-import { Router } from '@angular/router';
-
+import { MunicipalityService } from 'src/app/services/configuration/municipality.service';
 
 @Component({
   selector: 'app-muni',
@@ -17,25 +13,20 @@ export class MuniComponent implements OnInit {
   listSitios: Array<any> = [];
   hola: any = "yesid";
 
-  constructor(private formBuilder: FormBuilder, private municipalityService: MunicipalityService,
-    private dateService: DataServiceService, private router:Router) { }
+  constructor(private municipalityService: MunicipalityService) { }
 
   ngOnInit(): void {
 
-    this.dateService.getMunicipalities().valueChanges().subscribe((answer) => {
+    this.municipalityService.getMunicipios().valueChanges().subscribe((answer) => {
       this.listMunicipalities = answer;
     });
   }
 
-  goSites(mpio){
-    this.municipality= mpio;
-    this.listSitios= [];
+  goSites(mpio) {
+    this.municipality = mpio;
+    this.listSitios = [];
     Object.keys(mpio.info).forEach((m) => {
       this.listSitios.push(this.municipality.info[m]);
     });
-    
-    //this.router.navigate(['/subregiones/altiplano/mun']);
-
   }
-
 }

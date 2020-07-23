@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MunicipalityService } from 'src/app/services/municipality.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Router } from '@angular/router';
+import { MunicipalityService } from 'src/app/services/configuration/municipality.service';
 declare var $: any;
 
 @Component({

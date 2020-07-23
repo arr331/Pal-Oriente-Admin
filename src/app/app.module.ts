@@ -23,7 +23,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { SubregionComponent } from './components/subregion/subregion.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { MuniComponent } from './components/muni/muni.component';
 import { SitesShowComponent } from './components/sites-show/sites-show.component';
 import { ItemInfoComponent } from './components/item-info/item-info.component';

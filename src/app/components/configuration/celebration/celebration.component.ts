@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CelebrationService } from 'src/app/services/celebration.service';
+import { CelebrationService } from 'src/app/services/configuration/celebration.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
 declare var $: any;
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SiteService } from 'src/app/services/site.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { SiteService } from 'src/app/services/configuration/site.service';
 declare var $: any;
 
 @Component({
