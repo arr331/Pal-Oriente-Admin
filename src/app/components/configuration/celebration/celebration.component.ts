@@ -1,7 +1,10 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CelebrationService } from 'src/app/services/configuration/celebration.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { Municipality } from 'src/app/interfaces/municipality';
+import { Celebration } from 'src/app/interfaces/celebration';
+import { Activity } from 'src/app/interfaces/activity';
 declare var $: any;
 
 @Component({
@@ -10,30 +13,24 @@ declare var $: any;
   styleUrls: ['./celebration.component.scss']
 })
 
-export class CelebrationComponent implements OnInit, OnChanges {
-  private _celebrationForm: FormGroup;
-  private _activityForm: FormGroup;
-  listCelebration: Array<any> = [];
-  listActivity: Array<any> = [];
-  celebration: any;
-  activity: any;
-  files: FileList;
-  file: File;
+export class CelebrationComponent implements OnChanges {
+  celebrationForm: FormGroup; activityForm: FormGroup;
+  listCelebration: Celebration[]; celebration: Celebration;
+  listActivity: Activity[]; activity: Activity;
+  files: FileList; file: File;
   url: any;
   imageBlob: any;
 
-  @Input() municipality: any;
+  @Input() municipality: Municipality;
 
   constructor(private formBuilder: FormBuilder, private celebrationService: CelebrationService, private imageCompress: NgxImageCompressService) { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.listCelebration = [];
     this.listActivity = [];
-    this.celebration = '';
+    this.celebration = null;
     this.municipality.celebrations ?
-      Object.keys(this.municipality.celebrations).forEach((m) => {
-        this.listCelebration.push(this.municipality.celebrations[m]);
-      }) : '';
+      Object.keys(this.municipality.celebrations).forEach(m => this.listCelebration.push(this.municipality.celebrations[m])) : '';
     this.buildForm();
   }
 
@@ -51,16 +48,11 @@ export class CelebrationComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(): void {
-    this.ngOnInit();
-  }
-
   newCelebration(celebration) {
     this.celebration = celebration;
     celebration ? this.celebrationForm.setValue({
       name: celebration.name, description: celebration.description, image: celebration.image, state: celebration.state
     }) : this.buildForm();
-
     $('#siteModal').modal('show');
   }
 
@@ -90,10 +82,7 @@ export class CelebrationComponent implements OnInit, OnChanges {
   showActivities(celebration) {
     this.celebration = celebration;
     this.listActivity = [];
-    celebration.activities ?
-      Object.keys(celebration.activities).forEach((m) => {
-        this.listActivity.push(celebration.activities[m]);
-      }) : '';
+    celebration.activities ? Object.keys(celebration.activities).forEach(m => this.listActivity.push(celebration.activities[m])) : '';
   }
 
   saveActivity() {
@@ -122,9 +111,7 @@ export class CelebrationComponent implements OnInit, OnChanges {
 
   newActivity(activity) {
     this.activity = activity;
-    activity ? this.activityForm.setValue({
-      name: activity.name, image: activity.image, state: activity.state
-    }) : this.buildForm();
+    activity ? this.activityForm.patchValue(activity) : this.buildForm();
     $('#activityModal').modal('show');
   }
 
@@ -151,10 +138,4 @@ export class CelebrationComponent implements OnInit, OnChanges {
     const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
   }
-
-  public get celebrationForm(): FormGroup { return this._celebrationForm; }
-  public set celebrationForm(value: FormGroup) { this._celebrationForm = value; }
-
-  public get activityForm(): FormGroup { return this._activityForm; }
-  public set activityForm(value: FormGroup) { this._activityForm = value; }
 }

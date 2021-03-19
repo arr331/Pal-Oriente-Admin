@@ -1,5 +1,5 @@
-<button type="button" class="btn btn-outline-info mb-3" (click)="newCelebration('')" style="margin-right: 30px;"><i
-        class="fa fa-plus" aria-hidden="true"></i> Crear sitio</button>
+<button type="button" class="btn btn-outline-info mb-3" (click)="newCelebration(null)" style="margin-right: 30px;"><i
+        class="fa fa-plus" aria-hidden="true"></i> Crear celebración</button>
 <table class="table table-sm">
     <thead class="thead-dark">
         <tr>
@@ -16,9 +16,9 @@
     </tbody>
 </table>
 
-<ng-container *ngIf="celebration && listActivity.length > 0">
+<ng-container *ngIf="celebration">
     <hr>
-    <button type="button" class="btn btn-outline-success mb-3" (click)="newActivity('')" style="margin-right: 30px;"><i
+    <button type="button" class="btn btn-outline-success mb-3" (click)="newActivity(null)" style="margin-right: 30px;"><i
             class="fa fa-plus" aria-hidden="true"></i> Crear actividad</button>
     <table class="table table-sm">
         <thead class="thead-dark">
@@ -40,7 +40,7 @@
         <div class="modal-content">
             <div class="container">
                 <h3><i class="fa fa-{{celebration ? 'pencil' : 'plus'}}" aria-hidden="true"></i>
-                    {{celebration ? 'Actualizar sitio' : 'Crear sitio'}}</h3>
+                    {{celebration ? 'Actualizar' : 'Crear'}} celebración</h3>
                 <hr>
                 <form [formGroup]="celebrationForm">
                     <div class="row mb-3" *ngIf="celebration">

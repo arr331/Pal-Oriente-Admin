@@ -1,6 +1,6 @@
 <div class="container" style="margin-top: 0;">
-  <button type="button" (click)="newMun(true, '')" class="btn btn-outline-primary"><i
-      class="fa fa-plus" aria-hidden="true"></i> Crear Municipio</button>
+  <button type="button" (click)="newMun(true, '')" class="btn btn-outline-primary"><i class="fa fa-plus"
+      aria-hidden="true"></i> Crear Municipio</button>
 </div>
 
 <div class="container">
@@ -14,10 +14,12 @@
     </thead>
     <tbody>
       <tr *ngFor="let mpio of listMunicipalities" class="hover">
-        <td (click)="newMun(false, mpio); item = ''" style="width: 85%;">{{mpio.name}}</td>
-        <td class="center-item biggest"><i (click)="municipality = mpio; item = 'site'" class="fa fa-globe icon-edit"
+        <td (click)="newMun(false, mpio);" style="width: 85%;">{{mpio.name}}</td>
+
+        <td class="center-item biggest"><i (click)="showConfiguration(mpio, 'site')" class="fa fa-globe icon-edit"
             style="color:#3a5ee1;" aria-hidden="true"></i></td>
-        <td class="center-item biggest"><i (click)="municipality = mpio; item = 'celebration'"
+
+        <td class="center-item biggest"><i (click)="showConfiguration(mpio, 'celebration')"
             class="fa fa-calendar icon-edit" aria-hidden="true"></i></td>
       </tr>
     </tbody>
@@ -111,7 +113,8 @@
       <app-site [municipality]="{idMun: municipality.idMun, sites: municipality.sites}"></app-site>
     </ng-container>
     <ng-container *ngSwitchCase="'celebration'">
-      <app-celebration [municipality]="{idMun: municipality.idMun, celebrations: municipality.celebrations}"></app-celebration>
+      <app-celebration [municipality]="{idMun: municipality.idMun, celebrations: municipality.celebrations}">
+      </app-celebration>
     </ng-container>
   </ng-container>
 </div>

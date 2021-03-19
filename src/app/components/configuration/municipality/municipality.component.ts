@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { Municipality } from 'src/app/interfaces/municipality';
 import { MunicipalityService } from 'src/app/services/configuration/municipality.service';
 declare var $: any;
 
@@ -11,8 +12,8 @@ declare var $: any;
 })
 export class MunicipalityComponent implements OnInit {
   municipalityForm: FormGroup;
-  listMunicipalities: Array<any> = [];
-  municipality;
+  listMunicipalities: Municipality[];
+  municipality: Municipality;
   isNew = true;
   url: any;
   imageBlob: any;
@@ -22,7 +23,7 @@ export class MunicipalityComponent implements OnInit {
     private imageCompress: NgxImageCompressService) { }
 
   ngOnInit(): void {
-    this.municipalityService.getMunicipios().valueChanges().subscribe((answer) => {
+    this.municipalityService.getMunicipios().valueChanges().subscribe(answer => {
       this.listMunicipalities = answer;
     });
     this.buildForm();
@@ -42,13 +43,16 @@ export class MunicipalityComponent implements OnInit {
   }
 
   newMun(isNew, mpio) {
+    this.item = '';
     this.isNew = isNew;
     this.municipality = mpio;
-    mpio ? this.municipalityForm.setValue({
-      name: mpio.name, description: mpio.description, economy: mpio.economy, habitants: mpio.habitants,
-      history: mpio.history, weather: mpio.weather, image: mpio.image, state: mpio.state
-    }) : this.buildForm();
+    mpio ? this.municipalityForm.patchValue(mpio) : this.buildForm();
     $('#mpioModal').modal('show');
+  }
+
+  showConfiguration(mpio: Municipality, item: string) {
+    this.municipality = mpio;
+    this.item = item;
   }
 
   async saveMpio() {

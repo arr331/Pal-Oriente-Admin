@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { Municipality } from 'src/app/interfaces/municipality';
+import { Site } from 'src/app/interfaces/site';
 import { SiteService } from 'src/app/services/configuration/site.service';
 declare var $: any;
 
@@ -9,29 +11,22 @@ declare var $: any;
   templateUrl: './site.component.html',
   styleUrls: ['./site.component.scss']
 })
-export class SiteComponent implements OnInit, OnChanges {
+export class SiteComponent implements OnChanges {
   siteForm: FormGroup;
-  listSites: Array<any> = [];
-  site: any;
+  siteList: Site[];
+  site: Site;
   files: FileList;
   file: File;
   url: any;
   imageBlob: any;
-
-  @Input() municipality: any;
+  @Input() municipality: Municipality;
 
   constructor(private formBuilder: FormBuilder, private siteService: SiteService, private imageCompress: NgxImageCompressService) { }
 
-  ngOnInit() {
-    this.listSites = [];
-    Object.keys(this.municipality.sites).forEach((m) => {
-      this.listSites.push(this.municipality.sites[m]);
-    });
-    this.buildForm();
-  }
-
   ngOnChanges() {
-    this.ngOnInit();
+    this.siteList = [];
+    this.municipality.sites ? Object.keys(this.municipality.sites).forEach(m => this.siteList.push(this.municipality.sites[m])) : '';
+    this.buildForm();
   }
 
   buildForm() {
@@ -47,9 +42,7 @@ export class SiteComponent implements OnInit, OnChanges {
 
   newSite(site) {
     this.site = site;
-    site ? this.siteForm.setValue({
-      name: site.name, description: site.description, image: site.image, x: site.x, y: site.y, state: site.state
-    }) : this.buildForm();
+    site ? this.siteForm.patchValue(site) : this.buildForm();
     $('#siteModal').modal('show');
   }
 
@@ -79,7 +72,7 @@ export class SiteComponent implements OnInit, OnChanges {
   reset(site) {
     $('#siteModal').modal('hide');
     this.buildForm();
-    this.site ? this.listSites[this.listSites.indexOf(this.site)] = site : this.listSites.push(site);
+    this.site ? this.siteList[this.siteList.indexOf(this.site)] = site : this.siteList.push(site);
     this.url = null;
     this.files = null;
   }
