@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxImageCompressService } from 'ngx-image-compress';
-import { Router } from '@angular/router';
 import { MunicipalityService } from 'src/app/services/configuration/municipality.service';
 declare var $: any;
 
@@ -20,7 +19,7 @@ export class MunicipalityComponent implements OnInit {
   item: string;
 
   constructor(private formBuilder: FormBuilder, private municipalityService: MunicipalityService,
-    private imageCompress: NgxImageCompressService, private router: Router) { }
+    private imageCompress: NgxImageCompressService) { }
 
   ngOnInit(): void {
     this.municipalityService.getMunicipios().valueChanges().subscribe((answer) => {
