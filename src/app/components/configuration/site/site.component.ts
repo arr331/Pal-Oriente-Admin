@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Municipality } from 'src/app/interfaces/municipality';
 import { Site } from 'src/app/interfaces/site';
@@ -13,10 +13,10 @@ declare var $: any;
 })
 export class SiteComponent implements OnChanges {
   siteForm: FormGroup;
+  galleryForm = new FormControl('');
   siteList: Site[];
   site: Site;
-  files: FileList;
-  file: File;
+  images: string[] = [];
   url: any;
   imageBlob: any;
   @Input() municipality: Municipality;
@@ -24,6 +24,9 @@ export class SiteComponent implements OnChanges {
   constructor(private formBuilder: FormBuilder, private siteService: SiteService, private imageCompress: NgxImageCompressService) { }
 
   ngOnChanges() {
+
+    this.galleryForm.valueChanges.subscribe(a => console.log(a, 'ajjaja'))
+
     this.siteList = [];
     this.municipality.sites ? Object.keys(this.municipality.sites).forEach(m => this.siteList.push(this.municipality.sites[m])) : '';
     this.buildForm();
@@ -46,11 +49,24 @@ export class SiteComponent implements OnChanges {
     $('#siteModal').modal('show');
   }
 
+  addImages(files: FileList) {
+    this.images = [];
+    for (let index = 0; index < files.length; index++) {
+      const reader = new FileReader();
+      reader.onload = event => this.images.push(event.target.result.toString());
+      reader.readAsDataURL(files[index]);
+    }
+  }
+
+  saveGallery() {
+    this.siteService.uploadGalery(this.images);
+  }
+
   saveSite() {
     if (this.siteForm.valid) {
       const site = this.siteService.buildSite(this.siteForm.value, this.municipality.idMun, this.site ? this.site.idSite : '');
       if (this.url) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = async event => {
           await this.compressFile(event.target.result);
           this.siteService.uploadImg(this.imageBlob).then(answer => {
@@ -74,19 +90,20 @@ export class SiteComponent implements OnChanges {
     this.buildForm();
     this.site ? this.siteList[this.siteList.indexOf(this.site)] = site : this.siteList.push(site);
     this.url = null;
-    this.files = null;
   }
 
-  uploadGallery(imgs) {
-    this.files = imgs.target.files
-    console.log(this.files, 'carpeta');
+  openGallery(imgs) {
+    $('#galleryModal').modal('show');
+    this.siteService.getAllImages().then(result => {
+      result.items.forEach(itemRef => itemRef.getDownloadURL().then(url => this.images.push(url)));
+    });
   }
 
   async compressFile(image) {
     this.imageBlob = this.dataURItoBlob((await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]);
   }
 
-  dataURItoBlob(dataURI) {
+  dataURItoBlob(dataURI: string): Blob {
     const byteString = window.atob(dataURI);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const int8Array = new Uint8Array(arrayBuffer);
@@ -96,17 +113,4 @@ export class SiteComponent implements OnChanges {
     const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
   }
-
-  // var sorage = this.storage.storage;
-  // var storageRef = sorage.ref('Z');
-
-  // storageRef.listAll().then(result => {
-  //   result.items.forEach(itemRef => {
-  //     itemRef.getDownloadURL().then((url) => {
-  //       console.log(url, 'todas url');
-  //     });
-
-  //     // All the items under listRef.
-  //   });
-  // })
 }

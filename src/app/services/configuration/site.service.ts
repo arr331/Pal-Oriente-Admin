@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireStorage } from 'angularfire2/storage';
+import { NgxImageCompressService } from 'ngx-image-compress';
 import { Coordinate } from 'src/app/interfaces/coordinate';
 import { Site } from 'src/app/interfaces/site';
 
@@ -11,7 +12,7 @@ export class SiteService {
   idSite: string;
   idMun: string;
 
-  constructor(private fireBase: AngularFireDatabase, private storage: AngularFireStorage) { }
+  constructor(private fireBase: AngularFireDatabase, private storage: AngularFireStorage, private imageCompress: NgxImageCompressService) { }
 
   addSite(site: Site) {
     this.fireBase.list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/sites`).update(site.idSite, site).then(() => {
@@ -21,26 +22,41 @@ export class SiteService {
   }
 
   buildSite(form, idMun: string, id: string): Site {
-    this.idMun = idMun
+    this.idMun = idMun;
     this.idSite = id ? id : this.fireBase.createPushId();
     const site = { idSite: this.idSite, ...form };
     return site;
   }
 
+  getAllImages() {
+    return this.storage.storage.ref('XXX').listAll();
+  }
+
   async uploadImg(img) {
     const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/portada`;
     const ref = this.storage.ref(filePath);
-    await ref.put(img).then(() => {
-      console.log('Se carg+o la imagen correctamente site');
-    });
+    await ref.put(img);
     return await ref.getDownloadURL().toPromise();
   }
 
-  uploadGalery(images) {
-    for (let i = 0; i < images.length; i++) {
-      const name = this.fireBase.createPushId();
-      const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/${name}`;
-      this.storage.upload(filePath, images[i]);
+  uploadGalery(images: string[]) {
+    images.forEach(async (img, index) => {
+      const blob = await this.compressFile(img);
+      this.storage.upload(`XXX/${index}`, blob);
+    });
+  }
+
+  async compressFile(image) {
+    return this.dataURItoBlob((await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]);
+  }
+
+  dataURItoBlob(dataURI: string): Blob {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
     }
+    return new Blob([int8Array], { type: 'image/jpeg' });
   }
 }
