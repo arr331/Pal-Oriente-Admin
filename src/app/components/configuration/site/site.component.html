@@ -10,7 +10,7 @@
     <tbody>
         <tr *ngFor="let site of siteList" class="hover">
             <td style="width: 80%;" (click)="newSite(site)">{{site.name}}</td>
-            <td class="center-item biggest"><i (click)="openGallery('')" class="fa fa-picture-o icon-edit"
+            <td class="center-item biggest"><i (click)="openGallery(site)" class="fa fa-picture-o icon-edit"
                     aria-hidden="true"></i></td>
         </tr>
     </tbody>

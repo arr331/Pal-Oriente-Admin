@@ -28,21 +28,22 @@ export class SiteService {
     return site;
   }
 
-  getAllImages() {
-    return this.storage.storage.ref('XXX').listAll();
+  getAllImages(idMun: string, idSite: string) {
+    return this.storage.storage.ref(`ALTIPLANO/MUNICIPALITIES/${idMun}/SITES/${idSite}/gallery`).listAll();
   }
 
   async uploadImg(img) {
     const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/portada`;
+    const imgToSave = await this.compressFile(img);
     const ref = this.storage.ref(filePath);
-    await ref.put(img);
+    await ref.put(imgToSave);
     return await ref.getDownloadURL().toPromise();
   }
 
-  uploadGalery(images: string[]) {
-    images.forEach(async (img, index) => {
+  async uploadGalery(images: string[], idMun: string, idSite: string) {
+    return await images.forEach(async (img, index) => {
       const blob = await this.compressFile(img);
-      this.storage.upload(`XXX/${index}`, blob);
+      this.storage.upload(`ALTIPLANO/MUNICIPALITIES/${idMun}/SITES/${idSite}/gallery/${index}`, blob);
     });
   }
 
@@ -54,9 +55,7 @@ export class SiteService {
     const byteString = window.atob(dataURI);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const int8Array = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < byteString.length; i++) {
-      int8Array[i] = byteString.charCodeAt(i);
-    }
+    for (let i = 0; i < byteString.length; i++) { int8Array[i] = byteString.charCodeAt(i); }
     return new Blob([int8Array], { type: 'image/jpeg' });
   }
 }
