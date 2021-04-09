@@ -10,6 +10,7 @@ import { MuniComponent } from './components/muni/muni.component';
 import { SitesShowComponent } from './components/sites-show/sites-show.component';
 import { LoginComponent } from './components/login/login.component';
 import { ItemInfoComponent } from './components/item-info/item-info.component';
+import { NewComponent } from './components/configuration/new/new.component';
 
 const redirect = () => redirectUnauthorizedTo(['inicio']);
 
@@ -18,7 +19,10 @@ const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: 'inicio', component: InicioComponent },
   { path: 'login', component: LoginComponent },
+
   { path: 'configuracion', component: MunicipalityComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirect } },
+  { path: 'configuracion/noticias', component: NewComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirect } },
+
   { path: 'info', component: RegionInfoComponent },
   { path: 'contactenos', component: ContactusComponent },
   { path: 'info/item/:numItem', component: ItemInfoComponent },

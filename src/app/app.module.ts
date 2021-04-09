@@ -30,6 +30,7 @@ import { UsersComponent } from './components/users/users.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NoticesComponent } from './components/notices/notices.component';
 import { CelebrationComponent } from './components/configuration/celebration/celebration.component';
+import { NewComponent } from './components/configuration/new/new.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { CelebrationComponent } from './components/configuration/celebration/cel
     ItemInfoComponent,
     UsersComponent,
     NoticesComponent,
-    CelebrationComponent
+    CelebrationComponent,
+    NewComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,73 @@
+<div class="container">
+    <button type="button" (click)="create(null)" class="btn btn-outline-primary" style="float: right;"><i
+            class="fa fa-plus" aria-hidden="true"></i> Crear noticia</button>
+    <h3>Noticias</h3>
+    <hr>
+    <table class="table table-sm">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Noticia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let nw of newList" class="hover">
+                <td (click)="create(nw)">{{nw.title}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal fade bd-example-modal-lg" id="newModal" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="container">
+                <div class="row" style="margin: 12px;">
+                    <div class="col-md-9">
+                        <h4>{{nw ? 'Editar' : 'Crear'}} noticia</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <input type="file" accept=".png, .jpg" id="input-image"
+                            (change)="readImage($event.target.files[0])" class="custom-file-input">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="input-image" style="font-size: 20px; cursor: pointer;">
+                            <strong>Subir <i class="fa fa-upload" aria-hidden="true"></i></strong>
+                        </label>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mb-3" *ngIf="image">
+                    <div class="col-md-12" style="text-align: center;">
+                        <img src="{{image}}" style=" height: 9rem; border-radius: 10px;" alt="no se cargo">
+                    </div>
+                </div>
+                <form [formGroup]="newForm">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label>Título</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="título de la noticia"
+                                formControlName="title">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label>Outline</label>
+                            <textarea type="text" class="form-control form-control-sm" placeholder="Ingrese outline"
+                                rows="4" formControlName="outline"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Texto</label>
+                            <textarea type="text" class="form-control form-control-sm"
+                                placeholder="Ingrese el texto de la noticia" rows="4" formControlName="text"></textarea>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <div class="container-fluid mb-3">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success pull-right" (click)="save()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
