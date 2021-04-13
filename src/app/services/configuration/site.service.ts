@@ -28,23 +28,12 @@ export class SiteService {
     return site;
   }
 
-  getAllImages(idMun: string, idSite: string) {
-    return this.storage.storage.ref(`ALTIPLANO/MUNICIPALITIES/${idMun}/SITES/${idSite}/gallery`).listAll();
-  }
-
   async uploadImg(img) {
     const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/portada`;
     const imgToSave = await this.compressFile(img);
     const ref = this.storage.ref(filePath);
     await ref.put(imgToSave);
     return await ref.getDownloadURL().toPromise();
-  }
-
-  async uploadGalery(images: string[], idMun: string, idSite: string) {
-    return await images.forEach(async (img, index) => {
-      const blob = await this.compressFile(img);
-      this.storage.upload(`ALTIPLANO/MUNICIPALITIES/${idMun}/SITES/${idSite}/gallery/${index}`, blob);
-    });
   }
 
   async compressFile(image) {

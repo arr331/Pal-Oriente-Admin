@@ -5,6 +5,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { Municipality } from 'src/app/interfaces/municipality';
 import { Celebration } from 'src/app/interfaces/celebration';
 import { Activity } from 'src/app/interfaces/activity';
+import { GalleryService } from 'src/app/services/configuration/gallery.service';
 declare var $: any;
 
 @Component({
@@ -20,10 +21,12 @@ export class CelebrationComponent implements OnChanges {
   files: FileList; file: File;
   url: any;
   imageBlob: any;
+  images: string[] = [];
 
   @Input() municipality: Municipality;
 
-  constructor(private formBuilder: FormBuilder, private celebrationService: CelebrationService, private imageCompress: NgxImageCompressService) { }
+  constructor(private formBuilder: FormBuilder, private celebrationService: CelebrationService,
+    private imageCompress: NgxImageCompressService, private galleryService: GalleryService) { }
 
   ngOnChanges(): void {
     this.listCelebration = [];
@@ -47,6 +50,30 @@ export class CelebrationComponent implements OnChanges {
       state: [true]
     });
   }
+
+  openGallery(celeb: Celebration) {
+    this.celebration = celeb;
+    $('#galleryModal').modal('show');
+    this.images = [];
+    this.galleryService.getAllImages(this.municipality.idMun, celeb.idCelebration, 'CELEBRATIONS').then(result => {
+      result.items.forEach(itemRef => itemRef.getDownloadURL().then(url => this.images.push(url)));
+    });
+  }
+
+  addImages(files: FileList) {
+    for (let index = 0; index < files.length; index++) {
+      const reader = new FileReader();
+      reader.onload = event => this.images.push(event.target.result.toString());
+      reader.readAsDataURL(files[index]);
+    }
+  }
+
+  saveGallery() {
+    this.galleryService.uploadGalery(this.images, this.municipality.idMun, this.celebration.idCelebration, 'CELEBRATIONS').then(() => {
+      $('#galleryModal').modal('hide');
+    });
+  }
+
 
   newCelebration(celebration) {
     this.celebration = celebration;

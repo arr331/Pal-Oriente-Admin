@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Municipality } from 'src/app/interfaces/municipality';
 import { Site } from 'src/app/interfaces/site';
+import { GalleryService } from 'src/app/services/configuration/gallery.service';
 import { SiteService } from 'src/app/services/configuration/site.service';
 declare var $: any;
 
@@ -19,7 +20,7 @@ export class SiteComponent implements OnChanges {
   url: any;
   @Input() municipality: Municipality;
 
-  constructor(private formBuilder: FormBuilder, private siteService: SiteService, private imageCompress: NgxImageCompressService) { }
+  constructor(private formBuilder: FormBuilder, private siteService: SiteService, private galleryService: GalleryService) { }
 
   ngOnChanges() {
     this.siteList = [];
@@ -53,7 +54,7 @@ export class SiteComponent implements OnChanges {
   }
 
   saveGallery() {
-    this.siteService.uploadGalery(this.images, this.municipality.idMun, this.site.idSite).then(() => {
+    this.galleryService.uploadGalery(this.images, this.municipality.idMun, this.site.idSite, 'SITES').then(() => {
       $('#galleryModal').modal('hide');
     });
   }
@@ -92,7 +93,7 @@ export class SiteComponent implements OnChanges {
     this.site = site;
     $('#galleryModal').modal('show');
     this.images = [];
-    this.siteService.getAllImages(this.municipality.idMun, site.idSite).then(result => {
+    this.galleryService.getAllImages(this.municipality.idMun, site.idSite, 'SITES').then(result => {
       result.items.forEach(itemRef => itemRef.getDownloadURL().then(url => this.images.push(url)));
     });
   }

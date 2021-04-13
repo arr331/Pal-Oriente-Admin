@@ -5,6 +5,7 @@
         <tr>
             <th scope="col">Celebración</th>
             <th scope="col" class="center-item">Actividad</th>
+            <th scope="col" class="center-item">Galería</th>
         </tr>
     </thead>
     <tbody>
@@ -12,6 +13,8 @@
             <td style="width: 80%;" (click)="newCelebration(celeb)">{{celeb.name}}</td>
             <td class="center-item biggest"><i (click)="showActivities(celeb)" class="fa fa-sign-language icon-edit"
                     aria-hidden="true"></i></td>
+                    <td class="center-item biggest"><i (click)="openGallery(celeb)" class="fa fa-picture-o icon-edit"
+                        aria-hidden="true"></i></td>
         </tr>
     </tbody>
 </table>
@@ -137,6 +140,44 @@
                 <div class="container-fluid mb-3">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     <button type="button" (click)="saveActivity()" class="btn btn-success pull-right">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-xl" id="galleryModal" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4>Imágenes</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <input type="file" accept=".png, .jpg" id="input-gallery" (change)="addImages($event.target.files)"
+                            class="custom-file-input" multiple>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="input-gallery" style="font-size: 20px; cursor: pointer;">
+                            <strong>Subir <i class="fa fa-upload" aria-hidden="true"></i></strong>
+                        </label>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3" *ngFor="let img of images">
+                        <img src="{{img}}"
+                            style="max-width: 16rem; height: 11rem; border-radius: 10px; margin-bottom: 1rem;"
+                            alt="no se cargo">
+                    </div>
+                </div>
+                <hr>
+                <div class="container-fluid mb-3">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success pull-right" (click)="saveGallery()">Guardar</button>
                 </div>
             </div>
         </div>
