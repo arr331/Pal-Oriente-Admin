@@ -38,6 +38,7 @@ export class MunicipalityComponent implements OnInit {
       history: [''],
       weather: [''],
       image: [''],
+      reference: [''],
       state: [true]
     });
   }

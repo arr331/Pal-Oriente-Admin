@@ -40,13 +40,14 @@ export class CelebrationComponent implements OnChanges {
   buildForm() {
     this.celebrationForm = this.formBuilder.group({
       name: ['', Validators.required],
-      description: [''],
-      image: [''],
+      description: ['', Validators.required],
+      image: ['', Validators.required],
+      reference: ['', Validators.required],
       state: [true]
     });
     this.activityForm = this.formBuilder.group({
-      name: [''],
-      image: [''],
+      name: ['', Validators.required],
+      image: ['', Validators.required],
       state: [true]
     });
   }
@@ -75,11 +76,9 @@ export class CelebrationComponent implements OnChanges {
   }
 
 
-  newCelebration(celebration) {
+  newCelebration(celebration: Celebration) {
     this.celebration = celebration;
-    celebration ? this.celebrationForm.setValue({
-      name: celebration.name, description: celebration.description, image: celebration.image, state: celebration.state
-    }) : this.buildForm();
+    celebration ? this.celebrationForm.patchValue(celebration) : this.buildForm();
     $('#siteModal').modal('show');
   }
 

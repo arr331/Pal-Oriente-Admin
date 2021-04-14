@@ -5,5 +5,6 @@ export interface Site {
     name: string;
     state: boolean;
     x: string;
-    y: string
+    y: string;
+    reference: string;
 }

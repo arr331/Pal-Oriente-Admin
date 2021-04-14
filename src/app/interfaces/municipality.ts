@@ -12,5 +12,6 @@ export interface Municipality {
     name: string,
     sites: Site[],
     state: boolean,
-    weather: string
+    weather: string,
+    reference: string
 }

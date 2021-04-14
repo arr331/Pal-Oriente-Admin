@@ -35,6 +35,7 @@ export class SiteComponent implements OnChanges {
       image: [''],
       x: [''],
       y: [''],
+      reference: [''],
       state: [true]
     });
   }

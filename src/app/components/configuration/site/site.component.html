@@ -31,12 +31,17 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-8">
+                        <div class="col-md-5">
                             <label>Nombre del sitio</label>
                             <input type="text" class="form-control form-control-sm"
                                 placeholder="Ingrese el nombre del sitio" formControlName="name">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
+                            <label>Referencia</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Ingrese la referencia"
+                                formControlName="reference">
+                        </div>
+                        <div class="col-md-2">
                             <label>Estado</label>
                             <select class="custom-select custom-select-sm" formControlName="state">
                                 <option [ngValue]="true">Activo</option>
@@ -94,8 +99,8 @@
                         <h4>Imágenes</h4>
                     </div>
                     <div class="col-md-1">
-                        <input type="file" accept=".png, .jpg" id="input-gallery" (change)="addImages($event.target.files)"
-                            class="custom-file-input" multiple>
+                        <input type="file" accept=".png, .jpg" id="input-gallery"
+                            (change)="addImages($event.target.files)" class="custom-file-input" multiple>
                     </div>
                     <div class="col-md-2">
                         <label for="input-gallery" style="font-size: 20px; cursor: pointer;">
