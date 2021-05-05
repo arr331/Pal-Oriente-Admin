@@ -41,13 +41,13 @@ export class CelebrationComponent implements OnChanges {
     this.celebrationForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      image: ['', Validators.required],
+      image: [''],
       reference: ['', Validators.required],
       state: [true]
     });
     this.activityForm = this.formBuilder.group({
       name: ['', Validators.required],
-      image: ['', Validators.required],
+      image: [''],
       state: [true]
     });
   }
@@ -122,7 +122,7 @@ export class CelebrationComponent implements OnChanges {
           this.celebrationService.uploadImg(this.imageBlob, 1).then(answer => {
             activity.image = answer;
             this.celebrationService.addActivity(activity);
-            this.reset(1, activity, '#activityModal');
+            this.reset(1, activity, '#activityModal'); 
           });
         }
         reader.readAsDataURL(this.url.target.files[0]);
