@@ -1,49 +1,19 @@
 <div class="container">
-  <button *ngIf="isNew" class="btn btn-outline-dark btn-back" (click)="isNew = false"><i class="fa fa-chevron-left"
-      aria-hidden="true"></i></button>
-  <h3 class="center" style="margin-top: 15px;">{{isNew ? 'Nuevo usuario' : 'Iniciar sesión'}}</h3>
+  <h3 class="center" style="margin-top: 15px;">Bienvenid@ a Pal Oriente</h3>
   <hr>
   <form [formGroup]="logInForm" class="was-validated">
     <div class="mb-3">
       <label>Correo electrónico</label>
       <input type="text" formControlName="email" ngModel pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" placeholder="Ingrese el correo" required>
     </div>
-    <div *ngIf="isNew" class="mb-3">
-      <label>Nombre</label>
-      <input type="text" formControlName="nameUser" class="form-control" placeholder="Ingrese su nombre" required>
-    </div>
-    <div *ngIf="isNew" class="mb-3">
-      <label>Apellido</label>
-      <input type="text" formControlName="lastUser" class="form-control" placeholder="Ingrese su apellido" required>
-    </div>
     <div class="mb-3">
       <label>Contraseña</label>
       <input type="password" formControlName="password" ngModel pattern="^[a-z0-9_-]{5,16}$" class="form-control" placeholder="Ingrese la contraseña"
         required>
     </div>
-    <div *ngIf="isNew" class="mb-3">
-      <label>Repetir contraseña</label>
-      <input type="password" formControlName="password" ngModel pattern="^[a-z0-9_-]{5,16}$" class="form-control" placeholder="Ingrese otra vez la contraseña"
-        required>
-    </div>
-    <div *ngIf="!isNew" class="custom-control custom-checkbox mb-3">
-      <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-      <label class="custom-control-label" for="customControlValidation1" style="color: black;">Recordar
-        contraseña</label>
-    </div>
   </form>
   <hr>
-  <ng-container *ngIf="!isNew">
-    <div class="mb-3">
-      <button (click)="ingresar()" class="btn btn-lg btn-block" style="background: #22B547; color: white;">Ingresar</button>
-    </div>
-    <div class="container-fluid mb-3">
-      <button (click)="onLoginGoogle()" class="btn btn-danger pull-right"><i class="fa fa-google"
-          aria-hidden="true"></i> Acceder con Google</button>
-      <button class="btn btn-outline-dark" (click)="goRegister()">Registrarme</button>
-    </div>
-  </ng-container>
-  <div class="mb-3" *ngIf="isNew">
-    <button (click)="formUser()" class="btn btn-primary btn-lg btn-block">Crear cuenta</button>
+  <div class="mb-3">
+    <button (click)="logIn()" class="btn btn-lg btn-block" style="background: #22B547; color: white;">Iniciar Sesión</button>
   </div>
 </div>

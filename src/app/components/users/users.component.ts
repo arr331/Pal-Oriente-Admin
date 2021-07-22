@@ -27,12 +27,12 @@ export class UsersComponent implements OnInit {
       password: ['', Validators.required]
     });
 
-    this.loginservice.getUsers().subscribe(
+    /*this.loginservice.getUsers().subscribe(
       (users)=> {
         this.listUsers= users;
         console.log(users);
       }
-    );
+    );*/
 
     
   }
@@ -44,12 +44,12 @@ export class UsersComponent implements OnInit {
   }
 
   
-  updateUser(){
+  /*updateUser(){
       this.user= { ...this.logInForm.value };
       this.user.idUser= this.id;
       this.loginservice.UpdateUser(this.user).subscribe((response)=>{
         alert('Actualizado');
       })
-  }
+  }*/
 
 }
