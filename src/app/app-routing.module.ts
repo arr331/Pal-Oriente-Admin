@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { redirectUnauthorizedTo, AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { MunicipalityComponent } from './pages/municipality/municipality.component';
 import { LoginComponent } from './components/login/login.component';
-import { NewComponent } from './pages/new/new.component';
+import { NewComponent } from './pages/news/new.component';
 
 const redirect = () => redirectUnauthorizedTo(['login']);
 

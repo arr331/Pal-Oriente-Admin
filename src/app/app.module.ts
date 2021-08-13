@@ -20,7 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 import { UsersComponent } from './components/users/users.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { NewComponent } from './pages/new/new.component';
+import { NewComponent } from './pages/news/new.component';
 import { CelebrationComponent } from './pages/celebration/celebration.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 
