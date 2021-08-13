@@ -6,19 +6,35 @@ import { Coordinate } from 'src/app/interfaces/coordinate';
 import { Site } from 'src/app/interfaces/site';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SiteService {
   idSite: string;
   idMun: string;
 
-  constructor(private fireBase: AngularFireDatabase, private storage: AngularFireStorage, private imageCompress: NgxImageCompressService) { }
+  constructor(
+    private fireBase: AngularFireDatabase,
+    private storage: AngularFireStorage,
+    private imageCompress: NgxImageCompressService
+  ) {}
 
   addSite(site: Site) {
-    this.fireBase.list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/sites`).update(site.idSite, site).then(() => {
-      const coordinate: Coordinate = { region: 'P', idMun: this.idMun, idSite: site.idSite, name: site.name, x: site.x, y: site.y };
-      this.fireBase.list(`COORDINATES/${this.idMun}`).update(site.idSite, coordinate);
-    });
+    this.fireBase
+      .list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/sites`)
+      .update(site.idSite, site)
+      .then(() => {
+        const coordinate: Coordinate = {
+          region: 'P',
+          idMun: this.idMun,
+          idSite: site.idSite,
+          name: site.name,
+          x: site.x,
+          y: site.y,
+        };
+        this.fireBase
+          .list(`COORDINATES/${this.idMun}`)
+          .update(site.idSite, coordinate);
+      });
   }
 
   buildSite(form, idMun: string, id: string): Site {
@@ -37,14 +53,18 @@ export class SiteService {
   }
 
   async compressFile(image) {
-    return this.dataURItoBlob((await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]);
+    return this.dataURItoBlob(
+      (await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]
+    );
   }
 
   dataURItoBlob(dataURI: string): Blob {
     const byteString = window.atob(dataURI);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const int8Array = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < byteString.length; i++) { int8Array[i] = byteString.charCodeAt(i); }
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
     return new Blob([int8Array], { type: 'image/jpeg' });
   }
 }

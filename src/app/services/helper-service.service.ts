@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Sitio } from '../clases/sitio';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +11,7 @@ export class HelperServiceService {
 
   constructor() { }
 
-  public getSites(site: Sitio): void{
+  // public getSites(site: Sitio): void{
     //this.site.next(site);
-  }
+  // }
 }

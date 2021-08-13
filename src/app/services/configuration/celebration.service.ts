@@ -5,25 +5,34 @@ import { Activity } from 'src/app/interfaces/activity';
 import { Celebration } from 'src/app/interfaces/celebration';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CelebrationService {
   idCelebration: string;
   idActivity: string;
   idMun: string;
 
-  constructor(private fireBase: AngularFireDatabase, private storage: AngularFireStorage) { }
+  constructor(
+    private fireBase: AngularFireDatabase,
+    private storage: AngularFireStorage
+  ) {}
 
   addCelebration(celebration: Celebration) {
-    this.fireBase.list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/celebrations`).update(celebration.idCelebration, celebration);
+    this.fireBase
+      .list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/celebrations`)
+      .update(celebration.idCelebration, celebration);
   }
 
   addActivity(activity: Activity) {
-    this.fireBase.list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/celebrations/${this.idCelebration}/activities`).update(activity.idActivity, activity);
+    this.fireBase
+      .list(
+        `ALTIPLANO/MUNICIPALITIES/${this.idMun}/celebrations/${this.idCelebration}/activities`
+      )
+      .update(activity.idActivity, activity);
   }
 
   buildCelebration(form, idMun: string, id: string) {
-    this.idMun = idMun
+    this.idMun = idMun;
     this.idCelebration = id ? id : this.fireBase.createPushId();
     const celebration = { idCelebration: this.idCelebration, ...form };
     return celebration;
@@ -38,8 +47,10 @@ export class CelebrationService {
   }
 
   async uploadImg(img, wich) {
-    const filePath = wich === 0 ? `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/portada` :
-      `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/activities/${this.idActivity}/portada`;
+    const filePath =
+      wich === 0
+        ? `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/portada`
+        : `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/activities/${this.idActivity}/portada`;
     const ref = this.storage.ref(filePath);
     await ref.put(img).then(() => {
       console.log('Se carg+o la imagen correctamente site');
