@@ -52,9 +52,7 @@ export class CelebrationService {
         ? `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/portada`
         : `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/activities/${this.idActivity}/portada`;
     const ref = this.storage.ref(filePath);
-    await ref.put(img).then(() => {
-      console.log('Se carg+o la imagen correctamente site');
-    });
+    await ref.put(img).then();
     return await ref.getDownloadURL().toPromise();
   }
 }

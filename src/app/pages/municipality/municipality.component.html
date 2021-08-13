@@ -1,3 +1,5 @@
+<app-spinner *ngIf="loading"></app-spinner>
+
 <div class="container">
   <button type="button" class="btn btn-outline-success float-right" routerLink="/noticias"><i class="fa fa-eye" aria-hidden="true"></i> Ver noticias</button>
   <button type="button" (click)="newMun(true, '')" class="btn btn-outline-primary"><i class="fa fa-plus"

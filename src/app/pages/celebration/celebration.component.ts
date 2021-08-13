@@ -25,6 +25,7 @@ export class CelebrationComponent implements OnChanges {
   url: any;
   imageBlob: any;
   images: string[] = [];
+  loading: boolean;
 
   @Input() municipality: Municipality;
 
@@ -33,7 +34,7 @@ export class CelebrationComponent implements OnChanges {
     private celebrationService: CelebrationService,
     private imageCompress: NgxImageCompressService,
     private galleryService: GalleryService
-  ) {}
+  ) { }
 
   ngOnChanges(): void {
     this.listCelebration = [];
@@ -41,18 +42,18 @@ export class CelebrationComponent implements OnChanges {
     this.celebration = null;
     this.municipality.celebrations
       ? Object.keys(this.municipality.celebrations).forEach((m) =>
-          this.listCelebration.push(this.municipality.celebrations[m])
-        )
+        this.listCelebration.push(this.municipality.celebrations[m])
+      )
       : '';
     this.buildForm();
   }
 
-  buildForm() {
+  buildForm(): void {
     this.celebrationForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       image: [''],
-      reference: ['', Validators.required],
+      reference: [''],
       state: [true],
     });
     this.activityForm = this.formBuilder.group({
@@ -62,24 +63,27 @@ export class CelebrationComponent implements OnChanges {
     });
   }
 
-  openGallery(celeb: Celebration) {
+  openGallery(celeb: Celebration): void {
     this.celebration = celeb;
-    $('#galleryModal').modal('show');
     this.images = [];
+    this.loading = true;
     this.galleryService
-      .getAllImages(
-        this.municipality.idMun,
-        celeb.idCelebration,
-        'CELEBRATIONS'
+    .getAllImages(
+      this.municipality.idMun,
+      celeb.idCelebration,
+      'CELEBRATIONS'
       )
       .then((result) => {
-        result.items.forEach((itemRef) =>
-          itemRef.getDownloadURL().then((url) => this.images.push(url))
+        result.items.forEach((itemRef) => {
+          itemRef.getDownloadURL().then((url) => this.images.push(url));
+          this.loading = false;
+          $('#galleryModal').modal('show');
+        }
         );
       });
   }
 
-  addImages(files: FileList) {
+  addImages(files: FileList): void {
     for (let index = 0; index < files.length; index++) {
       const reader = new FileReader();
       reader.onload = (event) =>
@@ -88,7 +92,8 @@ export class CelebrationComponent implements OnChanges {
     }
   }
 
-  saveGallery() {
+  saveGallery(): void {
+    this.loading = true;
     this.galleryService
       .uploadGalery(
         this.images,
@@ -97,11 +102,12 @@ export class CelebrationComponent implements OnChanges {
         'CELEBRATIONS'
       )
       .then(() => {
+        this.loading = false;
         $('#galleryModal').modal('hide');
       });
   }
 
-  newCelebration(celebration: Celebration) {
+  newCelebration(celebration: Celebration): void {
     this.celebration = celebration;
     celebration
       ? this.celebrationForm.patchValue(celebration)
@@ -109,7 +115,8 @@ export class CelebrationComponent implements OnChanges {
     $('#siteModal').modal('show');
   }
 
-  saveCelebration() {
+  saveCelebration(): void {
+    this.loading = true;
     if (this.celebrationForm.valid) {
       const celebration = this.celebrationService.buildCelebration(
         this.celebrationForm.value,
@@ -134,21 +141,21 @@ export class CelebrationComponent implements OnChanges {
         this.reset(0, celebration, '#siteModal');
       }
     } else {
-      console.log('llenar');
+      alert('Por favor llenar todos los campos para continuar');
     }
   }
 
-  showActivities(celebration) {
+  showActivities(celebration): void {
     this.celebration = celebration;
     this.listActivity = [];
     celebration.activities
       ? Object.keys(celebration.activities).forEach((m) =>
-          this.listActivity.push(celebration.activities[m])
-        )
+        this.listActivity.push(celebration.activities[m])
+      )
       : '';
   }
 
-  saveActivity() {
+  saveActivity(): void {
     if (this.activityForm.valid) {
       const activity = this.celebrationService.buildActivity(
         this.activityForm.value,
@@ -174,38 +181,39 @@ export class CelebrationComponent implements OnChanges {
         this.reset(1, activity, '#activityModal');
       }
     } else {
-      console.log('llenar');
+      alert('Por favor llenar todos los campos para continuar');
     }
   }
 
-  newActivity(activity) {
+  newActivity(activity): void {
     this.activity = activity;
     activity ? this.activityForm.patchValue(activity) : this.buildForm();
     $('#activityModal').modal('show');
   }
 
-  reset(wich, item, modal) {
+  reset(wich, item, modal): void {
+    this.loading = false;
     $(modal).modal('hide');
     this.buildForm();
     wich === 0
       ? this.celebration
         ? (this.listCelebration[
-            this.listCelebration.indexOf(this.celebration)
-          ] = item)
+          this.listCelebration.indexOf(this.celebration)
+        ] = item)
         : this.listCelebration.push(item)
       : this.activity
-      ? (this.listActivity[this.listActivity.indexOf(this.activity)] = item)
-      : this.listActivity.push(item);
+        ? (this.listActivity[this.listActivity.indexOf(this.activity)] = item)
+        : this.listActivity.push(item);
     this.url = null;
   }
 
-  async compressFile(image) {
+  async compressFile(image): Promise<void> {
     this.imageBlob = this.dataURItoBlob(
       (await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]
     );
   }
 
-  dataURItoBlob(dataURI) {
+  dataURItoBlob(dataURI): Blob {
     const byteString = window.atob(dataURI);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const int8Array = new Uint8Array(arrayBuffer);

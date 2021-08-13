@@ -17,15 +17,16 @@ export class SiteComponent implements OnChanges {
   site: Site;
   images: string[] = [];
   url: any;
+  loading: boolean;
   @Input() municipality: Municipality;
 
   constructor(
     private formBuilder: FormBuilder,
     private siteService: SiteService,
     private galleryService: GalleryService
-  ) {}
+  ) { }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.siteList = [];
     if (this.municipality.sites) {
       Object.keys(this.municipality.sites).forEach((m) =>
@@ -35,25 +36,25 @@ export class SiteComponent implements OnChanges {
     this.buildForm();
   }
 
-  buildForm() {
+  buildForm(): void {
     this.siteForm = this.formBuilder.group({
       name: ['', Validators.required],
-      description: [''],
+      description: ['', Validators.required],
       image: [''],
-      x: [''],
-      y: [''],
+      x: ['', Validators.required],
+      y: ['', Validators.required],
       reference: [''],
       state: [true],
     });
   }
 
-  newSite(site: Site) {
+  newSite(site: Site): void {
     this.site = site;
     site ? this.siteForm.patchValue(site) : this.buildForm();
     $('#siteModal').modal('show');
   }
 
-  addImages(files: FileList) {
+  addImages(files: FileList): void {
     for (let index = 0; index < files.length; index++) {
       const reader = new FileReader();
       reader.onload = (event) =>
@@ -62,7 +63,8 @@ export class SiteComponent implements OnChanges {
     }
   }
 
-  saveGallery() {
+  saveGallery(): void {
+    this.loading = true;
     this.galleryService
       .uploadGalery(
         this.images,
@@ -71,11 +73,13 @@ export class SiteComponent implements OnChanges {
         'SITES'
       )
       .then(() => {
+        this.loading = false;
         $('#galleryModal').modal('hide');
       });
   }
 
-  saveSite() {
+  saveSite(): void {
+    this.loading = true;
     if (this.siteForm.valid) {
       const site = this.siteService.buildSite(
         this.siteForm.value,
@@ -98,11 +102,12 @@ export class SiteComponent implements OnChanges {
         this.reset(site);
       }
     } else {
-      console.log('llenar');
+      alert('Por favor llenar todos los campos para continuar');
     }
   }
 
-  reset(site) {
+  reset(site): void {
+    this.loading = false;
     $('#siteModal').modal('hide');
     this.buildForm();
     this.site
@@ -111,15 +116,18 @@ export class SiteComponent implements OnChanges {
     this.url = null;
   }
 
-  openGallery(site: Site) {
+  openGallery(site: Site): void {
+    this.loading = true;
     this.site = site;
-    $('#galleryModal').modal('show');
     this.images = [];
     this.galleryService
       .getAllImages(this.municipality.idMun, site.idSite, 'SITES')
       .then((result) => {
-        result.items.forEach((itemRef) =>
-          itemRef.getDownloadURL().then((url) => this.images.push(url))
+        result.items.forEach((itemRef) => {
+          itemRef.getDownloadURL().then((url) => this.images.push(url));
+          this.loading = false;
+          $('#galleryModal').modal('show');
+        }
         );
       });
   }
