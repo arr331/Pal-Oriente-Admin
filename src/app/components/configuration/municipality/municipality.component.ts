@@ -8,7 +8,7 @@ declare var $: any;
 @Component({
   selector: 'app-municipality',
   templateUrl: './municipality.component.html',
-  styleUrls: ['./municipality.component.scss']
+  styleUrls: ['./municipality.component.scss'],
 })
 export class MunicipalityComponent implements OnInit {
   municipalityForm: FormGroup;
@@ -19,13 +19,19 @@ export class MunicipalityComponent implements OnInit {
   imageBlob: any;
   item: string;
 
-  constructor(private formBuilder: FormBuilder, private municipalityService: MunicipalityService,
-    private imageCompress: NgxImageCompressService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private municipalityService: MunicipalityService,
+    private imageCompress: NgxImageCompressService
+  ) {}
 
   ngOnInit(): void {
-    this.municipalityService.getMunicipios().valueChanges().subscribe(answer => {
-      this.listMunicipalities = answer;
-    });
+    this.municipalityService
+      .getMunicipios()
+      .valueChanges()
+      .subscribe((answer) => {
+        this.listMunicipalities = answer;
+      });
     this.buildForm();
   }
 
@@ -39,7 +45,7 @@ export class MunicipalityComponent implements OnInit {
       weather: [''],
       image: [''],
       reference: [''],
-      state: [true]
+      state: [true],
     });
   }
 
@@ -58,17 +64,20 @@ export class MunicipalityComponent implements OnInit {
 
   async saveMpio() {
     if (this.municipalityForm.valid) {
-      const mpio = this.municipalityService.buildMunicipality(this.municipalityForm.value, this.isNew ? '' : this.municipality.idMun);
+      const mpio = this.municipalityService.buildMunicipality(
+        this.municipalityForm.value,
+        this.isNew ? '' : this.municipality.idMun
+      );
       if (this.url) {
-        var reader = new FileReader();
-        reader.onload = async event => {
+        const reader = new FileReader();
+        reader.onload = async (event) => {
           await this.compressFile(event.target.result);
-          this.municipalityService.uploadImg(this.imageBlob).then(answer => {
+          this.municipalityService.uploadImg(this.imageBlob).then((answer) => {
             mpio.image = answer;
             this.municipalityService.saveMunicipality(mpio);
-            this.reset('Municipio creado')
+            this.reset('Municipio creado');
           });
-        }
+        };
         reader.readAsDataURL(this.url.target.files[0]);
       } else {
         this.municipalityService.saveMunicipality(mpio);
@@ -87,7 +96,9 @@ export class MunicipalityComponent implements OnInit {
   }
 
   async compressFile(image) {
-    this.imageBlob = this.dataURItoBlob((await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]);
+    this.imageBlob = this.dataURItoBlob(
+      (await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]
+    );
   }
 
   dataURItoBlob(dataURI) {
