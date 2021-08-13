@@ -5,15 +5,11 @@
     text-decoration-color: white;
     height: 3rem;
     width: 100%;
-    line-height: 70px;
-}
-
-#footer p{
-    margin: 0px;
-    padding: 0px;
-}
-
-.center {
+    line-height: 45px;
     color: white;
-} 
+    & p{
+        margin: 0px;
+        padding: 0px;
+    }
+}
 

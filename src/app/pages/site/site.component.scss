@@ -5,8 +5,7 @@
     font-size: 35px;
 }
 .cover-img {
-    width: 380px;
-    height: 220px;
+    width: 350px;
     border-radius: 10px;
     border: 2px solid;
 }
@@ -20,4 +19,9 @@
     transform: scale(1.24);
     transition: transform 0.4s;
     border-bottom: solid 1px;
+}
+@media (max-width: 500px) {
+    .cover-img {
+        width: 280px;
+    }
 }

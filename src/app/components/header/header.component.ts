@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
 
@@ -7,29 +7,28 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, OnChanges {
+export class HeaderComponent implements OnInit {
   user: string;
 
-  constructor(private loginservice: LoginService, private router: Router) {}
+  constructor(private loginservice: LoginService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loginservice
-      .isAuth()
-      .subscribe((answer) =>
-        answer ? (this.user = answer.displayName.split(' ')[0]) : ''
-      );
-    this.user = localStorage.getItem('nameUser');
+    if (localStorage.getItem('nameUser')) {
+      this.user = localStorage.getItem('nameUser');
+    } else {
+      this.loginservice.isAuth().subscribe(answer => {
+        if (answer) {
+          this.user = answer.displayName.split(' ')[0];
+        }
+      });
+    }
   }
 
-  ngOnChanges(): void {
-    this.ngOnInit();
-  }
-
-  logOut() {
+  logOut(): void {
     localStorage.removeItem('nameUser');
-    this.loginservice.logOut().then((res) => {
+    this.loginservice.logOut().then(() => {
       this.user = null;
-      this.router.navigate(['/inicio']);
+      this.router.navigate(['/login']);
     });
   }
 }
