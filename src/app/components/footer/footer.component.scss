@@ -1,19 +1,16 @@
 #footer{
     position: fixed;
-    background-color: #1a1a3c;
     bottom: 0;
-    text-decoration-color: white;
-    height: 3rem;
+    background-color: #1a1a3c;
+    color: rgb(245, 245, 245);
+    height: 50px;
     width: 100%;
-    line-height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & div {
+        text-align: center;
+    }
 }
 
-#footer p{
-    margin: 0px;
-    padding: 0px;
-}
-
-.center {
-    color: white;
-} 
 
