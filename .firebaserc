@@ -1,6 +1,8 @@
 {
   "projects": {
-    "default": "borre-a941b",
-    "dev": "mioriente"
-  }
+    "default": "palasquesea-e32c0",
+    "dev": "mioriente",
+    "palasquesea": "palasquesea-e32c0"
+  },
+  "targets": {}
 }
