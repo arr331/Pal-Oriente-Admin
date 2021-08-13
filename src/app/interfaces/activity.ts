@@ -1,6 +1,6 @@
 export interface Activity {
-    idActivity: string,
-    image: string,
-    name: string,
-    state: boolean
+  idActivity: string;
+  image: string;
+  name: string;
+  state: boolean;
 }
