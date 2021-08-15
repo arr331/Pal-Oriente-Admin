@@ -1,24 +1,23 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Municipality } from 'src/app/interfaces/municipality';
 import { Site } from 'src/app/interfaces/site';
 import { GalleryService } from 'src/app/services/configuration/gallery.service';
 import { SiteService } from 'src/app/services/configuration/site.service';
-declare var $: any;
+declare const $: any;
 
 @Component({
   selector: 'app-site',
   templateUrl: './site.component.html',
   styleUrls: ['./site.component.scss'],
 })
-export class SiteComponent implements OnChanges {
+export class SiteComponent implements OnInit {
   siteForm: FormGroup;
-  siteList: Site[];
   site: Site;
   images: string[] = [];
   url: any;
   loading: boolean;
-  @Input() municipality: Municipality;
+  idMun: string;
+  siteList: Site[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,12 +25,16 @@ export class SiteComponent implements OnChanges {
     private galleryService: GalleryService
   ) { }
 
-  ngOnChanges(): void {
-    this.siteList = [];
-    if (this.municipality.sites) {
-      Object.keys(this.municipality.sites).forEach((m) =>
-        this.siteList.push(this.municipality.sites[m])
-      );
+  ngOnInit(): void {
+    this.idMun = sessionStorage.getItem('idMun');
+    if (this.idMun) {
+      const sites = JSON.parse(sessionStorage.getItem('sites'));
+      if (sites) {
+        Object.keys(sites).forEach((m) => this.siteList.push(sites[m]));
+      }
+    } else {
+      alert('Debe seleccionar un municpio');
+      // Colocar un mensaje Sweetalert, mostrar ese mensaje y un botón para devolver a la pagina de municpios
     }
     this.buildForm();
   }
@@ -68,7 +71,7 @@ export class SiteComponent implements OnChanges {
     this.galleryService
       .uploadGalery(
         this.images,
-        this.municipality.idMun,
+        this.idMun,
         this.site.idSite,
         'SITES'
       )
@@ -83,7 +86,7 @@ export class SiteComponent implements OnChanges {
     if (this.siteForm.valid) {
       const site = this.siteService.buildSite(
         this.siteForm.value,
-        this.municipality.idMun,
+        this.idMun,
         this.site ? this.site.idSite : ''
       );
       if (this.url) {
@@ -121,7 +124,7 @@ export class SiteComponent implements OnChanges {
     this.site = site;
     this.images = [];
     this.galleryService
-      .getAllImages(this.municipality.idMun, site.idSite, 'SITES')
+      .getAllImages(this.idMun, site.idSite, 'SITES')
       .then((result) => {
         result.items.forEach((itemRef) => {
           itemRef.getDownloadURL().then((url) => this.images.push(url));

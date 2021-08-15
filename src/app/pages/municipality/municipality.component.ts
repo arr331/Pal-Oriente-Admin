@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Municipality } from 'src/app/interfaces/municipality';
 import { MunicipalityService } from 'src/app/services/configuration/municipality.service';
@@ -23,7 +24,8 @@ export class MunicipalityComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private municipalityService: MunicipalityService,
-    private imageCompress: NgxImageCompressService
+    private imageCompress: NgxImageCompressService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -34,6 +36,8 @@ export class MunicipalityComponent implements OnInit {
     .subscribe(answer => {
       this.listMunicipalities = answer;
       this.loading = false;
+      console.log(answer);
+      
       });
     this.buildForm();
   }
@@ -61,8 +65,14 @@ export class MunicipalityComponent implements OnInit {
   }
 
   showConfiguration(mpio: Municipality, item: string): void {
-    this.municipality = mpio;
-    this.item = item;
+    sessionStorage.setItem('idMun', mpio.idMun);
+    if (item === 'site') {
+      sessionStorage.setItem('sites', JSON.stringify(mpio.sites));
+      this.router.navigateByUrl('/sitios');
+    } else {
+      sessionStorage.setItem('celebrations', JSON.stringify(mpio.celebrations));
+      this.router.navigateByUrl('/celebraciones');
+    }
   }
 
   async saveMpio(): Promise<void> {

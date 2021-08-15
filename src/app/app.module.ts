@@ -23,6 +23,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NewComponent } from './pages/news/new.component';
 import { CelebrationComponent } from './pages/celebration/celebration.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { GalleryComponent } from './components/gallery/gallery.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     UsersComponent,
     CelebrationComponent,
     NewComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    GalleryComponent
   ],
   imports: [
     BrowserModule,

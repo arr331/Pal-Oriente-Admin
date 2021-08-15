@@ -113,16 +113,3 @@
     </div>
   </div>
 </div>
-
-<div class="container" *ngIf="municipality">
-  <hr>
-  <ng-container [ngSwitch]="item">
-    <ng-container *ngSwitchCase="'site'">
-      <app-site [municipality]="{idMun: municipality.idMun, sites: municipality.sites}"></app-site>
-    </ng-container>
-    <ng-container *ngSwitchCase="'celebration'">
-      <app-celebration [municipality]="{idMun: municipality.idMun, celebrations: municipality.celebrations}">
-      </app-celebration>
-    </ng-container>
-  </ng-container>
-</div>

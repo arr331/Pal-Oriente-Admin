@@ -1,0 +1,26 @@
+<div class="columns">
+    <div *ngFor="let img of images" (click)="open(img)">
+        <img src="{{img}}" width="100%" style="border-radius: 5px;">
+    </div>
+</div>
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="container">
+                <h3 class=" text-center">
+                    <span class="fa-stack fa-lg mt-3">
+                        <i class="fa fa-circle fa-stack-2x text-dark"></i>
+                        <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse text-warning"></i>
+                    </span>
+                </h3>
+                <h6 class="mt-4 mb-4 text-center">¿Está seguro que desea eliminar esta imagen?</h6>
+                <hr>
+                <div class="mb-3">
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="close()">Cancelar</button>
+                    <button type="button" class="btn btn-danger btn-sm float-right" (click)="delete()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

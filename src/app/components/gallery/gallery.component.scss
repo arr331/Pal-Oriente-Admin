@@ -1,0 +1,22 @@
+.columns {
+    column-width: 20vw;
+    column-gap: 0px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 2vw auto;
+}
+.columns div {
+    margin: 5px;
+    display: inline-block;
+    & :hover {
+        transform: scale(1.04);
+        transition: transform 0.4s;
+        cursor: pointer;
+        filter: grayscale(0.85);
+    }
+}
+@media (max-width: 500px) {
+    .columns {
+        column-width: 50vw;
+    }
+}

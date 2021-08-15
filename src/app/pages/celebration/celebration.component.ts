@@ -1,24 +1,23 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CelebrationService } from 'src/app/services/configuration/celebration.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
-import { Municipality } from 'src/app/interfaces/municipality';
 import { Celebration } from 'src/app/interfaces/celebration';
 import { Activity } from 'src/app/interfaces/activity';
 import { GalleryService } from 'src/app/services/configuration/gallery.service';
-declare var $: any;
+declare const $: any;
 
 @Component({
   selector: 'app-celebration',
   templateUrl: './celebration.component.html',
   styleUrls: ['./celebration.component.scss'],
 })
-export class CelebrationComponent implements OnChanges {
+export class CelebrationComponent implements OnInit {
   celebrationForm: FormGroup;
   activityForm: FormGroup;
-  listCelebration: Celebration[];
+  listCelebration: Celebration[] = [];
+  listActivity: Activity[] = [];
   celebration: Celebration;
-  listActivity: Activity[];
   activity: Activity;
   files: FileList;
   file: File;
@@ -26,8 +25,7 @@ export class CelebrationComponent implements OnChanges {
   imageBlob: any;
   images: string[] = [];
   loading: boolean;
-
-  @Input() municipality: Municipality;
+  idMun: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,15 +34,17 @@ export class CelebrationComponent implements OnChanges {
     private galleryService: GalleryService
   ) { }
 
-  ngOnChanges(): void {
-    this.listCelebration = [];
-    this.listActivity = [];
-    this.celebration = null;
-    this.municipality.celebrations
-      ? Object.keys(this.municipality.celebrations).forEach((m) =>
-        this.listCelebration.push(this.municipality.celebrations[m])
-      )
-      : '';
+  ngOnInit(): void {
+    this.idMun = sessionStorage.getItem('idMun');
+    if (this.idMun) {
+      const celebrations = JSON.parse(sessionStorage.getItem('celebrations'));
+      if (celebrations) {
+        Object.keys(celebrations).forEach((m) => this.listCelebration.push(celebrations[m]));
+      }
+    } else {
+      alert('Debe seleccionar un municpio');
+      // Colocar un mensaje Sweetalert, mostrar ese mensaje y un botón para devolver a la pagina de municpios
+    }
     this.buildForm();
   }
 
@@ -68,10 +68,10 @@ export class CelebrationComponent implements OnChanges {
     this.images = [];
     this.loading = true;
     this.galleryService
-    .getAllImages(
-      this.municipality.idMun,
-      celeb.idCelebration,
-      'CELEBRATIONS'
+      .getAllImages(
+        this.idMun,
+        celeb.idCelebration,
+        'CELEBRATIONS'
       )
       .then((result) => {
         result.items.forEach((itemRef) => {
@@ -97,7 +97,7 @@ export class CelebrationComponent implements OnChanges {
     this.galleryService
       .uploadGalery(
         this.images,
-        this.municipality.idMun,
+        this.idMun,
         this.celebration.idCelebration,
         'CELEBRATIONS'
       )
@@ -120,7 +120,7 @@ export class CelebrationComponent implements OnChanges {
     if (this.celebrationForm.valid) {
       const celebration = this.celebrationService.buildCelebration(
         this.celebrationForm.value,
-        this.municipality.idMun,
+        this.idMun,
         this.celebration ? this.celebration.idCelebration : ''
       );
       if (this.url) {
@@ -159,7 +159,7 @@ export class CelebrationComponent implements OnChanges {
     if (this.activityForm.valid) {
       const activity = this.celebrationService.buildActivity(
         this.activityForm.value,
-        this.municipality.idMun,
+        this.idMun,
         this.celebration.idCelebration,
         this.activity ? this.activity.idActivity : ''
       );

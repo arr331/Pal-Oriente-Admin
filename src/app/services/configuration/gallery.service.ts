@@ -13,6 +13,10 @@ export class GalleryService {
     return this.storage.storage.ref(`ALTIPLANO/MUNICIPALITIES/${idMun}/${item}/${idSite}/gallery`).listAll();
   }
 
+  deleteByUrl(url: string): Promise<void> {
+    return this.storage.storage.refFromURL(url).delete();
+  }
+
   async uploadGalery(images: string[], idMun: string, idSite: string, item: string) {
     return await images.forEach(async (img, index) => {
       const blob = await this.compressFile(img);
