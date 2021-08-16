@@ -23,6 +23,8 @@
         <tbody>
             <tr *ngFor="let nw of newList" class="hover">
                 <td (click)="create(nw)">{{nw.title}}</td>
+                <td class="center-item biggest"><i (click)="deleteNotice(nw)" class="fa fa-trash-o"
+                    style="color:red;" aria-hidden="true"></i></td>
             </tr>
         </tbody>
     </table>

@@ -25,6 +25,15 @@ export class NewService {
     return this.fireBase.list('NEWS').update(nw.id, nw);
   }
 
+  delete(nw: Partial<New>){
+    this.fireBase.list('NEWS').remove(nw.id);
+    this.deleteByUrl(nw.image);
+  }
+
+  deleteByUrl(url: string) : Promise<void> {
+    return this.storage.storage.refFromURL(url).delete();
+  }
+
   async uploadImg(image: string, id: string): Promise<string> {
     const filePath = `NEWS/${id}`;
     const imgToSave = await this.compressFile(image);

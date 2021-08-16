@@ -20,7 +20,7 @@ export class SubregionService {
   }
 
   getNotices() : AngularFireList<any>{
-    return (this.list=this.fireBase.list('NEWS'))
+    return (this.list=this.fireBase.list('NEWS'));
   }
   
 

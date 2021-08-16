@@ -77,4 +77,21 @@ export class NewComponent implements OnInit {
     }
   }
 
+  deleteNotice(notice: New) : void{
+    Swal.fire({
+      title: 'Confirmación',
+      html: '¿Está seguro que desea eliminar esta noticia?',
+      showCancelButton: true,
+      confirmButtonText: `Estoy seguro`,
+      cancelButtonText: 'Cancelar',
+      icon: 'question',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.newService.delete(notice);
+        Swal.fire('Buen trabajo!', 'Noticia eliminada correctamente','success');
+      }
+    })
+  }
+
 }
