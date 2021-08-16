@@ -18,7 +18,7 @@ export class SiteService {
     private imageCompress: NgxImageCompressService
   ) {}
 
-  addSite(site: Site) {
+  addSite(site: Site) : void {
     this.fireBase
       .list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/sites`)
       .update(site.idSite, site)
@@ -44,7 +44,7 @@ export class SiteService {
     return site;
   }
 
-  async uploadImg(img) {
+  async uploadImg(img) : Promise<any> {
     const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/portada`;
     const imgToSave = await this.compressFile(img);
     const ref = this.storage.ref(filePath);
@@ -52,7 +52,7 @@ export class SiteService {
     return await ref.getDownloadURL().toPromise();
   }
 
-  async compressFile(image) {
+  async compressFile(image) : Promise<Blob>{
     return this.dataURItoBlob(
       (await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]
     );

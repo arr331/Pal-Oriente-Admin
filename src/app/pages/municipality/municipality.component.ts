@@ -39,8 +39,7 @@ export class MunicipalityComponent implements OnInit {
       this.loading = false;
       
       }), error =>{
-        console.log(error);
-        this.throwError('La información no pudo ser obtenida, intentelo de nuevo más tarde');
+        this.throwError('La información no pudo ser obtenida, intentelo de nuevo más tarde', error);
       };
     this.buildForm();
   }
@@ -94,8 +93,8 @@ export class MunicipalityComponent implements OnInit {
             this.municipalityService.saveMunicipality(mpio);
             Swal.fire('Buen trabajo!','Municipio creado exitosamente','success');
             this.reset('Municipio creado');
-          }).catch (()=>{
-            this.throwError('El municipio no pudo guardarse, intentelo de nuevo más tarde');
+          }).catch ((error)=>{
+            this.throwError('El municipio no pudo guardarse, intentelo de nuevo más tarde', error);
           });
         };
         reader.readAsDataURL(this.url.target.files[0]);
@@ -103,8 +102,8 @@ export class MunicipalityComponent implements OnInit {
         this.municipalityService.saveMunicipality(mpio).then(() => {
           this.reset('Municipio Actualizado');
           Swal.fire('Buen trabajo!','Municipio actualizado exitosamente','success');
-        }).catch (()=>{
-          this.throwError('El municipio no pudo actualizarse, intentelo de nuevo más tarde');
+        }).catch ((error)=>{
+          this.throwError('El municipio no pudo actualizarse, intentelo de nuevo más tarde', error);
         });
       }
     } else {
@@ -112,8 +111,8 @@ export class MunicipalityComponent implements OnInit {
     }
   }
 
-  throwError(msj?: string): void{
-    console.error('Problema interno del server');
+  throwError(msj?: string, err?:any): void{
+    console.error(err);
     Swal.fire('Problema interno del server',msj,'warning');
     this.loading = false;
   }

@@ -41,7 +41,7 @@ export class MunicipalityService {
     return municipality;
   }
 
-  async uploadImg(event) {
+  async uploadImg(event) : Promise<any>{
     const filePath = `ALTIPLANO/MUNICIPALITIES/${this.id}/portada`;
     const ref = this.storage.ref(filePath);
     await ref.put(event).then();

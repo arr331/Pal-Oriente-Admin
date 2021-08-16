@@ -3,6 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { New } from 'src/app/interfaces/new';
+import { AngularFireList } from 'angularfire2/database';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +15,11 @@ export class NewService {
     private imageCompress: NgxImageCompressService
   ) {}
 
-  getAll() {
+  getAll() : AngularFireList<New> {
     return this.fireBase.list<New>('NEWS');
   }
 
-  async save(nw: Partial<New>, image: string, decisionSave: boolean) {
+  async save(nw: Partial<New>, image: string, decisionSave: boolean) : Promise<void>{
     nw.id = nw.id || this.fireBase.createPushId();
     decisionSave ? nw.image = await this.uploadImg(image, nw.id):'';
     return this.fireBase.list('NEWS').update(nw.id, nw);
@@ -32,7 +33,7 @@ export class NewService {
     return await ref.getDownloadURL().toPromise();
   }
 
-  async compressFile(image) {
+  async compressFile(image) : Promise<Blob> {
     return this.dataURItoBlob(
       (await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]
     );

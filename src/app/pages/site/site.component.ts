@@ -87,8 +87,8 @@ export class SiteComponent implements OnInit {
       .then(() => {
         this.loading = false;
         $('#galleryModal').modal('hide');
-      }).catch(()=>{
-        this.throwError('En este momento no se puede actualizar la galería, intentelo más tarde');
+      }).catch((error)=>{
+        this.throwError('En este momento no se puede actualizar la galería, intentelo más tarde', error);
       });
   }
 
@@ -108,8 +108,8 @@ export class SiteComponent implements OnInit {
             site.image = answer;
             this.siteService.addSite(site);
             this.reset(site);
-          }).catch(()=>{
-            this.throwError('No se pudo guardar el sitio, intentelo más tarde');
+          }).catch((error)=>{
+            this.throwError('No se pudo guardar el sitio, intentelo más tarde', error);
           });
         };
         reader.readAsDataURL(this.url.target.files[0]);
@@ -122,8 +122,8 @@ export class SiteComponent implements OnInit {
     }
   }
 
-  throwError(msj?: string): void{
-    console.error('Problema interno del server');
+  throwError(msj?: string, err?:any): void{
+    console.error(err);
     Swal.fire('Problema interno del server',msj,'warning');
     this.loading = false;
   }

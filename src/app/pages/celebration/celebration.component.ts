@@ -112,8 +112,8 @@ export class CelebrationComponent implements OnInit {
       .then(() => {
         this.loading = false;
         $('#galleryModal').modal('hide');
-      }).catch(()=>{
-        this.throwError('En este momento no se puede actualizar la galería, intentelo más tarde');
+      }).catch((error)=>{
+        this.throwError('En este momento no se puede actualizar la galería, intentelo más tarde', error);
       });
   }
 
@@ -143,8 +143,8 @@ export class CelebrationComponent implements OnInit {
               celebration.image = answer;
               this.celebrationService.addCelebration(celebration);
               this.reset(0, celebration, '#siteModal');
-            }).catch(()=>{
-              this.throwError('No se pudo guardar el sitio, intentelo más tarde');
+            }).catch((error)=>{
+              this.throwError('No se pudo guardar el sitio, intentelo más tarde', error);
             });
         };
         reader.readAsDataURL(this.url.target.files[0]);
@@ -167,37 +167,37 @@ export class CelebrationComponent implements OnInit {
       : '';
   }
 
-  saveActivity(): void {
-    if (this.activityForm.valid) {
-      const activity = this.celebrationService.buildActivity(
-        this.activityForm.value,
-        this.idMun,
-        this.celebration.idCelebration,
-        this.activity ? this.activity.idActivity : ''
-      );
-      if (this.url) {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-          await this.compressFile(event.target.result);
-          this.celebrationService
-            .uploadImg(this.imageBlob, 1)
-            .then((answer) => {
-              activity.image = answer;
-              this.celebrationService.addActivity(activity);
-              this.reset(1, activity, '#activityModal');
-            }).catch(()=>{
-              this.throwError('No se pudo guardar la actividad, intentelo más tarde');
-            });
-        };
-        reader.readAsDataURL(this.url.target.files[0]);
-      } else {
-        this.celebrationService.addActivity(activity);
-        this.reset(1, activity, '#activityModal');
-      }
-    } else {
-      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
-    }
-  }
+  // saveActivity(): void {
+  //   if (this.activityForm.valid) {
+  //     const activity = this.celebrationService.buildActivity(
+  //       this.activityForm.value,
+  //       this.idMun,
+  //       this.celebration.idCelebration,
+  //       this.activity ? this.activity.idActivity : ''
+  //     );
+  //     if (this.url) {
+  //       const reader = new FileReader();
+  //       reader.onload = async (event) => {
+  //         await this.compressFile(event.target.result);
+  //         this.celebrationService
+  //           .uploadImg(this.imageBlob, 1)
+  //           .then((answer) => {
+  //             activity.image = answer;
+  //             this.celebrationService.addActivity(activity);
+  //             this.reset(1, activity, '#activityModal');
+  //           }).catch((error)=>{
+  //             this.throwError('No se pudo guardar la actividad, intentelo más tarde', error);
+  //           });
+  //       };
+  //       reader.readAsDataURL(this.url.target.files[0]);
+  //     } else {
+  //       this.celebrationService.addActivity(activity);
+  //       this.reset(1, activity, '#activityModal');
+  //     }
+  //   } else {
+  //     Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
+  //   }
+  // }
 
   newActivity(activity): void {
     this.activity = activity;
@@ -205,8 +205,8 @@ export class CelebrationComponent implements OnInit {
     $('#activityModal').modal('show');
   }
 
-  throwError(msj?: string): void{
-    console.error('Problema interno del server');
+  throwError(msj?: string, err?:any): void{
+    console.error(err);
     Swal.fire('Problema interno del server',msj,'warning');
     this.loading = false;
   }
