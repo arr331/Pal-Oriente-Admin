@@ -37,8 +37,8 @@ export class CelebrationComponent implements OnInit {
   ngOnInit(): void {
     this.idMun = sessionStorage.getItem('idMun');
     if (this.idMun) {
-      const celebrations = JSON.parse(sessionStorage.getItem('celebrations'));
-      if (celebrations) {
+      const celebrations: Celebration[] = JSON.parse(sessionStorage.getItem('celebrations'));
+      if (celebrations && Object.keys(celebrations).length > 0) {
         Object.keys(celebrations).forEach((m) => this.listCelebration.push(celebrations[m]));
       }
     } else {
@@ -76,11 +76,10 @@ export class CelebrationComponent implements OnInit {
       .then((result) => {
         result.items.forEach((itemRef) => {
           itemRef.getDownloadURL().then((url) => this.images.push(url));
-          this.loading = false;
-          $('#galleryModal').modal('show');
-        }
-        );
-      });
+        });
+        $('#galleryModal').modal('show');
+        this.loading = false;
+      }).catch(() => this.loading = false);
   }
 
   addImages(files: FileList): void {

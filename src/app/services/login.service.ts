@@ -16,7 +16,7 @@ export class LoginService {
     try {
       return this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -32,7 +32,7 @@ export class LoginService {
     try {
       return this.afAuth.auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

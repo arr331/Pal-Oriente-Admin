@@ -36,7 +36,6 @@ export class MunicipalityComponent implements OnInit {
     .subscribe(answer => {
       this.listMunicipalities = answer;
       this.loading = false;
-      console.log(answer);
       
       });
     this.buildForm();

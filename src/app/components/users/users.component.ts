@@ -27,7 +27,6 @@ export class UsersComponent implements OnInit {
 
   openModal(user) {
     this.id = user.idUser;
-    console.log(user.idUser);
     $('#modal').modal('show');
   }
 }
