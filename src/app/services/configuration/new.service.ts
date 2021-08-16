@@ -18,9 +18,9 @@ export class NewService {
     return this.fireBase.list<New>('NEWS');
   }
 
-  async save(nw: Partial<New>, image: string) {
+  async save(nw: Partial<New>, image: string, decisionSave: boolean) {
     nw.id = nw.id || this.fireBase.createPushId();
-    nw.image = await this.uploadImg(image, nw.id);
+    decisionSave ? nw.image = await this.uploadImg(image, nw.id):'';
     return this.fireBase.list('NEWS').update(nw.id, nw);
   }
 

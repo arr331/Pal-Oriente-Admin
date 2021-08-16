@@ -17,13 +17,13 @@ export class CelebrationService {
     private storage: AngularFireStorage
   ) {}
 
-  addCelebration(celebration: Celebration) {
+  addCelebration(celebration: Celebration) : void {
     this.fireBase
       .list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/celebrations`)
       .update(celebration.idCelebration, celebration);
   }
 
-  addActivity(activity: Activity) {
+  addActivity(activity: Activity) : void {
     this.fireBase
       .list(
         `ALTIPLANO/MUNICIPALITIES/${this.idMun}/celebrations/${this.idCelebration}/activities`
@@ -31,14 +31,14 @@ export class CelebrationService {
       .update(activity.idActivity, activity);
   }
 
-  buildCelebration(form, idMun: string, id: string) {
+  buildCelebration(form, idMun: string, id: string) : void {
     this.idMun = idMun;
     this.idCelebration = id ? id : this.fireBase.createPushId();
     const celebration = { idCelebration: this.idCelebration, ...form };
     return celebration;
   }
 
-  buildActivity(form, idMun: string, idCeleb: string, id: string) {
+  buildActivity(form, idMun: string, idCeleb: string, id: string) : void {
     this.idMun = idMun;
     this.idCelebration = idCeleb;
     this.idActivity = id ? id : this.fireBase.createPushId();
@@ -46,7 +46,7 @@ export class CelebrationService {
     return activity;
   }
 
-  async uploadImg(img, wich) {
+  async uploadImg(img, wich) : Promise <Activity>{
     const filePath =
       wich === 0
         ? `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/portada`

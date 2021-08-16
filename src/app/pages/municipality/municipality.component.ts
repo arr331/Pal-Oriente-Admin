@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Municipality } from 'src/app/interfaces/municipality';
 import { MunicipalityService } from 'src/app/services/configuration/municipality.service';
+import Swal from 'sweetalert2';
 declare const $: any;
 
 @Component({
@@ -37,7 +38,10 @@ export class MunicipalityComponent implements OnInit {
       this.listMunicipalities = answer;
       this.loading = false;
       
-      });
+      }), error =>{
+        console.log(error);
+        this.throwError('La información no pudo ser obtenida, intentelo de nuevo más tarde');
+      };
     this.buildForm();
   }
 
@@ -88,18 +92,30 @@ export class MunicipalityComponent implements OnInit {
           this.municipalityService.uploadImg(this.imageBlob).then((answer) => {
             mpio.image = answer;
             this.municipalityService.saveMunicipality(mpio);
+            Swal.fire('Buen trabajo!','Municipio creado exitosamente','success');
             this.reset('Municipio creado');
+          }).catch (()=>{
+            this.throwError('El municipio no pudo guardarse, intentelo de nuevo más tarde');
           });
         };
         reader.readAsDataURL(this.url.target.files[0]);
       } else {
         this.municipalityService.saveMunicipality(mpio).then(() => {
           this.reset('Municipio Actualizado');
+          Swal.fire('Buen trabajo!','Municipio actualizado exitosamente','success');
+        }).catch (()=>{
+          this.throwError('El municipio no pudo actualizarse, intentelo de nuevo más tarde');
         });
       }
     } else {
-      alert('Por favor llenar todos los campos para continuar');
+      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar','warning');
     }
+  }
+
+  throwError(msj?: string): void{
+    console.error('Problema interno del server');
+    Swal.fire('Problema interno del server',msj,'warning');
+    this.loading = false;
   }
 
   reset(msj?: string): void {
