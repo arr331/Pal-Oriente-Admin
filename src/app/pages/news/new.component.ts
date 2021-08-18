@@ -37,14 +37,14 @@ export class NewComponent implements OnInit {
   }
 
   buildForm(): void {
-    let date1 = new Date().getTime();
+    let dateNow = new Date().getTime().toString();
     this.newForm = this.formBuilder.group({
       outline: ['', Validators.required],
       text: ['', Validators.required],
       title: ['', Validators.required],
       state: [true, Validators.required],
       reference: [''],
-      date:[date1]
+      date:[dateNow]
     });
   }
 
