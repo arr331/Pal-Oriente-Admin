@@ -16,6 +16,7 @@ export class NewComponent implements OnInit {
   newList: New[];
   image: string;
   loading: boolean;
+  date;
   decisionSave = false;
   alertCreate = 'Noticia creada exitosamente';
   alertUpdate = 'Noticia actualizada correctamente';
@@ -36,11 +37,14 @@ export class NewComponent implements OnInit {
   }
 
   buildForm(): void {
+    let date1 = new Date().getTime();
     this.newForm = this.formBuilder.group({
       outline: ['', Validators.required],
       text: ['', Validators.required],
       title: ['', Validators.required],
-      state: [true, Validators.required]
+      state: [true, Validators.required],
+      reference: [''],
+      date:[date1]
     });
   }
 
@@ -86,7 +90,6 @@ export class NewComponent implements OnInit {
       cancelButtonText: 'Cancelar',
       icon: 'question',
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.newService.delete(notice);
         Swal.fire('Buen trabajo!', 'Noticia eliminada correctamente','success');

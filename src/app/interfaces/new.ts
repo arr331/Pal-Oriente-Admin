@@ -5,4 +5,6 @@ export interface New {
   text: string;
   title: string;
   state: true;
+  reference ?: string;
+  date: string;
 }

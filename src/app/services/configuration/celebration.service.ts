@@ -31,14 +31,14 @@ export class CelebrationService {
       .update(activity.idActivity, activity);
   }
 
-  buildCelebration(form, idMun: string, id: string) : void {
+  buildCelebration(form, idMun: string, id: string) : Celebration{
     this.idMun = idMun;
     this.idCelebration = id ? id : this.fireBase.createPushId();
     const celebration = { idCelebration: this.idCelebration, ...form };
     return celebration;
   }
 
-  buildActivity(form, idMun: string, idCeleb: string, id: string) : void {
+  buildActivity(form, idMun: string, idCeleb: string, id: string): any{
     this.idMun = idMun;
     this.idCelebration = idCeleb;
     this.idActivity = id ? id : this.fireBase.createPushId();
@@ -46,7 +46,7 @@ export class CelebrationService {
     return activity;
   }
 
-  async uploadImg(img, wich) : Promise <Activity>{
+  async uploadImg(img, wich) :  Promise<any>{
     const filePath =
       wich === 0
         ? `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/portada`

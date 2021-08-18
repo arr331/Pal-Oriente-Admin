@@ -167,37 +167,37 @@ export class CelebrationComponent implements OnInit {
       : '';
   }
 
-  // saveActivity(): void {
-  //   if (this.activityForm.valid) {
-  //     const activity = this.celebrationService.buildActivity(
-  //       this.activityForm.value,
-  //       this.idMun,
-  //       this.celebration.idCelebration,
-  //       this.activity ? this.activity.idActivity : ''
-  //     );
-  //     if (this.url) {
-  //       const reader = new FileReader();
-  //       reader.onload = async (event) => {
-  //         await this.compressFile(event.target.result);
-  //         this.celebrationService
-  //           .uploadImg(this.imageBlob, 1)
-  //           .then((answer) => {
-  //             activity.image = answer;
-  //             this.celebrationService.addActivity(activity);
-  //             this.reset(1, activity, '#activityModal');
-  //           }).catch((error)=>{
-  //             this.throwError('No se pudo guardar la actividad, intentelo más tarde', error);
-  //           });
-  //       };
-  //       reader.readAsDataURL(this.url.target.files[0]);
-  //     } else {
-  //       this.celebrationService.addActivity(activity);
-  //       this.reset(1, activity, '#activityModal');
-  //     }
-  //   } else {
-  //     Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
-  //   }
-  // }
+  saveActivity(): void {
+    if (this.activityForm.valid) {
+      const activity = this.celebrationService.buildActivity(
+        this.activityForm.value,
+        this.idMun,
+        this.celebration.idCelebration,
+        this.activity ? this.activity.idActivity : ''
+      );
+      if (this.url) {
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+          await this.compressFile(event.target.result);
+          this.celebrationService
+            .uploadImg(this.imageBlob, 1)
+            .then((answer) => {
+              activity.image = answer;
+              this.celebrationService.addActivity(activity);
+              this.reset(1, activity, '#activityModal');
+            }).catch((error)=>{
+              this.throwError('No se pudo guardar la actividad, intentelo más tarde', error);
+            });
+        };
+        reader.readAsDataURL(this.url.target.files[0]);
+      } else {
+        this.celebrationService.addActivity(activity);
+        this.reset(1, activity, '#activityModal');
+      }
+    } else {
+      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
+    }
+  }
 
   newActivity(activity): void {
     this.activity = activity;
