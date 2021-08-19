@@ -19,12 +19,14 @@ export class MunicipalityService {
     await this.fireBase
       .list('ALTIPLANO/MUNICIPALITIES')
       .update(mpio.idMun, mpio);
+    console.log(mpio.state);
     const mpioInfo: MunicipalityInfo = {
       habitants: mpio.habitants,
       idMun: mpio.idMun,
       image: mpio.image,
       name: mpio.name,
       weather: mpio.weather,
+      state: mpio.state,
     };
     this.fireBase
       .list('ALTIPLANO/MUNICIPALITIESINFO')
@@ -41,7 +43,7 @@ export class MunicipalityService {
     return municipality;
   }
 
-  async uploadImg(event) {
+  async uploadImg(event) : Promise<any>{
     const filePath = `ALTIPLANO/MUNICIPALITIES/${this.id}/portada`;
     const ref = this.storage.ref(filePath);
     await ref.put(event).then();

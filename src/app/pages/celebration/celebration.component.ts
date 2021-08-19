@@ -5,6 +5,8 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { Celebration } from 'src/app/interfaces/celebration';
 import { Activity } from 'src/app/interfaces/activity';
 import { GalleryService } from 'src/app/services/configuration/gallery.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 declare const $: any;
 
 @Component({
@@ -31,7 +33,8 @@ export class CelebrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private celebrationService: CelebrationService,
     private imageCompress: NgxImageCompressService,
-    private galleryService: GalleryService
+    private galleryService: GalleryService,
+    private router : Router,
   ) { }
 
   ngOnInit(): void {
@@ -42,8 +45,14 @@ export class CelebrationComponent implements OnInit {
         Object.keys(celebrations).forEach((m) => this.listCelebration.push(celebrations[m]));
       }
     } else {
-      alert('Debe seleccionar un municpio');
-      // Colocar un mensaje Sweetalert, mostrar ese mensaje y un botón para devolver a la pagina de municpios
+      Swal.fire({
+        title: 'Advertencia?',
+        html: 'Debe seleccionar un municipio',
+        confirmButtonText: `Ir a municipios`,
+        icon: 'warning'
+      }).then(() => {
+        this.router.navigate(['municipios']);
+      });
     }
     this.buildForm();
   }
@@ -103,6 +112,8 @@ export class CelebrationComponent implements OnInit {
       .then(() => {
         this.loading = false;
         $('#galleryModal').modal('hide');
+      }).catch((error)=>{
+        this.throwError('En este momento no se puede actualizar la galería, intentelo más tarde', error);
       });
   }
 
@@ -132,6 +143,8 @@ export class CelebrationComponent implements OnInit {
               celebration.image = answer;
               this.celebrationService.addCelebration(celebration);
               this.reset(0, celebration, '#siteModal');
+            }).catch((error)=>{
+              this.throwError('No se pudo guardar el sitio, intentelo más tarde', error);
             });
         };
         reader.readAsDataURL(this.url.target.files[0]);
@@ -140,7 +153,7 @@ export class CelebrationComponent implements OnInit {
         this.reset(0, celebration, '#siteModal');
       }
     } else {
-      alert('Por favor llenar todos los campos para continuar');
+      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
     }
   }
 
@@ -172,6 +185,8 @@ export class CelebrationComponent implements OnInit {
               activity.image = answer;
               this.celebrationService.addActivity(activity);
               this.reset(1, activity, '#activityModal');
+            }).catch((error)=>{
+              this.throwError('No se pudo guardar la actividad, intentelo más tarde', error);
             });
         };
         reader.readAsDataURL(this.url.target.files[0]);
@@ -180,7 +195,7 @@ export class CelebrationComponent implements OnInit {
         this.reset(1, activity, '#activityModal');
       }
     } else {
-      alert('Por favor llenar todos los campos para continuar');
+      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
     }
   }
 
@@ -188,6 +203,12 @@ export class CelebrationComponent implements OnInit {
     this.activity = activity;
     activity ? this.activityForm.patchValue(activity) : this.buildForm();
     $('#activityModal').modal('show');
+  }
+
+  throwError(msj?: string, err?:any): void{
+    console.error(err);
+    Swal.fire('Problema interno del server',msj,'warning');
+    this.loading = false;
   }
 
   reset(wich, item, modal): void {

@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Site } from 'src/app/interfaces/site';
 import { GalleryService } from 'src/app/services/configuration/gallery.service';
 import { SiteService } from 'src/app/services/configuration/site.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 declare const $: any;
 
 @Component({
@@ -22,7 +24,8 @@ export class SiteComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private siteService: SiteService,
-    private galleryService: GalleryService
+    private galleryService: GalleryService,
+    private router : Router,
   ) { }
 
   ngOnInit(): void {
@@ -33,8 +36,14 @@ export class SiteComponent implements OnInit {
         Object.keys(sites).forEach((m) => this.siteList.push(sites[m]));
       }
     } else {
-      alert('Debe seleccionar un municpio');
-      // Colocar un mensaje Sweetalert, mostrar ese mensaje y un botón para devolver a la pagina de municpios
+      Swal.fire({
+        title: 'Advertencia?',
+        html: 'Debe seleccionar un municipio',
+        confirmButtonText: `Ir a municipios`,
+        icon: 'warning'
+      }).then(() => {
+        this.router.navigate(['municipios']);
+      });
     }
     this.buildForm();
   }
@@ -78,6 +87,8 @@ export class SiteComponent implements OnInit {
       .then(() => {
         this.loading = false;
         $('#galleryModal').modal('hide');
+      }).catch((error)=>{
+        this.throwError('En este momento no se puede actualizar la galería, intentelo más tarde', error);
       });
   }
 
@@ -97,6 +108,8 @@ export class SiteComponent implements OnInit {
             site.image = answer;
             this.siteService.addSite(site);
             this.reset(site);
+          }).catch((error)=>{
+            this.throwError('No se pudo guardar el sitio, intentelo más tarde', error);
           });
         };
         reader.readAsDataURL(this.url.target.files[0]);
@@ -105,8 +118,14 @@ export class SiteComponent implements OnInit {
         this.reset(site);
       }
     } else {
-      alert('Por favor llenar todos los campos para continuar');
+      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
     }
+  }
+
+  throwError(msj?: string, err?:any): void{
+    console.error(err);
+    Swal.fire('Problema interno del server',msj,'warning');
+    this.loading = false;
   }
 
   reset(site): void {

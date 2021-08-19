@@ -11,16 +11,16 @@ export class SubregionService {
   constructor(private fireBase: AngularFireDatabase) { }
 
 
-  getHomeImages(){
+  getHomeImages() : AngularFireList<any> {
     return (this.list= this.fireBase.list('HOME'));
   }
 
-  getPlaceInfo(){
+  getPlaceInfo() : AngularFireList<any>{
     return (this.list= this.fireBase.list('PLACEINFO'));
   }
 
-  getNotices(){
-    return (this.list=this.fireBase.list('NEWS'))
+  getNotices() : AngularFireList<any>{
+    return (this.list=this.fireBase.list('NEWS'));
   }
   
 

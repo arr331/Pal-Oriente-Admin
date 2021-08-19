@@ -4,4 +4,5 @@ export interface MunicipalityInfo {
   image: string;
   name: string;
   weather: string;
+  state: boolean;
 }

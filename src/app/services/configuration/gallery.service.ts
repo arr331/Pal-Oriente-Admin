@@ -9,22 +9,22 @@ export class GalleryService {
 
   constructor(private storage: AngularFireStorage, private imageCompress: NgxImageCompressService) { }
 
-  getAllImages(idMun: string, idSite: string, item: string) {
+  getAllImages(idMun: string, idSite: string, item: string) : Promise<firebase.storage.ListResult> {
     return this.storage.storage.ref(`ALTIPLANO/MUNICIPALITIES/${idMun}/${item}/${idSite}/gallery`).listAll();
   }
 
-  deleteByUrl(url: string): Promise<void> {
+  deleteByUrl(url: string) : Promise<void> {
     return this.storage.storage.refFromURL(url).delete();
   }
 
-  async uploadGalery(images: string[], idMun: string, idSite: string, item: string) {
+  async uploadGalery(images: string[], idMun: string, idSite: string, item: string) : Promise<void> {
     return await images.forEach(async (img, index) => {
       const blob = await this.compressFile(img);
       this.storage.upload(`ALTIPLANO/MUNICIPALITIES/${idMun}/${item}/${idSite}/gallery/${index}`, blob);
     });
   }
 
-  async compressFile(image: string) {
+  async compressFile(image: string) : Promise<Blob> {
     return this.dataURItoBlob((await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]);
   }
 

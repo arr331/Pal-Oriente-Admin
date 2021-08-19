@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { New } from 'src/app/interfaces/new';
 import { NewService } from 'src/app/services/configuration/new.service';
+import Swal from 'sweetalert2';
 declare const $: any;
 
 @Component({
@@ -15,6 +16,10 @@ export class NewComponent implements OnInit {
   newList: New[];
   image: string;
   loading: boolean;
+  date;
+  decisionSave = false;
+  alertCreate = 'Noticia creada exitosamente';
+  alertUpdate = 'Noticia actualizada correctamente';
 
   constructor(private formBuilder: FormBuilder, private newService: NewService) { }
 
@@ -24,19 +29,27 @@ export class NewComponent implements OnInit {
     this.newService.getAll().valueChanges().subscribe(answer => {
       this.newList = answer;
       this.loading = false;
-    });
+    }), error => {
+      console.error(error);
+      Swal.fire('Problema interno del server','La información no pudo ser obtenida, intentelo de nuevo más tarde','warning');
+      this.loading = false;
+    };
   }
 
   buildForm(): void {
+    let dateNow = new Date().getTime().toString();
     this.newForm = this.formBuilder.group({
       outline: ['', Validators.required],
       text: ['', Validators.required],
       title: ['', Validators.required],
-      state: [true, Validators.required]
+      state: [true, Validators.required],
+      reference: [''],
+      date:[dateNow]
     });
   }
 
   readImage(file: File): void {
+    this.decisionSave = true;
     const reader = new FileReader();
     reader.onload = event => this.image = event.target.result.toString();
     reader.readAsDataURL(file);
@@ -53,13 +66,35 @@ export class NewComponent implements OnInit {
     if (this.newForm.valid && this.image) {
       this.loading = true;
       const newToSave: Partial<New> = { id: this.nw?.id, ...this.newForm.value };
-      this.newService.save(newToSave, this.image).then(() => {
+      this.newService.save(newToSave, this.image, this.decisionSave).then(() => {
         this.loading = false;
         $('#newModal').modal('hide');
         this.buildForm();
+        Swal.fire('Buen trabajo!', this.decisionSave ? this.alertCreate: this.alertUpdate,'success');
+        this.decisionSave = false;
+      }) .catch (() => {
+        this.loading= false;
+        Swal.fire('Problema interno del server','La información no pudo ser guardada, intentelo de nuevo más tarde','warning');
       });
     } else {
-      alert('Por favor llenar todos los campos para continuar');
+      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
     }
   }
+
+  deleteNotice(notice: New) : void{
+    Swal.fire({
+      title: 'Confirmación',
+      html: '¿Está seguro que desea eliminar esta noticia?',
+      showCancelButton: true,
+      confirmButtonText: `Estoy seguro`,
+      cancelButtonText: 'Cancelar',
+      icon: 'question',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.newService.delete(notice);
+        Swal.fire('Buen trabajo!', 'Noticia eliminada correctamente','success');
+      }
+    })
+  }
+
 }
