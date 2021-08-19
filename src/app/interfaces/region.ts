@@ -1,5 +1,7 @@
 export interface Region {
-    description: string,
-    name: string,
-    urlImage: string
+    id: string;
+    description: string;
+    name: string;
+    urlImage: string;
+    state: boolean;
 }
