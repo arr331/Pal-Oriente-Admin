@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Region } from 'src/app/interfaces/region';
 import { RegionService } from 'src/app/services/configuration/region.service';
+import Swal from 'sweetalert2';
 declare const $: any;
 
 @Component({
@@ -13,10 +15,11 @@ export class RegionComponent implements OnInit {
   regionForm: FormGroup;
   regionList: Region[];
   image: string;
+  newImage: boolean;
   loading: boolean;
   region: Region;
 
-  constructor(private formBuilder: FormBuilder, private regionService: RegionService) { }
+  constructor(private formBuilder: FormBuilder, private regionService: RegionService, private router: Router) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -31,11 +34,13 @@ export class RegionComponent implements OnInit {
     this.regionForm = this.formBuilder.group({
       description: ['', Validators.required],
       name: ['', Validators.required],
-      state: [true, Validators.required]
+      state: [true, Validators.required],
+      urlImage: ['']
     });
   }
 
   create(region?: Region): void {
+    this.newImage = false;
     this.region = region;
     if (region) {
       this.image = region.urlImage;
@@ -51,9 +56,10 @@ export class RegionComponent implements OnInit {
     if (this.regionForm.valid && this.image) {
       this.loading = true;
       const regionToSave = this.regionService.build(this.regionForm.value);
-      this.regionService.save(regionToSave, this.image, this.region?.id).then(() => {
+      this.regionService.save(regionToSave, this.image, this.newImage, this.region?.id).then(() => {
         this.loading = false;
         $('#regionModal').modal('hide');
+        Swal.fire('¡Buen trabajo!', 'Región creada exitosamente', 'success');
         this.buildForm();
       });
     } else {
@@ -61,10 +67,15 @@ export class RegionComponent implements OnInit {
     }
   }
 
-  readImage(file: File): void {
+  readImage(file: File, newImage: boolean): void {
+    this.newImage = newImage;
     const reader = new FileReader();
     reader.onload = event => this.image = event.target.result.toString();
     reader.readAsDataURL(file);
   }
 
+  go(id: string): void {
+    sessionStorage.setItem('region', id);
+    this.router.navigateByUrl('/municipios');
+  }
 }

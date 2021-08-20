@@ -21,6 +21,7 @@ export class MunicipalityComponent implements OnInit {
   imageBlob: any;
   item: string;
   loading: boolean;
+  region: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,17 +31,28 @@ export class MunicipalityComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loading = true;
-    this.municipalityService
-    .getMunicipios()
-    .valueChanges()
-    .subscribe(answer => {
-      this.listMunicipalities = answer;
-      this.loading = false;
-      
-      }), error =>{
-        this.throwError('La información no pudo ser obtenida, intentelo de nuevo más tarde', error);
-      };
+    this.region = sessionStorage.getItem('region');
+    if (this.region) {
+      this.loading = true;
+      this.municipalityService
+        .getMunicipios(this.region)
+        .valueChanges()
+        .subscribe(answer => {
+          this.listMunicipalities = answer;
+          this.loading = false;
+        }), error => {
+          this.throwError('La información no pudo ser obtenida, intentelo de nuevo más tarde', error);
+        };
+    } else {
+      Swal.fire({
+        title: 'Advertencia',
+        html: 'Debe seleccionar una región',
+        confirmButtonText: `Ir a regiones`,
+        icon: 'warning'
+      }).then(() => {
+        this.router.navigate(['regiones']);
+      });
+    }
     this.buildForm();
   }
 
@@ -88,32 +100,32 @@ export class MunicipalityComponent implements OnInit {
         const reader = new FileReader();
         reader.onload = async (event) => {
           await this.compressFile(event.target.result);
-          this.municipalityService.uploadImg(this.imageBlob).then((answer) => {
+          this.municipalityService.uploadImg(this.region, this.imageBlob).then((answer) => {
             mpio.image = answer;
-            this.municipalityService.saveMunicipality(mpio);
-            Swal.fire('Buen trabajo!','Municipio creado exitosamente','success');
+            this.municipalityService.saveMunicipality(this.region, mpio);
+            Swal.fire('Buen trabajo!', 'Municipio creado exitosamente', 'success');
             this.reset('Municipio creado');
-          }).catch ((error)=>{
+          }).catch((error) => {
             this.throwError('El municipio no pudo guardarse, intentelo de nuevo más tarde', error);
           });
         };
         reader.readAsDataURL(this.url.target.files[0]);
       } else {
-        this.municipalityService.saveMunicipality(mpio).then(() => {
+        this.municipalityService.saveMunicipality(this.region, mpio).then(() => {
           this.reset('Municipio Actualizado');
-          Swal.fire('Buen trabajo!','Municipio actualizado exitosamente','success');
-        }).catch ((error)=>{
+          Swal.fire('Buen trabajo!', 'Municipio actualizado exitosamente', 'success');
+        }).catch((error) => {
           this.throwError('El municipio no pudo actualizarse, intentelo de nuevo más tarde', error);
         });
       }
     } else {
-      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar','warning');
+      Swal.fire('Campos incompletos', 'Por favor llenar todos los campos para continuar', 'warning');
     }
   }
 
-  throwError(msj?: string, err?:any): void{
+  throwError(msj?: string, err?: any): void {
     console.error(err);
-    Swal.fire('Problema interno del server',msj,'warning');
+    Swal.fire('Problema interno del server', msj, 'warning');
     this.loading = false;
   }
 

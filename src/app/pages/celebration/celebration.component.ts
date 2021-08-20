@@ -28,6 +28,7 @@ export class CelebrationComponent implements OnInit {
   images: string[] = [];
   loading: boolean;
   idMun: string;
+  region: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,7 +40,8 @@ export class CelebrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.idMun = sessionStorage.getItem('idMun');
-    if (this.idMun) {
+    this.region = sessionStorage.getItem('region');
+    if (this.idMun && this.region) {
       const celebrations: Celebration[] = JSON.parse(sessionStorage.getItem('celebrations'));
       if (celebrations && Object.keys(celebrations).length > 0) {
         Object.keys(celebrations).forEach((m) => this.listCelebration.push(celebrations[m]));
@@ -78,6 +80,7 @@ export class CelebrationComponent implements OnInit {
     this.loading = true;
     this.galleryService
       .getAllImages(
+        this.region,
         this.idMun,
         celeb.idCelebration,
         'CELEBRATIONS'
@@ -104,6 +107,7 @@ export class CelebrationComponent implements OnInit {
     this.loading = true;
     this.galleryService
       .uploadGalery(
+        this.region,
         this.images,
         this.idMun,
         this.celebration.idCelebration,
@@ -138,10 +142,10 @@ export class CelebrationComponent implements OnInit {
         reader.onload = async (event) => {
           await this.compressFile(event.target.result);
           this.celebrationService
-            .uploadImg(this.imageBlob, 0)
+            .uploadImg(this.region, this.imageBlob, 0)
             .then((answer) => {
               celebration.image = answer;
-              this.celebrationService.addCelebration(celebration);
+              this.celebrationService.addCelebration(this.region, celebration);
               this.reset(0, celebration, '#siteModal');
             }).catch((error)=>{
               this.throwError('No se pudo guardar el sitio, intentelo más tarde', error);
@@ -149,7 +153,7 @@ export class CelebrationComponent implements OnInit {
         };
         reader.readAsDataURL(this.url.target.files[0]);
       } else {
-        this.celebrationService.addCelebration(celebration);
+        this.celebrationService.addCelebration(this.region, celebration);
         this.reset(0, celebration, '#siteModal');
       }
     } else {
@@ -180,10 +184,10 @@ export class CelebrationComponent implements OnInit {
         reader.onload = async (event) => {
           await this.compressFile(event.target.result);
           this.celebrationService
-            .uploadImg(this.imageBlob, 1)
+            .uploadImg(this.region, this.imageBlob, 1)
             .then((answer) => {
               activity.image = answer;
-              this.celebrationService.addActivity(activity);
+              this.celebrationService.addActivity(this.region, activity);
               this.reset(1, activity, '#activityModal');
             }).catch((error)=>{
               this.throwError('No se pudo guardar la actividad, intentelo más tarde', error);
@@ -191,7 +195,7 @@ export class CelebrationComponent implements OnInit {
         };
         reader.readAsDataURL(this.url.target.files[0]);
       } else {
-        this.celebrationService.addActivity(activity);
+        this.celebrationService.addActivity(this.region, activity);
         this.reset(1, activity, '#activityModal');
       }
     } else {

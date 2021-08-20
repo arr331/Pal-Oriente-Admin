@@ -18,9 +18,9 @@ export class SiteService {
     private imageCompress: NgxImageCompressService
   ) {}
 
-  addSite(site: Site) : void {
+  addSite(region: string, site: Site) : void {
     this.fireBase
-      .list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/sites`)
+      .list(`${region}/MUNICIPALITIES/${this.idMun}/sites`)
       .update(site.idSite, site)
       .then(() => {
         const coordinate: Coordinate = {
@@ -44,8 +44,8 @@ export class SiteService {
     return site;
   }
 
-  async uploadImg(img) : Promise<any> {
-    const filePath = `ALTIPLANO/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/portada`;
+  async uploadImg(region: string, img) : Promise<any> {
+    const filePath = `${region}/MUNICIPALITIES/${this.idMun}/SITES/${this.idSite}/portada`;
     const imgToSave = await this.compressFile(img);
     const ref = this.storage.ref(filePath);
     await ref.put(imgToSave);

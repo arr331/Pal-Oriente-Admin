@@ -20,6 +20,7 @@ export class SiteComponent implements OnInit {
   loading: boolean;
   idMun: string;
   siteList: Site[] = [];
+  region: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,14 +31,15 @@ export class SiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.idMun = sessionStorage.getItem('idMun');
-    if (this.idMun) {
+    this.region = sessionStorage.getItem('region');
+    if (this.idMun && this.region) {
       const sites = JSON.parse(sessionStorage.getItem('sites'));
       if (sites) {
         Object.keys(sites).forEach((m) => this.siteList.push(sites[m]));
       }
     } else {
       Swal.fire({
-        title: 'Advertencia?',
+        title: 'Advertencia',
         html: 'Debe seleccionar un municipio',
         confirmButtonText: `Ir a municipios`,
         icon: 'warning'
@@ -79,6 +81,7 @@ export class SiteComponent implements OnInit {
     this.loading = true;
     this.galleryService
       .uploadGalery(
+        this.region,
         this.images,
         this.idMun,
         this.site.idSite,
@@ -104,9 +107,9 @@ export class SiteComponent implements OnInit {
         const reader = new FileReader();
         reader.onload = (event) => {
           const imgToSave = event.target.result;
-          this.siteService.uploadImg(imgToSave).then((answer) => {
+          this.siteService.uploadImg(this.region, imgToSave).then((answer) => {
             site.image = answer;
-            this.siteService.addSite(site);
+            this.siteService.addSite(this.region, site);
             this.reset(site);
           }).catch((error)=>{
             this.throwError('No se pudo guardar el sitio, intentelo más tarde', error);
@@ -114,7 +117,7 @@ export class SiteComponent implements OnInit {
         };
         reader.readAsDataURL(this.url.target.files[0]);
       } else {
-        this.siteService.addSite(site);
+        this.siteService.addSite(this.region, site);
         this.reset(site);
       }
     } else {
@@ -143,7 +146,7 @@ export class SiteComponent implements OnInit {
     this.site = site;
     this.images = [];
     this.galleryService
-      .getAllImages(this.idMun, site.idSite, 'SITES')
+      .getAllImages(this.region, this.idMun, site.idSite, 'SITES')
       .then((result) => {
         result.items.forEach((itemRef) => {
           itemRef.getDownloadURL().then((url) => this.images.push(url));

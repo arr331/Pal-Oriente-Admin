@@ -15,30 +15,30 @@ export class CelebrationService {
   constructor(
     private fireBase: AngularFireDatabase,
     private storage: AngularFireStorage
-  ) {}
+  ) { }
 
-  addCelebration(celebration: Celebration) : void {
+  addCelebration(region: string, celebration: Celebration): void {
     this.fireBase
-      .list(`ALTIPLANO/MUNICIPALITIES/${this.idMun}/celebrations`)
+      .list(`${region}/MUNICIPALITIES/${this.idMun}/celebrations`)
       .update(celebration.idCelebration, celebration);
   }
 
-  addActivity(activity: Activity) : void {
+  addActivity(region: string, activity: Activity): void {
     this.fireBase
       .list(
-        `ALTIPLANO/MUNICIPALITIES/${this.idMun}/celebrations/${this.idCelebration}/activities`
+        `${region}/MUNICIPALITIES/${this.idMun}/celebrations/${this.idCelebration}/activities`
       )
       .update(activity.idActivity, activity);
   }
 
-  buildCelebration(form, idMun: string, id: string) : Celebration{
+  buildCelebration(form, idMun: string, id: string): Celebration {
     this.idMun = idMun;
     this.idCelebration = id ? id : this.fireBase.createPushId();
     const celebration = { idCelebration: this.idCelebration, ...form };
     return celebration;
   }
 
-  buildActivity(form, idMun: string, idCeleb: string, id: string): any{
+  buildActivity(form, idMun: string, idCeleb: string, id: string): any {
     this.idMun = idMun;
     this.idCelebration = idCeleb;
     this.idActivity = id ? id : this.fireBase.createPushId();
@@ -46,11 +46,11 @@ export class CelebrationService {
     return activity;
   }
 
-  async uploadImg(img, wich) :  Promise<any>{
+  async uploadImg(region: string, img, wich): Promise<any> {
     const filePath =
       wich === 0
-        ? `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/portada`
-        : `ALTIPLANO/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/activities/${this.idActivity}/portada`;
+        ? `${region}/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/portada`
+        : `${region}/MUNICIPALITIES/${this.idMun}/CELEBRATIONS/${this.idCelebration}/activities/${this.idActivity}/portada`;
     const ref = this.storage.ref(filePath);
     await ref.put(img).then();
     return await ref.getDownloadURL().toPromise();

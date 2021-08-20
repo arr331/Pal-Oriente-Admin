@@ -1,21 +1,23 @@
 <app-spinner *ngIf="loading"></app-spinner>
 <div class="container mt-2">
-    <div class="container">
-        <button type="button" class="btn btn-outline-success float-right" routerLink="/noticias"><i class="fa fa-eye"
-                aria-hidden="true"></i> Ver noticias</button>
-        <button type="button" (click)="create()" class="btn btn-outline-primary"><i class="fa fa-plus"
-                aria-hidden="true"></i> Crear región</button>
-    </div>
+    <button type="button" class="btn btn-outline-success float-right" routerLink="/noticias"><i class="fa fa-eye"
+            aria-hidden="true"></i> Ver noticias</button>
+    <button type="button" (click)="create()" class="btn btn-outline-primary"><i class="fa fa-plus"
+            aria-hidden="true"></i> Crear región</button>
     <hr>
     <table class="table table-sm">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Región</th>
+                <th scope="col">Descripción</th>
+                <th scope="col" class="text-center">Municipios</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let reg of regionList" class="hover">
+                <td (click)="create(reg)">{{reg.name}}</td>
                 <td (click)="create(reg)">{{reg.description}}</td>
+                <td class="text-center"><i (click)="go(reg.id)" class="fa fa-external-link" aria-hidden="true"></i></td>
             </tr>
         </tbody>
     </table>
@@ -31,7 +33,7 @@
                     </div>
                     <div class="col-md-1">
                         <input type="file" accept=".png, .jpg, .jpeg" id="input-image"
-                            (change)="readImage($event.target.files[0])" class="custom-file-input">
+                            (change)="readImage($event.target.files[0], true)" class="custom-file-input">
                     </div>
                     <div class="col-md-4">
                         <label for="input-image" style="font-size: 20px; cursor: pointer;">

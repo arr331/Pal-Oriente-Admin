@@ -15,11 +15,10 @@ export class MunicipalityService {
     private storage: AngularFireStorage
   ) {}
 
-  async saveMunicipality(mpio: Municipality): Promise<void> {
+  async saveMunicipality(region: string, mpio: Municipality): Promise<void> {
     await this.fireBase
-      .list('ALTIPLANO/MUNICIPALITIES')
+      .list(`${region}/MUNICIPALITIES`)
       .update(mpio.idMun, mpio);
-    console.log(mpio.state);
     const mpioInfo: MunicipalityInfo = {
       habitants: mpio.habitants,
       idMun: mpio.idMun,
@@ -29,12 +28,12 @@ export class MunicipalityService {
       state: mpio.state,
     };
     this.fireBase
-      .list('ALTIPLANO/MUNICIPALITIESINFO')
+      .list(`${region}/MUNICIPALITIESINFO`)
       .update(mpio.idMun, mpioInfo);
   }
 
-  getMunicipios() {
-    return this.fireBase.list<Municipality>('ALTIPLANO/MUNICIPALITIES');
+  getMunicipios(region: string) {
+    return this.fireBase.list<Municipality>(`${region}/MUNICIPALITIES`);
   }
 
   buildMunicipality(form, id): Municipality {
@@ -43,8 +42,8 @@ export class MunicipalityService {
     return municipality;
   }
 
-  async uploadImg(event) : Promise<any>{
-    const filePath = `ALTIPLANO/MUNICIPALITIES/${this.id}/portada`;
+  async uploadImg(region: string, event) : Promise<any>{
+    const filePath = `${region}/MUNICIPALITIES/${this.id}/portada`;
     const ref = this.storage.ref(filePath);
     await ref.put(event).then();
     return await ref.getDownloadURL().toPromise();
