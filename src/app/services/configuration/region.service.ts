@@ -5,13 +5,14 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { Region } from '../../interfaces/region';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RegionService {
-
-  constructor(private fireBase: AngularFireDatabase,
+  constructor(
+    private fireBase: AngularFireDatabase,
     private storage: AngularFireStorage,
-    private imageCompress: NgxImageCompressService) { }
+    private imageCompress: NgxImageCompressService
+  ) {}
 
   getAll(): AngularFireList<Region> {
     return this.fireBase.list<Region>('HOME');
@@ -21,11 +22,18 @@ export class RegionService {
     return { ...regionForm };
   }
 
-  async save(region: Region, image: string, newImgae: boolean, id?: string): Promise<void> {
+  async save(
+    region: Region,
+    image: string,
+    newImgae: boolean,
+    id?: string
+  ): Promise<void> {
     region.id = id || this.fireBase.createPushId();
-    region.urlImage = newImgae ? await this.uploadImg(image, region.id) : region.urlImage;
+    region.urlImage = newImgae
+      ? await this.uploadImg(image, region.id)
+      : region.urlImage;
     console.log(region);
-    
+
     return this.fireBase.list('HOME').update(region.id, region);
   }
 

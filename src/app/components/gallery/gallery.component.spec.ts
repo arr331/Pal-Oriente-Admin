@@ -21,7 +21,7 @@ describe('GalleryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GalleryComponent ],
+      declarations: [GalleryComponent],
       imports: [
         BrowserModule,
         AppRoutingModule,
@@ -33,11 +33,10 @@ describe('GalleryComponent', () => {
         FormsModule,
         AngularFireStorageModule,
         FontAwesomeModule,
-        PerfectScrollbarModule
+        PerfectScrollbarModule,
       ],
-      providers:[AngularFireAuthGuard, NgxImageCompressService]
-    })
-    .compileComponents();
+      providers: [AngularFireAuthGuard, NgxImageCompressService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

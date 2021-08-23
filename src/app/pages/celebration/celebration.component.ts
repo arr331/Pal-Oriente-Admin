@@ -35,23 +35,27 @@ export class CelebrationComponent implements OnInit {
     private celebrationService: CelebrationService,
     private imageCompress: NgxImageCompressService,
     private galleryService: GalleryService,
-    private router : Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.idMun = sessionStorage.getItem('idMun');
     this.region = sessionStorage.getItem('region');
     if (this.idMun && this.region) {
-      const celebrations: Celebration[] = JSON.parse(sessionStorage.getItem('celebrations'));
+      const celebrations: Celebration[] = JSON.parse(
+        sessionStorage.getItem('celebrations')
+      );
       if (celebrations && Object.keys(celebrations).length > 0) {
-        Object.keys(celebrations).forEach((m) => this.listCelebration.push(celebrations[m]));
+        Object.keys(celebrations).forEach((m) =>
+          this.listCelebration.push(celebrations[m])
+        );
       }
     } else {
       Swal.fire({
         title: 'Advertencia?',
         html: 'Debe seleccionar un municipio',
         confirmButtonText: `Ir a municipios`,
-        icon: 'warning'
+        icon: 'warning',
       }).then(() => {
         this.router.navigate(['municipios']);
       });
@@ -91,7 +95,8 @@ export class CelebrationComponent implements OnInit {
         });
         $('#galleryModal').modal('show');
         this.loading = false;
-      }).catch(() => this.loading = false);
+      })
+      .catch(() => (this.loading = false));
   }
 
   addImages(files: FileList): void {
@@ -116,8 +121,12 @@ export class CelebrationComponent implements OnInit {
       .then(() => {
         this.loading = false;
         $('#galleryModal').modal('hide');
-      }).catch((error)=>{
-        this.throwError('En este momento no se puede actualizar la galería, intentelo más tarde', error);
+      })
+      .catch((error) => {
+        this.throwError(
+          'En este momento no se puede actualizar la galería, intentelo más tarde',
+          error
+        );
       });
   }
 
@@ -147,8 +156,12 @@ export class CelebrationComponent implements OnInit {
               celebration.image = answer;
               this.celebrationService.addCelebration(this.region, celebration);
               this.reset(0, celebration, '#siteModal');
-            }).catch((error)=>{
-              this.throwError('No se pudo guardar el sitio, intentelo más tarde', error);
+            })
+            .catch((error) => {
+              this.throwError(
+                'No se pudo guardar el sitio, intentelo más tarde',
+                error
+              );
             });
         };
         reader.readAsDataURL(this.url.target.files[0]);
@@ -157,7 +170,11 @@ export class CelebrationComponent implements OnInit {
         this.reset(0, celebration, '#siteModal');
       }
     } else {
-      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
+      Swal.fire(
+        'Campos incompletos',
+        'Por favor llenar todos los campos para continuar',
+        'warning'
+      );
     }
   }
 
@@ -166,8 +183,8 @@ export class CelebrationComponent implements OnInit {
     this.listActivity = [];
     celebration.activities
       ? Object.keys(celebration.activities).forEach((m) =>
-        this.listActivity.push(celebration.activities[m])
-      )
+          this.listActivity.push(celebration.activities[m])
+        )
       : '';
   }
 
@@ -189,8 +206,12 @@ export class CelebrationComponent implements OnInit {
               activity.image = answer;
               this.celebrationService.addActivity(this.region, activity);
               this.reset(1, activity, '#activityModal');
-            }).catch((error)=>{
-              this.throwError('No se pudo guardar la actividad, intentelo más tarde', error);
+            })
+            .catch((error) => {
+              this.throwError(
+                'No se pudo guardar la actividad, intentelo más tarde',
+                error
+              );
             });
         };
         reader.readAsDataURL(this.url.target.files[0]);
@@ -199,7 +220,11 @@ export class CelebrationComponent implements OnInit {
         this.reset(1, activity, '#activityModal');
       }
     } else {
-      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
+      Swal.fire(
+        'Campos incompletos',
+        'Por favor llenar todos los campos para continuar',
+        'warning'
+      );
     }
   }
 
@@ -209,9 +234,9 @@ export class CelebrationComponent implements OnInit {
     $('#activityModal').modal('show');
   }
 
-  throwError(msj: string, err?:any): void{
+  throwError(msj: string, err?: any): void {
     console.error(err);
-    Swal.fire('Problema interno del server',msj,'warning');
+    Swal.fire('Problema interno del server', msj, 'warning');
     this.loading = false;
   }
 
@@ -222,12 +247,12 @@ export class CelebrationComponent implements OnInit {
     wich === 0
       ? this.celebration
         ? (this.listCelebration[
-          this.listCelebration.indexOf(this.celebration)
-        ] = item)
+            this.listCelebration.indexOf(this.celebration)
+          ] = item)
         : this.listCelebration.push(item)
       : this.activity
-        ? (this.listActivity[this.listActivity.indexOf(this.activity)] = item)
-        : this.listActivity.push(item);
+      ? (this.listActivity[this.listActivity.indexOf(this.activity)] = item)
+      : this.listActivity.push(item);
     this.url = null;
   }
 

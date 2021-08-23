@@ -23,12 +23,12 @@ describe('MunicipalityComponent', () => {
   let component: MunicipalityComponent;
   let fixture: ComponentFixture<MunicipalityComponent>;
   let municipalityService: MunicipalityService;
-  let municipality : Municipality;
+  let municipality: Municipality;
   let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MunicipalityComponent ],
+      declarations: [MunicipalityComponent],
       imports: [
         BrowserModule,
         AppRoutingModule,
@@ -40,11 +40,10 @@ describe('MunicipalityComponent', () => {
         FormsModule,
         AngularFireStorageModule,
         FontAwesomeModule,
-        PerfectScrollbarModule
+        PerfectScrollbarModule,
       ],
-      providers:[AngularFireAuthGuard, NgxImageCompressService]
-    })
-    .compileComponents();
+      providers: [AngularFireAuthGuard, NgxImageCompressService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -53,19 +52,19 @@ describe('MunicipalityComponent', () => {
     router = TestBed.inject(Router);
     municipalityService = TestBed.inject(MunicipalityService);
     municipality = {
-        celebrations : [],
-        description: 'descripcion',
-        economy: 'economia',
-        habitants: 'habitantes',
-        history: 'historia',
-        idMun: 'idmun',
-        image: 'image',
-        name: 'name',
-        sites: [],
-        state: true,
-        weather: 'clima',
-        reference: 'referencia',
-    }
+      celebrations: [],
+      description: 'descripcion',
+      economy: 'economia',
+      habitants: 'habitantes',
+      history: 'historia',
+      idMun: 'idmun',
+      image: 'image',
+      name: 'name',
+      sites: [],
+      state: true,
+      weather: 'clima',
+      reference: 'referencia',
+    };
     fixture.detectChanges();
   });
 
@@ -74,7 +73,10 @@ describe('MunicipalityComponent', () => {
   });
 
   it('ngOnInit test when region exist', () => {
-    const getMunicipios = spyOn(municipalityService, 'getMunicipios').and.callThrough();
+    const getMunicipios = spyOn(
+      municipalityService,
+      'getMunicipios'
+    ).and.callThrough();
     sessionStorage.setItem('region', 'region');
     component.ngOnInit();
     expect(getMunicipios).toHaveBeenCalledWith(component.region);
@@ -116,9 +118,11 @@ describe('MunicipalityComponent', () => {
     expect(Swal.getTitle().textContent).toEqual('Campos incompletos');
   });
 
-  
   it('should save municipality when url not exist', () => {
-    const saveMunicipality = spyOn(municipalityService, 'saveMunicipality').and.callThrough();
+    const saveMunicipality = spyOn(
+      municipalityService,
+      'saveMunicipality'
+    ).and.callThrough();
     component.municipalityForm.controls.name.setValue('name');
     component.municipalityForm.controls.description.setValue('description');
     component.municipalityForm.controls.economy.setValue('economy');
@@ -129,6 +133,4 @@ describe('MunicipalityComponent', () => {
     component.saveMpio();
     expect(saveMunicipality).toHaveBeenCalledTimes(1);
   });
-
-
 });

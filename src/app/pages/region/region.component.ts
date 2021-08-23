@@ -9,7 +9,7 @@ declare const $: any;
 @Component({
   selector: 'app-region',
   templateUrl: './region.component.html',
-  styleUrls: ['./region.component.scss']
+  styleUrls: ['./region.component.scss'],
 })
 export class RegionComponent implements OnInit {
   regionForm: FormGroup;
@@ -19,18 +19,30 @@ export class RegionComponent implements OnInit {
   loading: boolean;
   region: Region;
 
-  constructor(private formBuilder: FormBuilder, private regionService: RegionService, private router: Router) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private regionService: RegionService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loading = true;
-    this.regionService.getAll().valueChanges().subscribe(answer => {
-      this.regionList = answer;
-      this.loading = false;
-    }), error =>{
-      console.error(error);
-      Swal.fire('Error','Error cargando datos, intentelo más tarde','error');
-      this.loading = false;
-    };
+    this.regionService
+      .getAll()
+      .valueChanges()
+      .subscribe((answer) => {
+        this.regionList = answer;
+        this.loading = false;
+      }),
+      (error) => {
+        console.error(error);
+        Swal.fire(
+          'Error',
+          'Error cargando datos, intentelo más tarde',
+          'error'
+        );
+        this.loading = false;
+      };
     this.buildForm();
   }
 
@@ -39,7 +51,7 @@ export class RegionComponent implements OnInit {
       description: ['', Validators.required],
       name: ['', Validators.required],
       state: [true, Validators.required],
-      urlImage: ['']
+      urlImage: [''],
     });
   }
 
@@ -60,23 +72,34 @@ export class RegionComponent implements OnInit {
     if (this.regionForm.valid && this.image) {
       this.loading = true;
       const regionToSave = this.regionService.build(this.regionForm.value);
-      this.regionService.save(regionToSave, this.image, this.newImage, this.region?.id).then(() => {
-        this.loading = false;
-        $('#regionModal').modal('hide');
-        Swal.fire('¡Buen trabajo!', 'Región creada exitosamente', 'success');
-        this.buildForm();
-      }).catch(()=>{
-        Swal.fire('Problema interno del server', 'La región no pudo guardarse, intentelo de nuevo más tarde', 'warning');
-      });
+      this.regionService
+        .save(regionToSave, this.image, this.newImage, this.region?.id)
+        .then(() => {
+          this.loading = false;
+          $('#regionModal').modal('hide');
+          Swal.fire('¡Buen trabajo!', 'Región creada exitosamente', 'success');
+          this.buildForm();
+        })
+        .catch(() => {
+          Swal.fire(
+            'Problema interno del server',
+            'La región no pudo guardarse, intentelo de nuevo más tarde',
+            'warning'
+          );
+        });
     } else {
-      Swal.fire('Campos incompletos', 'Por favor llenar todos los campos para continuar', 'warning');
+      Swal.fire(
+        'Campos incompletos',
+        'Por favor llenar todos los campos para continuar',
+        'warning'
+      );
     }
   }
 
   readImage(file: File, newImage: boolean): void {
     this.newImage = newImage;
     const reader = new FileReader();
-    reader.onload = event => this.image = event.target.result.toString();
+    reader.onload = (event) => (this.image = event.target.result.toString());
     reader.readAsDataURL(file);
   }
 

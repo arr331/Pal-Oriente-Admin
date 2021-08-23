@@ -24,13 +24,13 @@ describe('CelebrationComponent', () => {
   let component: CelebrationComponent;
   let fixture: ComponentFixture<CelebrationComponent>;
   let galleryService: GalleryService;
-  let celebrationService : CelebrationService;
+  let celebrationService: CelebrationService;
   let celebration: Celebration;
   let activity: Activity;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CelebrationComponent ],
+      declarations: [CelebrationComponent],
       imports: [
         BrowserModule,
         AppRoutingModule,
@@ -42,11 +42,10 @@ describe('CelebrationComponent', () => {
         FormsModule,
         AngularFireStorageModule,
         FontAwesomeModule,
-        PerfectScrollbarModule
+        PerfectScrollbarModule,
       ],
-      providers:[AngularFireAuthGuard, NgxImageCompressService]
-    })
-    .compileComponents();
+      providers: [AngularFireAuthGuard, NgxImageCompressService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -61,7 +60,7 @@ describe('CelebrationComponent', () => {
       name: 'name',
       reference: 'reference',
       state: true,
-    }
+    };
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -70,16 +69,23 @@ describe('CelebrationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  
   it('should called uploadGallery', () => {
-    const galleryUploadService = spyOn(galleryService, 'uploadGalery').and.resolveTo();
+    const galleryUploadService = spyOn(
+      galleryService,
+      'uploadGalery'
+    ).and.resolveTo();
     component.images = ['image1', 'image2'];
     component.idMun = 'idMun';
     component.celebration = celebration;
     component.region = 'region';
     component.saveGallery();
-    expect(galleryUploadService)
-    .toHaveBeenCalledWith(component.region,component.images, component.idMun, component.celebration.idCelebration, 'CELEBRATIONS');
+    expect(galleryUploadService).toHaveBeenCalledWith(
+      component.region,
+      component.images,
+      component.idMun,
+      component.celebration.idCelebration,
+      'CELEBRATIONS'
+    );
   });
 
   it('should called throw Error', () => {
@@ -115,9 +121,11 @@ describe('CelebrationComponent', () => {
     expect(Swal.getTitle().textContent).toEqual('Advertencia?');
   });
 
-  
   it('should call addCelebration method and reset method when url not exist', () => {
-    const addCelebration = spyOn(celebrationService, 'addCelebration').and.stub();
+    const addCelebration = spyOn(
+      celebrationService,
+      'addCelebration'
+    ).and.stub();
 
     component.celebrationForm.controls.name.setValue('name');
     component.celebrationForm.controls.description.setValue('description');
@@ -152,6 +160,4 @@ describe('CelebrationComponent', () => {
     expect(Swal.isVisible()).toBeTruthy();
     expect(Swal.getTitle().textContent).toEqual('Campos incompletos');
   });
-
-
 });

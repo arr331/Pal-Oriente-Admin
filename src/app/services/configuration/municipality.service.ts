@@ -42,7 +42,7 @@ export class MunicipalityService {
     return municipality;
   }
 
-  async uploadImg(region: string, event) : Promise<any>{
+  async uploadImg(region: string, event) : Promise<any> {
     const filePath = `${region}/MUNICIPALITIES/${this.id}/portada`;
     const ref = this.storage.ref(filePath);
     await ref.put(event).then();
