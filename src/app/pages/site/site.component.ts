@@ -26,7 +26,7 @@ export class SiteComponent implements OnInit {
     private formBuilder: FormBuilder,
     private siteService: SiteService,
     private galleryService: GalleryService,
-    private router : Router,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -90,7 +90,7 @@ export class SiteComponent implements OnInit {
       .then(() => {
         this.loading = false;
         $('#galleryModal').modal('hide');
-      }).catch((error)=>{
+      }).catch((error) => {
         this.throwError('En este momento no se puede actualizar la galería, intentelo más tarde', error);
       });
   }
@@ -111,7 +111,7 @@ export class SiteComponent implements OnInit {
             site.image = answer;
             this.siteService.addSite(this.region, site);
             this.reset(site);
-          }).catch((error)=>{
+          }).catch((error) => {
             this.throwError('No se pudo guardar el sitio, intentelo más tarde', error);
           });
         };
@@ -121,13 +121,13 @@ export class SiteComponent implements OnInit {
         this.reset(site);
       }
     } else {
-      Swal.fire('Campos incompletos','Por favor llenar todos los campos para continuar', 'warning');
+      Swal.fire('Campos incompletos', 'Por favor llenar todos los campos para continuar', 'warning');
     }
   }
 
-  throwError(msj?: string, err?:any): void{
+  throwError(msj?: string, err?: any): void {
     console.error(err);
-    Swal.fire('Problema interno del server',msj,'warning');
+    Swal.fire('Problema interno del server', msj, 'warning');
     this.loading = false;
   }
 
@@ -150,10 +150,9 @@ export class SiteComponent implements OnInit {
       .then((result) => {
         result.items.forEach((itemRef) => {
           itemRef.getDownloadURL().then((url) => this.images.push(url));
-          this.loading = false;
-          $('#galleryModal').modal('show');
-        }
-        );
+        });
+        $('#galleryModal').modal('show');
+        this.loading = false;
       });
   }
 }

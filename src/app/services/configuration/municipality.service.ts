@@ -26,6 +26,8 @@ export class MunicipalityService {
       name: mpio.name,
       weather: mpio.weather,
       state: mpio.state,
+      x: mpio.x,
+      y: mpio.y
     };
     this.fireBase
       .list(`${region}/MUNICIPALITIESINFO`)

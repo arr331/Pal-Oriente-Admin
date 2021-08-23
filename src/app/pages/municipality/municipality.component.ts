@@ -67,6 +67,8 @@ export class MunicipalityComponent implements OnInit {
       image: [''],
       reference: ['', Validators.required],
       state: [true],
+      x: ['', Validators.required],
+      y: ['', Validators.required]
     });
   }
 
@@ -113,9 +115,9 @@ export class MunicipalityComponent implements OnInit {
       } else {
         this.municipalityService.saveMunicipality(this.region, mpio).then(() => {
           this.reset('Municipio Actualizado');
-          Swal.fire('Buen trabajo!', 'Municipio actualizado exitosamente', 'success');
+          Swal.fire('¡Buen trabajo!', 'Municipio actualizado exitosamente', 'success');
         }).catch((error) => {
-          this.throwError('El municipio no pudo actualizarse, intentelo de nuevo más tarde', error);
+          this.throwError('El municipio no pudo actualizarse, inténtelo de nuevo más tarde', error);
         });
       }
     } else {

@@ -47,22 +47,22 @@
 
             </div>
             <div class="row">
-              <div class="col-md-4 mb-3">
+              <div class="col-lg-4 mb-3">
                 <label>Nombre del municipio</label>
                 <input type="text" class="form-control form-control-sm" placeholder="Ingrese el nombre del municipio"
                   formControlName="name">
               </div>
-              <div class="col-md-3 mb-3">
+              <div class="col-lg-3 mb-3">
                 <label>Clima</label>
                 <input type="text" class="form-control form-control-sm" placeholder="Ingrese la temperatura promedio"
                   formControlName="weather">
               </div>
-              <div class="col-md-3 mb-3">
+              <div class="col-lg-3 mb-3">
                 <label>Habitantes</label>
                 <input type="text" class="form-control form-control-sm"
                   placeholder="Ingrese la cantidad de habitantes del municipio" formControlName="habitants">
               </div>
-              <div class="col-md-2 mb-3">
+              <div class="col-lg-2 mb-3">
                 <label>Estado</label>
                 <select class="custom-select custom-select-sm" formControlName="state">
                   <option [ngValue]="true">Activo</option>
@@ -90,12 +90,22 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6 mb-3">
+              <div class="col-xl-4 col-lg-6 mb-3">
                 <label>Referencia</label>
                 <input type="text" class="form-control form-control-sm" placeholder="Ingrese la referencia"
                   formControlName="reference">
               </div>
-              <div class="col-md-6 mb-3">
+              <div class="col-xl-2 col-lg-6 col-md-6 mb-3">
+                <label>Coordenada X</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Ingrese la coordenada"
+                  formControlName="x">
+              </div>
+              <div class="col-xl-2 col-lg-6 col-md-6 mb-3">
+                <label>Coordenada Y</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Ingrese la coordenada"
+                  formControlName="y">
+              </div>
+              <div class="col-xl-4 col-lg-6 mb-3">
                 <label>Cargar foto</label>
                 <div class="custom-file form-control-sm">
                   <input type="file" accept=".png, .jpg" (change)="url= $event" class="custom-file-input">
