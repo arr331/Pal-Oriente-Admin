@@ -123,7 +123,7 @@ export class MunicipalityComponent implements OnInit {
     }
   }
 
-  throwError(msj?: string, err?: any): void {
+  throwError(msj: string, err: any): void {
     console.error(err);
     Swal.fire('Problema interno del server', msj, 'warning');
     this.loading = false;

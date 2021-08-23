@@ -25,7 +25,7 @@ export class NewService {
     return this.fireBase.list('NEWS').update(nw.id, nw);
   }
 
-  delete(nw: Partial<New>){
+  delete(nw: Partial<New>): void{
     this.fireBase.list('NEWS').remove(nw.id);
     this.deleteByUrl(nw.image);
   }

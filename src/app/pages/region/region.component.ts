@@ -26,7 +26,11 @@ export class RegionComponent implements OnInit {
     this.regionService.getAll().valueChanges().subscribe(answer => {
       this.regionList = answer;
       this.loading = false;
-    });
+    }), error =>{
+      console.error(error);
+      Swal.fire('Error','Error cargando datos, intentelo más tarde','error');
+      this.loading = false;
+    };
     this.buildForm();
   }
 
@@ -61,9 +65,11 @@ export class RegionComponent implements OnInit {
         $('#regionModal').modal('hide');
         Swal.fire('¡Buen trabajo!', 'Región creada exitosamente', 'success');
         this.buildForm();
+      }).catch(()=>{
+        Swal.fire('Problema interno del server', 'La región no pudo guardarse, intentelo de nuevo más tarde', 'warning');
       });
     } else {
-      alert('Por favor llenar todos los campos para continuar');
+      Swal.fire('Campos incompletos', 'Por favor llenar todos los campos para continuar', 'warning');
     }
   }
 
