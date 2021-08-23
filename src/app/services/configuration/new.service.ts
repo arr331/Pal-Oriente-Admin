@@ -15,22 +15,26 @@ export class NewService {
     private imageCompress: NgxImageCompressService
   ) {}
 
-  getAll() : AngularFireList<New> {
+  getAll(): AngularFireList<New> {
     return this.fireBase.list<New>('NEWS');
   }
 
-  async save(nw: Partial<New>, image: string, decisionSave: boolean) : Promise<void>{
+  async save(
+    nw: Partial<New>,
+    image: string,
+    decisionSave: boolean
+  ): Promise<void> {
     nw.id = nw.id || this.fireBase.createPushId();
-    decisionSave ? nw.image = await this.uploadImg(image, nw.id):'';
+    decisionSave ? (nw.image = await this.uploadImg(image, nw.id)) : '';
     return this.fireBase.list('NEWS').update(nw.id, nw);
   }
 
-  delete(nw: Partial<New>): void{
+  delete(nw: Partial<New>): void {
     this.fireBase.list('NEWS').remove(nw.id);
     this.deleteByUrl(nw.image);
   }
 
-  deleteByUrl(url: string) : Promise<void> {
+  deleteByUrl(url: string): Promise<void> {
     return this.storage.storage.refFromURL(url).delete();
   }
 
@@ -42,7 +46,7 @@ export class NewService {
     return await ref.getDownloadURL().toPromise();
   }
 
-  async compressFile(image) : Promise<Blob> {
+  async compressFile(image): Promise<Blob> {
     return this.dataURItoBlob(
       (await this.imageCompress.compressFile(image, -1, 50, 50)).split(',')[1]
     );

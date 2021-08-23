@@ -22,13 +22,13 @@ import { Router } from '@angular/router';
 describe('RegionComponent', () => {
   let component: RegionComponent;
   let fixture: ComponentFixture<RegionComponent>;
-  let regionService : RegionService;
-  let region : Region;
-  let router : Router;
+  let regionService: RegionService;
+  let region: Region;
+  let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegionComponent ],
+      declarations: [RegionComponent],
       imports: [
         BrowserModule,
         AppRoutingModule,
@@ -40,11 +40,10 @@ describe('RegionComponent', () => {
         FormsModule,
         AngularFireStorageModule,
         FontAwesomeModule,
-        PerfectScrollbarModule
+        PerfectScrollbarModule,
       ],
-      providers:[AngularFireAuthGuard, NgxImageCompressService]
-    })
-    .compileComponents();
+      providers: [AngularFireAuthGuard, NgxImageCompressService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -86,21 +85,18 @@ describe('RegionComponent', () => {
   });
 
   it('should call swal fire when form is invalid and image not exist', () => {
-
     component.regionForm.controls.description.setValue('description');
     component.regionForm.controls.state.setValue(false);
-    
+
     component.save();
     expect(Swal.isVisible()).toBeTruthy();
     expect(Swal.getTitle().textContent).toEqual('Campos incompletos');
   });
 
-  it('should call navigateByUrl', () => { 
+  it('should call navigateByUrl', () => {
     const navigateByUrl = spyOn(router, 'navigateByUrl').and.callThrough();
     component.go('id');
     expect(sessionStorage.getItem('region')).toEqual('id');
     expect(navigateByUrl).toHaveBeenCalledWith('/municipios');
   });
-
-  
 });

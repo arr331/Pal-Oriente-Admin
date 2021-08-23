@@ -5,13 +5,13 @@ declare const $: any;
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
-  styleUrls: ['./gallery.component.scss']
+  styleUrls: ['./gallery.component.scss'],
 })
 export class GalleryComponent {
   @Input() images: string[];
   url: string;
 
-  constructor(private galleryService: GalleryService) { }
+  constructor(private galleryService: GalleryService) {}
 
   open(url: string): void {
     this.url = url;

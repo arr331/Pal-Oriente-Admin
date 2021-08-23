@@ -35,7 +35,7 @@ describe('UsersComponent', () => {
         FontAwesomeModule,
         PerfectScrollbarModule
       ],
-      providers:[AngularFireAuthGuard, NgxImageCompressService]
+      providers: [AngularFireAuthGuard, NgxImageCompressService]
     })
     .compileComponents();
   }));

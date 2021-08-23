@@ -29,7 +29,7 @@ describe('SiteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SiteComponent ],
+      declarations: [SiteComponent],
       imports: [
         BrowserModule,
         AppRoutingModule,
@@ -41,11 +41,10 @@ describe('SiteComponent', () => {
         FormsModule,
         AngularFireStorageModule,
         FontAwesomeModule,
-        PerfectScrollbarModule
+        PerfectScrollbarModule,
       ],
-      providers:[AngularFireAuthGuard, NgxImageCompressService]
-    })
-    .compileComponents();
+      providers: [AngularFireAuthGuard, NgxImageCompressService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -57,12 +56,12 @@ describe('SiteComponent', () => {
       description: 'description',
       idSite: 'id1',
       image: 'image',
-      name:  'name',
-      state:  true,
+      name: 'name',
+      state: true,
       x: '588555',
       y: '-7585555',
       reference: 'reference',
-    }
+    };
     fixture.detectChanges();
   });
 
@@ -75,17 +74,18 @@ describe('SiteComponent', () => {
     component.idMun = 'idMun';
     component.region = 'region';
     component.site = site;
-    const params = {
-      region : component.region,
-      images : component.images,
-      idMun : component.idMun,
-      idSite : component.site.idSite,
-      type : 'SITES'
-    };
-    const galleryUploadService = spyOn(galleryService, 'uploadGalery').and.resolveTo();
+    const galleryUploadService = spyOn(
+      galleryService,
+      'uploadGalery'
+    ).and.resolveTo();
     component.saveGallery();
-    expect(galleryUploadService)
-    .toHaveBeenCalledWith(component.region, component.images, component.idMun, component.site.idSite, 'SITES');
+    expect(galleryUploadService).toHaveBeenCalledWith(
+      component.region,
+      component.images,
+      component.idMun,
+      component.site.idSite,
+      'SITES'
+    );
   });
 
   it('should call addSite method and reset method when url not exist', () => {
@@ -103,30 +103,42 @@ describe('SiteComponent', () => {
   });
 
   it('should call swal fire when url not exist', () => {
-
     component.siteForm.controls.name.setValue('name');
     component.siteForm.controls.description.setValue('description');
     component.idMun = 'idMun';
-    
+
     component.saveSite();
     expect(Swal.isVisible()).toBeTruthy();
     expect(Swal.getTitle().textContent).toEqual('Campos incompletos');
   });
 
   it('should called getAllImages method', () => {
-    const getAllImages = spyOn(galleryService, 'getAllImages').and.callThrough();
+    const getAllImages = spyOn(
+      galleryService,
+      'getAllImages'
+    ).and.callThrough();
     component.idMun = 'idMun';
     component.region = 'region';
     component.openGallery(site);
-    expect(getAllImages)
-    .toHaveBeenCalledWith(component.region,component.idMun, component.site.idSite, 'SITES');
+    expect(getAllImages).toHaveBeenCalledWith(
+      component.region,
+      component.idMun,
+      component.site.idSite,
+      'SITES'
+    );
   });
 
+  it('should called reset method', () => {
+    spyOn($, '#siteModal').and.resolveTo();
+    component.idMun = 'idMun';
+    component.reset(site);
+    expect(component.siteList.length).toBeGreaterThanOrEqual(1);
+  });
 
   it('onInit test when idMun and IdRegion exists', () => {
     sessionStorage.setItem('idMun', 'idMun');
     sessionStorage.setItem('region', 'region');
-    let sites = [site, site];
+    const sites = [site, site];
     component.siteList = [];
     sessionStorage.setItem('sites', JSON.stringify(sites));
     component.ngOnInit();
@@ -136,13 +148,11 @@ describe('SiteComponent', () => {
   it('onInit test when idMun and IdRegion not exists', () => {
     sessionStorage.removeItem('idMun');
     sessionStorage.removeItem('region');
-    let sites = [site, site];
+    const sites = [site, site];
     component.siteList = [];
     sessionStorage.setItem('sites', JSON.stringify(sites));
     component.ngOnInit();
     expect(Swal.isVisible()).toBeTruthy();
     expect(Swal.getTitle().textContent).toEqual('Advertencia');
   });
-
-
 });

@@ -25,7 +25,7 @@ describe('NewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewComponent ],
+      declarations: [NewComponent],
       imports: [
         BrowserModule,
         AppRoutingModule,
@@ -37,11 +37,10 @@ describe('NewComponent', () => {
         FormsModule,
         AngularFireStorageModule,
         FontAwesomeModule,
-        PerfectScrollbarModule
+        PerfectScrollbarModule,
       ],
-      providers:[AngularFireAuthGuard, NgxImageCompressService]
-    })
-    .compileComponents();
+      providers: [AngularFireAuthGuard, NgxImageCompressService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -56,7 +55,7 @@ describe('NewComponent', () => {
       title: 'title',
       state: true,
       date: new Date().getTime().toString(),
-    }
+    };
     fixture.detectChanges();
   });
 
@@ -64,13 +63,13 @@ describe('NewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('getAll', () =>{
+  it('getAll', () => {
     const getAllService = spyOn(newService, 'getAll').and.callThrough();
     component.ngOnInit();
     expect(getAllService).toHaveBeenCalledTimes(1);
   });
 
-  it('saving', () =>{
+  it('saving', () => {
     component.image = 'image';
     component.newForm.controls.outline.setValue('outline');
     component.newForm.controls.text.setValue('text');
@@ -83,7 +82,7 @@ describe('NewComponent', () => {
     expect(getSaveService).toHaveBeenCalledTimes(1);
   });
 
-  it('invalidForm', () =>{
+  it('invalidForm', () => {
     const getSaveService = spyOn(newService, 'save').and.callThrough();
     component.image = 'image';
     component.newForm.controls.outline.setValue('outline');
@@ -93,7 +92,4 @@ describe('NewComponent', () => {
     expect(component.newForm.valid).toBeFalsy();
     expect(getSaveService).not.toHaveBeenCalledTimes(1);
   });
-
-
 });
-
