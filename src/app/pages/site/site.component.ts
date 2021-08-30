@@ -66,7 +66,7 @@ export class SiteComponent implements OnInit {
       image: [''],
       x: ['', Validators.required],
       y: ['', Validators.required],
-      reference: [''],
+      reference: ['', Validators.required],
       state: [true],
     });
   }

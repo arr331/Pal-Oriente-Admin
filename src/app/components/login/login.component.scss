@@ -9,4 +9,6 @@
     margin-top: 23px;
     padding: 0 8px;
 }
-
+.was-validated .form-control:invalid{
+    border-color: #cccccc;
+}
