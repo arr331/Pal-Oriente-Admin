@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Region } from 'src/app/interfaces/region';
 import { RegionService } from 'src/app/services/configuration/region.service';
+import { FormValidator } from 'src/app/utils/form-validator';
 import Swal from 'sweetalert2';
 declare const $: any;
 
@@ -18,6 +19,11 @@ export class RegionComponent implements OnInit {
   newImage: boolean;
   loading: boolean;
   region: Region;
+  fields = {
+    description: 'descripción',
+    name: 'nombre',
+    state: 'estado'
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -69,7 +75,8 @@ export class RegionComponent implements OnInit {
   }
 
   save(): void {
-    if (this.regionForm.valid && this.image) {
+    if (FormValidator.validateForm(this.regionForm) && this.image) {
+     if (this.region || this.validateName()) {
       this.loading = true;
       const regionToSave = this.regionService.build(this.regionForm.value);
       this.regionService
@@ -87,13 +94,19 @@ export class RegionComponent implements OnInit {
             'warning'
           );
         });
+     } else {
+      Swal.fire('Atención', `Ya existe una región con el mismo nombre`, 'info');
+     }
     } else {
-      Swal.fire(
-        'Campos incompletos',
-        'Por favor llenar todos los campos para continuar',
-        'warning'
-      );
+      const imageRequerid = this.image ? '' : ', imagen'
+      const invalids = `${FormValidator.msgInvalidKeys(this.fields, FormValidator.getInvalids(this.regionForm))}${imageRequerid}`;
+      Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${invalids}</strong>`, 'info');
     }
+  }
+
+  validateName(): boolean {
+    const name: string = this.regionForm.get('name').value;
+    return !this.regionList.some(region => region.name.trim().toLowerCase() === name.trim().toLowerCase());
   }
 
   readImage(file: File, newImage: boolean): void {

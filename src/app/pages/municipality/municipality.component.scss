@@ -1,6 +1,9 @@
 .container{
     margin-top: 15px;
 }
+.was-validated .form-control:invalid{
+    border-color: #cccccc;
+}
 .icon-edit {
     padding: 0;
     text-align: center;

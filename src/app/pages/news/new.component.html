@@ -24,8 +24,8 @@
         <tbody>
             <tr *ngFor="let nw of newList" class="hover">
                 <td (click)="create(nw)">{{nw.title}}</td>
-                <td class="center-item biggest"><i (click)="deleteNotice(nw)" class="fa fa-trash-o"
-                    style="color:red;" aria-hidden="true"></i></td>
+                <td class="center-item biggest"><i (click)="deleteNotice(nw)" class="fa fa-trash-o" style="color:red;"
+                        aria-hidden="true"></i></td>
             </tr>
         </tbody>
     </table>
@@ -50,24 +50,30 @@
                     </div>
                 </div>
                 <hr>
-                <div class="row mb-3" *ngIf="image">
+                <div class="row mb-3">
                     <div class="col-md-12" style="text-align: center;">
-                        <img src="{{image}}" style=" height: 9rem; border-radius: 10px;" alt="no se cargo">
+                        <img *ngIf="image" src="{{image}}" style=" height: 9rem; border-radius: 10px;"
+                            alt="No se cargó">
+                        <ng-container *ngIf="!image">
+                            <i class="fa fa-picture-o" style="font-size: 5rem; color: gray;" aria-hidden="true"></i>
+                            <br>
+                            <span>Sin imagen</span>
+                        </ng-container>
                     </div>
                 </div>
-                <form [formGroup]="newForm">
+                <form [formGroup]="newForm" class="was-validated">
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label>Título</label>
                             <input type="text" class="form-control form-control-sm" placeholder="título de la noticia"
-                                formControlName="title">
+                                formControlName="title" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label>Referencia</label>
                             <input type="text" class="form-control form-control-sm" placeholder="referencia"
-                                formControlName="reference">
+                                formControlName="reference" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Estado</label>
@@ -81,11 +87,11 @@
                         <div class="col-md-6">
                             <label>Outline</label>
                             <textarea type="text" class="form-control form-control-sm" placeholder="Ingrese outline"
-                                rows="4" formControlName="outline"></textarea>
+                                rows="4" formControlName="outline" required></textarea>
                         </div>
                         <div class="col-md-6">
                             <label>Texto</label>
-                            <textarea type="text" class="form-control form-control-sm"
+                            <textarea type="text" class="form-control form-control-sm" required
                                 placeholder="Ingrese el texto de la noticia" rows="4" formControlName="text"></textarea>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Municipality } from 'src/app/interfaces/municipality';
 import { MunicipalityService } from 'src/app/services/configuration/municipality.service';
+import { FormValidator } from 'src/app/utils/form-validator';
 import Swal from 'sweetalert2';
 declare const $: any;
 
@@ -22,6 +23,18 @@ export class MunicipalityComponent implements OnInit {
   item: string;
   loading: boolean;
   region: string;
+  image: string;
+  fields = {
+    name: 'nombre',
+    description: 'descripción',
+    economy: 'economía',
+    habitants: 'habitantes',
+    history: 'historia',
+    weather: 'clima',
+    reference: 'referencia',
+    x: 'coordenada X',
+    y: 'coordenada Y'
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,11 +85,18 @@ export class MunicipalityComponent implements OnInit {
     });
   }
 
-  newMun(isNew: boolean, mpio): void {
+  newMun(isNew: boolean, mpio?: Municipality): void {
     this.item = '';
     this.isNew = isNew;
     this.municipality = mpio;
-    mpio ? this.municipalityForm.patchValue(mpio) : this.buildForm();
+    this.url = null;
+    if (mpio) {
+      this.municipalityForm.patchValue(mpio);
+      this.image = mpio.image;
+    } else {
+      this.buildForm();
+      this.image = '';
+    }
     $('#mpioModal').modal('show');
   }
 
@@ -92,37 +112,55 @@ export class MunicipalityComponent implements OnInit {
   }
 
   async saveMpio(): Promise<void> {
-    if (this.municipalityForm.valid) {
-      this.loading = true;
-      const mpio = this.municipalityService.buildMunicipality(
-        this.municipalityForm.value,
-        this.isNew ? '' : this.municipality.idMun
-      );
-      if (this.url) {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-          await this.compressFile(event.target.result);
-          this.municipalityService.uploadImg(this.region, this.imageBlob).then((answer) => {
-            mpio.image = answer;
-            this.municipalityService.saveMunicipality(this.region, mpio);
-            Swal.fire('Buen trabajo!', 'Municipio creado exitosamente', 'success');
-            this.reset('Municipio creado');
+    if (FormValidator.validateForm(this.municipalityForm) && this.image) {
+      if (!this.isNew || this.validateName()) {
+        this.loading = true;
+        const mpio = this.municipalityService.buildMunicipality(
+          this.municipalityForm.value,
+          this.isNew ? '' : this.municipality.idMun
+        );
+        if (this.url) {
+          const reader = new FileReader();
+          reader.onload = async (event) => {
+            await this.compressFile(event.target.result);
+            this.municipalityService.uploadImg(this.region, this.imageBlob).then((answer) => {
+              mpio.image = answer;
+              this.municipalityService.saveMunicipality(this.region, mpio);
+              Swal.fire('Buen trabajo!', 'Municipio creado exitosamente', 'success');
+              this.reset('Municipio creado');
+            }).catch((error) => {
+              this.throwError('El municipio no pudo guardarse, inténtelo de nuevo más tarde', error);
+            });
+          };
+          reader.readAsDataURL(this.url);
+        } else {
+          this.municipalityService.saveMunicipality(this.region, mpio).then(() => {
+            this.reset('Municipio Actualizado');
+            Swal.fire('¡Buen trabajo!', 'Municipio actualizado exitosamente', 'success');
           }).catch((error) => {
-            this.throwError('El municipio no pudo guardarse, intentelo de nuevo más tarde', error);
+            this.throwError('El municipio no pudo actualizarse, inténtelo de nuevo más tarde', error);
           });
-        };
-        reader.readAsDataURL(this.url.target.files[0]);
+        }
       } else {
-        this.municipalityService.saveMunicipality(this.region, mpio).then(() => {
-          this.reset('Municipio Actualizado');
-          Swal.fire('¡Buen trabajo!', 'Municipio actualizado exitosamente', 'success');
-        }).catch((error) => {
-          this.throwError('El municipio no pudo actualizarse, inténtelo de nuevo más tarde', error);
-        });
+        Swal.fire('Atención', `Ya existe una municipio con el mismo nombre`, 'info');
       }
     } else {
-      Swal.fire('Campos incompletos', 'Por favor llenar todos los campos para continuar', 'warning');
+      const imageRequerid = this.image ? '' : ', imagen'
+      const invalids = `${FormValidator.msgInvalidKeys(this.fields, FormValidator.getInvalids(this.municipalityForm))}${imageRequerid}`;
+      Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${invalids}</strong>`, 'info');
     }
+  }
+
+  validateName(): boolean {
+    const name: string = this.municipalityForm.get('name').value;
+    return !this.listMunicipalities.some(mun => mun.name.trim().toLowerCase() === name.trim().toLowerCase());
+  }
+
+  readImage(file: File): void {
+    this.url = file;
+    const reader = new FileReader();
+    reader.onload = (event) => (this.image = event.target.result.toString());
+    reader.readAsDataURL(file);
   }
 
   throwError(msj: string, err: any): void {
@@ -132,8 +170,8 @@ export class MunicipalityComponent implements OnInit {
   }
 
   reset(msj?: string): void {
-    this.url = null;
-    this.imageBlob = null;
+    this.url = this.imageBlob = null;
+    this.image = '';
     $('#mpioModal').modal('hide');
     this.buildForm();
     this.loading = false;

@@ -1,6 +1,9 @@
 .center-item {
     text-align: center;
 }
+.was-validated .form-control:invalid{
+    border-color: #cccccc;
+}
 .biggest :hover {
     transform: scale(1.24);
     transition: transform 0.4s;

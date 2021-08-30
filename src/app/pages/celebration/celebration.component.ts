@@ -7,6 +7,7 @@ import { Activity } from 'src/app/interfaces/activity';
 import { GalleryService } from 'src/app/services/configuration/gallery.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { FormValidator } from 'src/app/utils/form-validator';
 declare const $: any;
 
 @Component({
@@ -29,6 +30,12 @@ export class CelebrationComponent implements OnInit {
   loading: boolean;
   idMun: string;
   region: string;
+  image: string;
+  fields = {
+    name: 'nombre',
+    description: 'descripción',
+    reference: 'referencia',
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,7 +43,7 @@ export class CelebrationComponent implements OnInit {
     private imageCompress: NgxImageCompressService,
     private galleryService: GalleryService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idMun = sessionStorage.getItem('idMun');
@@ -68,7 +75,7 @@ export class CelebrationComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       image: [''],
-      reference: [''],
+      reference: ['', Validators.required],
       state: [true],
     });
     this.activityForm = this.formBuilder.group({
@@ -132,50 +139,69 @@ export class CelebrationComponent implements OnInit {
 
   newCelebration(celebration: Celebration): void {
     this.celebration = celebration;
-    celebration
-      ? this.celebrationForm.patchValue(celebration)
-      : this.buildForm();
+    this.url = null;
+    if (celebration) {
+      this.celebrationForm.patchValue(celebration);
+      this.image = celebration.image;
+    } else {
+      this.buildForm();
+      this.image = '';
+    }
     $('#siteModal').modal('show');
   }
 
   saveCelebration(): void {
-    this.loading = true;
-    if (this.celebrationForm.valid) {
-      const celebration = this.celebrationService.buildCelebration(
-        this.celebrationForm.value,
-        this.idMun,
-        this.celebration ? this.celebration.idCelebration : ''
-      );
-      if (this.url) {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-          await this.compressFile(event.target.result);
-          this.celebrationService
-            .uploadImg(this.region, this.imageBlob, 0)
-            .then((answer) => {
-              celebration.image = answer;
-              this.celebrationService.addCelebration(this.region, celebration);
-              this.reset(0, celebration, '#siteModal');
-            })
-            .catch((error) => {
-              this.throwError(
-                'No se pudo guardar el sitio, intentelo más tarde',
-                error
-              );
-            });
-        };
-        reader.readAsDataURL(this.url.target.files[0]);
+    if (FormValidator.validateForm(this.celebrationForm) && this.image) {
+      if (this.celebration || this.validateName()) {
+        this.loading = true;
+        const celebration = this.celebrationService.buildCelebration(
+          this.celebrationForm.value,
+          this.idMun,
+          this.celebration ? this.celebration.idCelebration : ''
+        );
+        if (this.url) {
+          const reader = new FileReader();
+          reader.onload = async (event) => {
+            await this.compressFile(event.target.result);
+            this.celebrationService
+              .uploadImg(this.region, this.imageBlob, 0)
+              .then((answer) => {
+                celebration.image = answer;
+                this.celebrationService.addCelebration(this.region, celebration);
+                this.reset(0, celebration, '#siteModal');
+              })
+              .catch((error) => {
+                this.throwError(
+                  'No se pudo guardar el sitio, inténtelo más tarde',
+                  error
+                );
+              });
+          };
+          reader.readAsDataURL(this.url);
+        } else {
+          this.celebrationService.addCelebration(this.region, celebration);
+          this.reset(0, celebration, '#siteModal');
+        }
       } else {
-        this.celebrationService.addCelebration(this.region, celebration);
-        this.reset(0, celebration, '#siteModal');
+        Swal.fire('Atención', `Ya existe una celebración con el mismo nombre`, 'info');
       }
     } else {
-      Swal.fire(
-        'Campos incompletos',
-        'Por favor llenar todos los campos para continuar',
-        'warning'
-      );
+      const imageRequerid = this.image ? '' : ', imagen'
+      const invalids = `${FormValidator.msgInvalidKeys(this.fields, FormValidator.getInvalids(this.celebrationForm))}${imageRequerid}`;
+      Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${invalids}</strong>`, 'info');
     }
+  }
+
+  validateName(): boolean {
+    const name: string = this.celebrationForm.get('name').value;
+    return !this.listCelebration.some(cel => cel.name.trim().toLowerCase() === name.trim().toLowerCase());
+  }
+
+  readImage(file: File): void {
+    this.url = file;
+    const reader = new FileReader();
+    reader.onload = (event) => (this.image = event.target.result.toString());
+    reader.readAsDataURL(file);
   }
 
   showActivities(celebration): void {
@@ -183,54 +209,69 @@ export class CelebrationComponent implements OnInit {
     this.listActivity = [];
     celebration.activities
       ? Object.keys(celebration.activities).forEach((m) =>
-          this.listActivity.push(celebration.activities[m])
-        )
+        this.listActivity.push(celebration.activities[m])
+      )
       : '';
   }
 
   saveActivity(): void {
-    if (this.activityForm.valid) {
-      const activity = this.celebrationService.buildActivity(
-        this.activityForm.value,
-        this.idMun,
-        this.celebration.idCelebration,
-        this.activity ? this.activity.idActivity : ''
-      );
-      if (this.url) {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-          await this.compressFile(event.target.result);
-          this.celebrationService
-            .uploadImg(this.region, this.imageBlob, 1)
-            .then((answer) => {
-              activity.image = answer;
-              this.celebrationService.addActivity(this.region, activity);
-              this.reset(1, activity, '#activityModal');
-            })
-            .catch((error) => {
-              this.throwError(
-                'No se pudo guardar la actividad, intentelo más tarde',
-                error
-              );
-            });
-        };
-        reader.readAsDataURL(this.url.target.files[0]);
+    if (FormValidator.validateForm(this.activityForm) && this.image) {
+      if (this.activity || this.validateNameActivity()) {
+        this.loading = true;
+        const activity = this.celebrationService.buildActivity(
+          this.activityForm.value,
+          this.idMun,
+          this.celebration.idCelebration,
+          this.activity ? this.activity.idActivity : ''
+        );
+        if (this.url) {
+          const reader = new FileReader();
+          reader.onload = async (event) => {
+            await this.compressFile(event.target.result);
+            this.celebrationService
+              .uploadImg(this.region, this.imageBlob, 1)
+              .then((answer) => {
+                activity.image = answer;
+                this.celebrationService.addActivity(this.region, activity);
+                this.reset(1, activity, '#activityModal');
+              })
+              .catch((error) => {
+                this.throwError(
+                  'No se pudo guardar la actividad, intentelo más tarde',
+                  error
+                );
+              });
+          };
+          reader.readAsDataURL(this.url);
+        } else {
+          this.celebrationService.addActivity(this.region, activity);
+          this.reset(1, activity, '#activityModal');
+        }
       } else {
-        this.celebrationService.addActivity(this.region, activity);
-        this.reset(1, activity, '#activityModal');
+        Swal.fire('Atención', `Ya existe una atividad con el mismo nombre`, 'info');
       }
     } else {
-      Swal.fire(
-        'Campos incompletos',
-        'Por favor llenar todos los campos para continuar',
-        'warning'
-      );
+      const name = this.activityForm.get('name').invalid ? 'nombre' : '';
+      const img = this.image ? '' : ', imagen';
+      Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${name}${img}</strong>`, 'info');
     }
   }
 
-  newActivity(activity): void {
+  validateNameActivity(): boolean {
+    const name: string = this.activityForm.get('name').value;
+    return !this.listActivity.some(act => act.name.trim().toLowerCase() === name.trim().toLowerCase());
+  }
+
+  newActivity(activity: Activity): void {
     this.activity = activity;
-    activity ? this.activityForm.patchValue(activity) : this.buildForm();
+    this.url = null;
+    if (activity) {
+      this.activityForm.patchValue(activity);
+      this.image = activity.image;
+    } else {
+      this.buildForm();
+      this.image = '';
+    }
     $('#activityModal').modal('show');
   }
 
@@ -247,12 +288,12 @@ export class CelebrationComponent implements OnInit {
     wich === 0
       ? this.celebration
         ? (this.listCelebration[
-            this.listCelebration.indexOf(this.celebration)
-          ] = item)
+          this.listCelebration.indexOf(this.celebration)
+        ] = item)
         : this.listCelebration.push(item)
       : this.activity
-      ? (this.listActivity[this.listActivity.indexOf(this.activity)] = item)
-      : this.listActivity.push(item);
+        ? (this.listActivity[this.listActivity.indexOf(this.activity)] = item)
+        : this.listActivity.push(item);
     this.url = null;
   }
 

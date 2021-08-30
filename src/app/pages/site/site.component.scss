@@ -4,6 +4,9 @@
     color: black; 
     font-size: 35px;
 }
+.was-validated .form-control:invalid{
+    border-color: #cccccc;
+}
 .cover-img {
     width: 350px;
     border-radius: 10px;

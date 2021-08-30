@@ -5,6 +5,7 @@ import { GalleryService } from 'src/app/services/configuration/gallery.service';
 import { SiteService } from 'src/app/services/configuration/site.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { FormValidator } from 'src/app/utils/form-validator';
 declare const $: any;
 
 @Component({
@@ -21,6 +22,14 @@ export class SiteComponent implements OnInit {
   idMun: string;
   siteList: Site[] = [];
   region: string;
+  image: string;
+  fields = {
+    name: 'nombre',
+    description: 'descripción',
+    reference: 'referencia',
+    x: 'coordenada X',
+    y: 'coordenada Y'
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,7 +73,14 @@ export class SiteComponent implements OnInit {
 
   newSite(site: Site): void {
     this.site = site;
-    site ? this.siteForm.patchValue(site) : this.buildForm();
+    this.url = null;
+    if (site) {
+      this.siteForm.patchValue(site);
+      this.image = site.image;
+    } else {
+      this.buildForm();
+      this.image = '';
+    }
     $('#siteModal').modal('show');
   }
 
@@ -96,8 +112,9 @@ export class SiteComponent implements OnInit {
   }
 
   saveSite(): void {
-    this.loading = true;
-    if (this.siteForm.valid) {
+    if (FormValidator.validateForm(this.siteForm) && this.image) {
+     if (this.site || this.validateName()) {
+      this.loading = true;
       const site = this.siteService.buildSite(
         this.siteForm.value,
         this.idMun,
@@ -115,17 +132,35 @@ export class SiteComponent implements OnInit {
             this.throwError('No se pudo guardar el sitio, intentelo más tarde', error);
           });
         };
-        reader.readAsDataURL(this.url.target.files[0]);
+        reader.readAsDataURL(this.url);
       } else {
         this.siteService.addSite(this.region, site);
         this.reset(site);
       }
+     } else {
+      Swal.fire('Atención', `Ya existe un sitio con el mismo nombre`, 'info');
+     }
     } else {
-      Swal.fire('Campos incompletos', 'Por favor llenar todos los campos para continuar', 'warning');
+      const imageRequerid = this.image ? '' : ', imagen'
+      const invalids = `${FormValidator.msgInvalidKeys(this.fields, FormValidator.getInvalids(this.siteForm))}${imageRequerid}`;
+      Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${invalids}</strong>`, 'info');
     }
   }
 
-  throwError(msj : string, err : any) : void{
+  validateName(): boolean {
+    const name: string = this.siteForm.get('name').value;
+    return !this.siteList.some(site => site.name.trim().toLowerCase() === name.trim().toLowerCase());
+  }
+
+
+  readImage(file: File): void {
+    this.url = file;
+    const reader = new FileReader();
+    reader.onload = (event) => (this.image = event.target.result.toString());
+    reader.readAsDataURL(file);
+  }
+
+  throwError(msj: string, err: any): void {
     console.error(err);
     Swal.fire('Problema interno del server', msj, 'warning');
     this.loading = false;
@@ -133,6 +168,7 @@ export class SiteComponent implements OnInit {
 
   reset(site): void {
     this.loading = false;
+    this.image = '';
     $('#siteModal').modal('hide');
     this.buildForm();
     this.site
