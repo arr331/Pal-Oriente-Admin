@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { auth } from 'firebase/app';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,7 +13,7 @@ import { User } from '../models/user';
 export class LoginService {
   user = new User();
 
-  constructor(public afAuth: AngularFireAuth) {}
+  constructor(public afAuth: AngularFireAuth, private fireBase: AngularFireDatabase,) {}
 
   async loginGoogle(): Promise<auth.UserCredential> {
     try {
@@ -65,5 +66,9 @@ export class LoginService {
 
   getToken() {
     return localStorage.getItem('accessToken');
+  }
+
+  saveUser(user: User) {
+    return this.fireBase.list('USERS').update(user.idUser, user);
   }
 }
