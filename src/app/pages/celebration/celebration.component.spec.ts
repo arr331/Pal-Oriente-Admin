@@ -126,9 +126,12 @@ describe('CelebrationComponent', () => {
       celebrationService,
       'addCelebration'
     ).and.stub();
-
+    spyOn(component, 'validateName').and.returnValue(true);
+    component.celebration = celebration;
+    component.image = 'image';
     component.celebrationForm.controls.name.setValue('name');
     component.celebrationForm.controls.description.setValue('description');
+    component.celebrationForm.controls.reference.setValue('reference');
     component.idMun = 'idMun';
     spyOn(component, 'reset');
     component.saveCelebration();
@@ -136,19 +139,40 @@ describe('CelebrationComponent', () => {
     expect(component.reset).toHaveBeenCalledTimes(1);
   });
 
+  // it('should call addCelebration method test', () => {
+  //   const addCelebration = spyOn(
+  //     celebrationService,
+  //     'addCelebration'
+  //   ).and.stub();
+
+  //   component.celebrationForm.controls.name.setValue('name');
+  //   component.celebrationForm.controls.description.setValue('description');
+  //   component.idMun = 'idMun';
+  //   component.url = 'url';
+  //   spyOn(component, 'reset');
+  //   const uploadImg = spyOn(celebrationService, 'uploadImg').and.resolveTo();
+  //   component.saveCelebration();
+  //   expect(uploadImg).toHaveBeenCalledTimes(1);
+  // });
+
   it('should show message error when form is invalid', () => {
     component.celebrationForm.controls.name.setValue('name');
+    component.celebrationForm.controls.reference.setValue('reference');
+    component.celebrationForm.controls.image.setValue('image');
+    component.image = 'image';
     component.saveCelebration();
     expect(Swal.isVisible()).toBeTruthy();
-    expect(Swal.getTitle().textContent).toEqual('Campos incompletos');
+    expect(Swal.getHtmlContainer().textContent).toEqual('Los siguientes campos son inválidos:  descripción');
   });
 
   it('should call addActivity method and reset method when url not exist', () => {
     const addCelebration = spyOn(celebrationService, 'addActivity').and.stub();
-
+    spyOn(component, 'validateNameActivity').and.returnValue(true);
     component.activityForm.controls.name.setValue('name');
     component.celebration = celebration;
     component.idMun = 'idMun';
+    component.image = 'image';
+    component.activity = activity;
     spyOn(component, 'reset');
     component.saveActivity();
     expect(addCelebration).toHaveBeenCalledTimes(1);
@@ -156,8 +180,9 @@ describe('CelebrationComponent', () => {
   });
 
   it('should show message error when activityForm is invalid', () => {
+    component.image = 'image';
     component.saveActivity();
     expect(Swal.isVisible()).toBeTruthy();
-    expect(Swal.getTitle().textContent).toEqual('Campos incompletos');
+    expect(Swal.getHtmlContainer().textContent).toEqual('Los siguientes campos son inválidos:  nombre');
   });
 });

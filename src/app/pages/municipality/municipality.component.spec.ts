@@ -64,6 +64,8 @@ describe('MunicipalityComponent', () => {
       state: true,
       weather: 'clima',
       reference: 'referencia',
+      x: '55555',
+      y: '88999'
     };
     fixture.detectChanges();
   });
@@ -113,9 +115,13 @@ describe('MunicipalityComponent', () => {
     component.municipalityForm.controls.description.setValue('description');
     component.municipalityForm.controls.economy.setValue('economy');
     component.municipalityForm.controls.habitants.setValue('habitants');
+    component.municipalityForm.controls.weather.setValue('20 grados');
+    component.municipalityForm.controls.x.setValue('65.4555');
+    component.municipalityForm.controls.y.setValue('-75.6555');
+    component.municipalityForm.controls.reference.setValue('www.reference.com');
     component.saveMpio();
     expect(Swal.isVisible()).toBeTruthy();
-    expect(Swal.getTitle().textContent).toEqual('Campos incompletos');
+    expect(Swal.getHtmlContainer().textContent).toEqual('Los siguientes campos son inválidos:  historia, imagen');
   });
 
   it('should save municipality when url not exist', () => {
@@ -123,6 +129,7 @@ describe('MunicipalityComponent', () => {
       municipalityService,
       'saveMunicipality'
     ).and.callThrough();
+    spyOn(component, 'validateName').and.returnValue(true);
     component.municipalityForm.controls.name.setValue('name');
     component.municipalityForm.controls.description.setValue('description');
     component.municipalityForm.controls.economy.setValue('economy');
@@ -130,6 +137,10 @@ describe('MunicipalityComponent', () => {
     component.municipalityForm.controls.history.setValue('history');
     component.municipalityForm.controls.weather.setValue('weather');
     component.municipalityForm.controls.reference.setValue('reference');
+    component.municipalityForm.controls.x.setValue('x');
+    component.municipalityForm.controls.y.setValue('y');
+    component.image = 'image';
+    component.municipality = municipality;
     component.saveMpio();
     expect(saveMunicipality).toHaveBeenCalledTimes(1);
   });

@@ -162,7 +162,7 @@ export class SiteComponent implements OnInit {
 
   throwError(msj: string, err: any): void {
     console.error(err);
-    Swal.fire('Problema interno del server', msj, 'warning');
+    Swal.fire('Problema interno del servidor', msj, 'warning');
     this.loading = false;
   }
 
@@ -189,6 +189,8 @@ export class SiteComponent implements OnInit {
         });
         $('#galleryModal').modal('show');
         this.loading = false;
+      }).catch((error) => {
+        this.throwError('No se pudo cargar la galería de imágenes, inténtelo más tarde', error);
       });
   }
 }

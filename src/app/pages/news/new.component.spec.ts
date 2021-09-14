@@ -74,8 +74,11 @@ describe('NewComponent', () => {
     component.newForm.controls.outline.setValue('outline');
     component.newForm.controls.text.setValue('text');
     component.newForm.controls.title.setValue('title');
+    component.newForm.controls.reference.setValue('reference');
     component.newForm.controls.state.setValue(true);
+    component.nw = nw;
     const newToSave: Partial<New> = { id: nw?.id, ...component.newForm.value };
+    spyOn(component, 'validateName').and.returnValue(true);
     const getSaveService = spyOn(newService, 'save').and.resolveTo();
     component.save();
     expect(component.newForm.valid).toBeTruthy();

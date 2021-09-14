@@ -77,6 +77,8 @@ describe('RegionComponent', () => {
     component.regionForm.controls.name.setValue('name');
     component.regionForm.controls.state.setValue(false);
     component.image = 'imageForm';
+    component.region = region;
+    spyOn(component, 'validateName').and.returnValue(true);
     const saveRegion = spyOn(regionService, 'save').and.resolveTo();
     spyOn(regionService, 'build').and.returnValue(region);
     sessionStorage.setItem('region', 'region');
@@ -90,7 +92,7 @@ describe('RegionComponent', () => {
 
     component.save();
     expect(Swal.isVisible()).toBeTruthy();
-    expect(Swal.getTitle().textContent).toEqual('Campos incompletos');
+    expect(Swal.getHtmlContainer().textContent).toEqual('Los siguientes campos son inválidos:  nombre, imagen');
   });
 
   it('should call navigateByUrl', () => {

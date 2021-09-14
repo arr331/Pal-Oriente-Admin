@@ -89,7 +89,7 @@ export class RegionComponent implements OnInit {
         })
         .catch(() => {
           Swal.fire(
-            'Problema interno del server',
+            'Problema interno del servidor',
             'La región no pudo guardarse, intentelo de nuevo más tarde',
             'warning'
           );

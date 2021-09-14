@@ -277,7 +277,7 @@ export class CelebrationComponent implements OnInit {
 
   throwError(msj: string, err?: any): void {
     console.error(err);
-    Swal.fire('Problema interno del server', msj, 'warning');
+    Swal.fire('Problema interno del servidor', msj, 'warning');
     this.loading = false;
   }
 
