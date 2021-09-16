@@ -106,7 +106,7 @@ describe('MunicipalityComponent', () => {
   it('should called throw Error', () => {
     component.throwError('mensaje', 'error');
     expect(Swal.isVisible()).toBeTruthy();
-    expect(Swal.getTitle().textContent).toEqual('Problema interno del server');
+    expect(Swal.getTitle().textContent).toEqual('Problema interno del servidor');
     expect(component.loading).toBeFalse();
   });
 
