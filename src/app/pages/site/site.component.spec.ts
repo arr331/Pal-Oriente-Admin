@@ -108,7 +108,6 @@ describe('SiteComponent', () => {
   it('should call swal fire when form is invalid', () => {
     component.siteForm.controls.name.setValue('name');
     component.siteForm.controls.description.setValue('description');
-    component.siteForm.controls.reference.setValue('reference');
     component.siteForm.controls.y.setValue('y');
     component.idMun = 'idMun';
  

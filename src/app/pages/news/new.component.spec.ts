@@ -16,6 +16,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { New } from '../../interfaces/new';
+import Swal from 'sweetalert2';
 
 describe('NewComponent', () => {
   let component: NewComponent;
@@ -85,7 +86,7 @@ describe('NewComponent', () => {
     expect(getSaveService).toHaveBeenCalledTimes(1);
   });
 
-  it('invalidForm', () => {
+  it('invalidFormTest', () => {
     const getSaveService = spyOn(newService, 'save').and.callThrough();
     component.image = 'image';
     component.newForm.controls.outline.setValue('outline');
@@ -94,5 +95,6 @@ describe('NewComponent', () => {
     component.save();
     expect(component.newForm.valid).toBeFalsy();
     expect(getSaveService).not.toHaveBeenCalledTimes(1);
+    expect(Swal.getHtmlContainer().textContent).toEqual('Los siguientes campos son inválidos:  texto');
   });
 });

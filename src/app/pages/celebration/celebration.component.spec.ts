@@ -131,7 +131,6 @@ describe('CelebrationComponent', () => {
     component.image = 'image';
     component.celebrationForm.controls.name.setValue('name');
     component.celebrationForm.controls.description.setValue('description');
-    component.celebrationForm.controls.reference.setValue('reference');
     component.idMun = 'idMun';
     spyOn(component, 'reset');
     component.saveCelebration();

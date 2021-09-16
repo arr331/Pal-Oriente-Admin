@@ -118,7 +118,6 @@ describe('MunicipalityComponent', () => {
     component.municipalityForm.controls.weather.setValue('20 grados');
     component.municipalityForm.controls.x.setValue('65.4555');
     component.municipalityForm.controls.y.setValue('-75.6555');
-    component.municipalityForm.controls.reference.setValue('www.reference.com');
     component.saveMpio();
     expect(Swal.isVisible()).toBeTruthy();
     expect(Swal.getHtmlContainer().textContent).toEqual('Los siguientes campos son inválidos:  historia, imagen');

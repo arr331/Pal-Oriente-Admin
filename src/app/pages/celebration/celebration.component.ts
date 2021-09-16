@@ -34,7 +34,6 @@ export class CelebrationComponent implements OnInit {
   fields = {
     name: 'nombre',
     description: 'descripción',
-    reference: 'referencia',
   }
 
   constructor(
@@ -75,7 +74,7 @@ export class CelebrationComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       image: [''],
-      reference: ['', Validators.required],
+      reference: [''],
       state: [true],
     });
     this.activityForm = this.formBuilder.group({

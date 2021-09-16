@@ -26,7 +26,6 @@ export class SiteComponent implements OnInit {
   fields = {
     name: 'nombre',
     description: 'descripción',
-    reference: 'referencia',
     x: 'coordenada X',
     y: 'coordenada Y'
   }
@@ -66,7 +65,7 @@ export class SiteComponent implements OnInit {
       image: [''],
       x: ['', Validators.required],
       y: ['', Validators.required],
-      reference: ['', Validators.required],
+      reference: [''],
       state: [true],
     });
   }

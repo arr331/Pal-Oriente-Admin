@@ -31,7 +31,6 @@ export class MunicipalityComponent implements OnInit {
     habitants: 'habitantes',
     history: 'historia',
     weather: 'clima',
-    reference: 'referencia',
     x: 'coordenada X',
     y: 'coordenada Y'
   }
@@ -78,7 +77,7 @@ export class MunicipalityComponent implements OnInit {
       history: ['', Validators.required],
       weather: ['', Validators.required],
       image: [''],
-      reference: ['', Validators.required],
+      reference: [''],
       state: [true],
       x: ['', Validators.required],
       y: ['', Validators.required]

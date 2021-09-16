@@ -24,8 +24,7 @@ export class NewComponent implements OnInit {
   fields = {
     outline: 'outline',
     text: 'texto',
-    title: 'título',
-    reference: 'referencia'
+    title: 'título'
   }
 
   constructor(
