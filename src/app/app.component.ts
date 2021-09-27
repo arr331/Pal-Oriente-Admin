@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import * as firebase from 'firebase';
+import { Observable } from 'rxjs';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'inicio';
+  user: Observable<firebase.User>;
+
+  constructor(private loginservice: LoginService) {
+    this.user = loginservice.isAuth();
+  }
 }

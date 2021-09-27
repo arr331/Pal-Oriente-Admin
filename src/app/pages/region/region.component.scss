@@ -1,3 +1,14 @@
 .was-validated .form-control:invalid{
     border-color: #cccccc;
 }
+
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+.back-image {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-origin: content-box;
+}

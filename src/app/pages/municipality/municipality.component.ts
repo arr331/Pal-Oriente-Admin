@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Municipality } from 'src/app/interfaces/municipality';
 import { MunicipalityService } from 'src/app/services/configuration/municipality.service';
+import { Breadcrumb, BreadPaths } from 'src/app/utils/breadcrumb';
 import { FormValidator } from 'src/app/utils/form-validator';
 import Swal from 'sweetalert2';
 declare const $: any;
@@ -40,7 +41,9 @@ export class MunicipalityComponent implements OnInit {
     private municipalityService: MunicipalityService,
     private imageCompress: NgxImageCompressService,
     private router: Router
-  ) { }
+  ) {
+    Breadcrumb.paths.next(BreadPaths.municipality);
+  }
 
   ngOnInit(): void {
     this.region = sessionStorage.getItem('region');

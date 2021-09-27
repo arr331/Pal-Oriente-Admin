@@ -25,6 +25,7 @@ import { CelebrationComponent } from './pages/celebration/celebration.component'
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { RegionComponent } from './pages/region/region.component';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { RegionComponent } from './pages/region/region.component';
     NewComponent,
     SpinnerComponent,
     GalleryComponent,
-    RegionComponent
+    RegionComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule,

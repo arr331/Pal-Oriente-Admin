@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Region } from 'src/app/interfaces/region';
 import { RegionService } from 'src/app/services/configuration/region.service';
+import { Breadcrumb, BreadPaths } from 'src/app/utils/breadcrumb';
 import { FormValidator } from 'src/app/utils/form-validator';
 import Swal from 'sweetalert2';
 declare const $: any;
@@ -29,7 +30,9 @@ export class RegionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private regionService: RegionService,
     private router: Router
-  ) {}
+  ) {
+    Breadcrumb.paths.next(BreadPaths.default);
+  }
 
   ngOnInit(): void {
     this.loading = true;

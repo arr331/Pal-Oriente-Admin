@@ -69,6 +69,9 @@ body{
     text-align: center;
 }
 
+.container-fluid {
+    padding: 0;
+}
 /*Responsive*/
 /*Desde la altura 0px hasta ka anchura 1488px de pantalla*/
 @media(max-width: 1488px){

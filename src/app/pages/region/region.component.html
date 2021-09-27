@@ -1,26 +1,30 @@
 <app-spinner *ngIf="loading"></app-spinner>
-<div class="container mt-2">
+<div class="container mt-2 mb-3">
     <button type="button" class="btn btn-outline-success float-right" routerLink="/noticias"><i class="fa fa-eye"
             aria-hidden="true"></i> Ver noticias</button>
     <button type="button" (click)="create()" class="btn btn-outline-primary"><i class="fa fa-plus"
             aria-hidden="true"></i> Crear región</button>
     <hr>
-    <table class="table table-sm">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Región</th>
-                <th scope="col">Descripción</th>
-                <th scope="col" class="text-center">Municipios</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let reg of regionList" class="hover">
-                <td (click)="create(reg)">{{reg.name}}</td>
-                <td (click)="create(reg)">{{reg.description}}</td>
-                <td class="text-center"><i (click)="go(reg.id)" class="fa fa-external-link" aria-hidden="true"></i></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-6 col-sm-12" *ngFor="let reg of regionList" style="padding: 0 !important;">
+            <div class="card">
+                <div class="row no-gutters">
+                  <div class="col-md-4 back-image" style="background-image: url({{reg.urlImage}});"></div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{reg.name}}</h5>
+                      <p class="card-text">{{reg.description}}</p>
+                      <p class="card-text"><small class="text-muted">{{reg.state ? 'Activa' : 'Inactiva'}}</small></p>
+                      <button type="button" (click)="create(reg)" class="btn btn-sm btn-outline-primary" style="margin-right: 20px;">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Editar</button>
+                      <button type="button" (click)="go(reg.id)" class="btn btn-sm btn-outline-primary">
+                          <i class="fa fa-plus" aria-hidden="true"></i> Ver municipios</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="modal fade bd-example-modal-lg" id="regionModal" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -44,7 +48,7 @@
                 <hr>
                 <div class="row mb-3">
                     <div class="col-md-12" style="text-align: center;">
-                        <img *ngIf="image" src="{{image}}" style=" height: 9rem; border-radius: 10px;"
+                        <img *ngIf="image" src="{{image}}" style=" height: 9rem;"
                             alt="No se cargó">
                         <ng-container *ngIf="!image">
                             <i class="fa fa-picture-o" style="font-size: 5rem; color: gray;" aria-hidden="true"></i>

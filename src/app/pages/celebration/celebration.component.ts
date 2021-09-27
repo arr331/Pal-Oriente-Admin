@@ -8,6 +8,7 @@ import { GalleryService } from 'src/app/services/configuration/gallery.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { FormValidator } from 'src/app/utils/form-validator';
+import { Breadcrumb, BreadPaths } from 'src/app/utils/breadcrumb';
 declare const $: any;
 
 @Component({
@@ -42,7 +43,9 @@ export class CelebrationComponent implements OnInit {
     private imageCompress: NgxImageCompressService,
     private galleryService: GalleryService,
     private router: Router
-  ) { }
+  ) {
+    Breadcrumb.paths.next(BreadPaths.celebration);
+  }
 
   ngOnInit(): void {
     this.idMun = sessionStorage.getItem('idMun');

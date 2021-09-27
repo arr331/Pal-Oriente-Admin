@@ -1,0 +1,9 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" [class.active]="last" *ngFor = "let path of paths | async; last as last">
+            <a *ngIf="!last else lastPath" routerLink="/{{path.path}}">{{path.name}}</a>
+            <ng-template #lastPath>{{path.name}}</ng-template>
+        </li>
+      <!--<li class="breadcrumb-item active" aria-current="page">Data</li>-->
+    </ol>
+</nav>

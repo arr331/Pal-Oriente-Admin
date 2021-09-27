@@ -1,7 +1,13 @@
-.container{
-    max-width: 33rem;
-    border: #cccccc 2px solid;
-    border-radius: 10px;
+.login-container{
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    display:  flex; 
+    align-items:  flex-start; 
+    justify-content:  flex-start; 
+    background:  #f3f2f2; 
 }
 .btn-back{
     font-size: 20px;
@@ -12,3 +18,76 @@
 .was-validated .form-control:invalid{
     border-color: #cccccc;
 }
+$primary: #244256; 	
+
+h4 {
+    font-size:  24px; 
+    font-weight:  600; 
+    color:  #000; 
+    opacity:  .85; 
+  }
+  label {
+    font-size:  13.5px; 
+    color:  #000;
+    opacity:  .8;
+    font-weight:  400; 
+  }
+  form {
+    padding:  40px 30px; 
+    background:  #fefefe; 
+    padding-bottom:  20px; 
+    h4 {
+      margin-bottom:  20px;
+      color:  rgba(#000, .5);
+      span {
+        color:  rgba(#000, 1);
+        font-weight:  700; 
+      }
+    }
+  }
+
+  button {
+    -webkit-appearance:  none; 
+    width:  auto;
+    min-width:  100px;
+    border-radius:  24px; 
+    text-align:  center; 
+    padding:  15px 40px;
+    margin-top:  5px; 
+    background-color:  saturate($primary, 30%); 
+    color:  #fff; 
+    font-size:  14px;
+    margin-left:  auto; 
+    font-weight:  500; 
+    box-shadow:  0px 2px 6px -1px rgba(0,0,0,.13); 
+    border:  none;
+    transition:  all .3s ease; 
+    outline: 0; 
+    &:hover {
+        color:  #fff; 
+      box-shadow:  0 2px 6px -1px rgba($primary, .65);
+    }
+  }
+
+  .session {
+    display:  flex; 
+    flex-direction:  row; 
+    width:  700PX; 
+    height:  auto; 
+    margin:  auto auto; 
+    background:  #ffffff; 
+    border-radius:  4px; 
+    box-shadow:  0px 2px 6px -1px rgba(0,0,0,.12);
+  }
+  .left {
+    width: 30%;
+    max-width: 220px;
+    min-width: 20px;
+    height:  auto; 
+    min-height:  100%; 
+    position:  relative; 
+    background-image: url("https://firebasestorage.googleapis.com/v0/b/palasquesea-e32c0.appspot.com/o/REGION%2Fembalses.jpg?alt=media&token=ef3522cf-a3b4-4d3f-b53c-4ec3f4815d1f");
+    background-size:  cover;
+    border-top-left-radius:  4px; 
+    border-bottom-left-radius:  4px; 
+  }

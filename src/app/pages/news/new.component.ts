@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { New } from 'src/app/interfaces/new';
 import { NewService } from 'src/app/services/configuration/new.service';
+import { Breadcrumb, BreadPaths } from 'src/app/utils/breadcrumb';
 import { FormValidator } from 'src/app/utils/form-validator';
 import Swal from 'sweetalert2';
 declare const $: any;
@@ -30,7 +31,9 @@ export class NewComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private newService: NewService
-  ) { }
+  ) {
+    Breadcrumb.paths.next(BreadPaths.news);
+  }
 
   ngOnInit(): void {
     this.buildForm();

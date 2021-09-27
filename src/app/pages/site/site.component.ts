@@ -6,6 +6,7 @@ import { SiteService } from 'src/app/services/configuration/site.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { FormValidator } from 'src/app/utils/form-validator';
+import { Breadcrumb, BreadPaths } from 'src/app/utils/breadcrumb';
 declare const $: any;
 
 @Component({
@@ -35,7 +36,9 @@ export class SiteComponent implements OnInit {
     private siteService: SiteService,
     private galleryService: GalleryService,
     private router: Router,
-  ) { }
+  ) {
+    Breadcrumb.paths.next(BreadPaths.sites);
+  }
 
   ngOnInit(): void {
     this.idMun = sessionStorage.getItem('idMun');
