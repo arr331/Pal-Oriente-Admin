@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   logInForm: FormGroup;
   fields = {
     email: 'correo electrónico',
-    password: 'constraseña'
+    password: 'contraseña'
   }
 
   constructor(
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
           this.logInForm.value['password']
         )
         .then(
-          () => this.router.navigateByUrl('/configuration'),
+          () => this.router.navigateByUrl('/regiones'),
           (error) => {
             console.error(error);
             Swal.fire(

@@ -7,13 +7,14 @@ import { NewComponent } from './pages/news/new.component';
 import { SiteComponent } from './pages/site/site.component';
 import { CelebrationComponent } from './pages/celebration/celebration.component';
 import { RegionComponent } from './pages/region/region.component';
+import { LoginGuard } from './services/login.service';
 
 const redirect = () => redirectUnauthorizedTo(['login']);
 
 const routes: Routes = [
 
   { path: '', redirectTo: 'regiones', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'regiones', component: RegionComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirect } },
   { path: 'municipios', component: MunicipalityComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirect } },
   { path: 'sitios', component: SiteComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirect } },

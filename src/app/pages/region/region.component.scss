@@ -2,13 +2,14 @@
     border-color: #cccccc;
 }
 
-.card-horizontal {
-    display: flex;
-    flex: 1 1 auto;
-}
-
 .back-image {
     background-repeat: no-repeat;
     background-position: center;
     background-origin: content-box;
+    background-size: cover;
+    height: 11vh;
+}
+
+.card {
+    margin: 5px
 }

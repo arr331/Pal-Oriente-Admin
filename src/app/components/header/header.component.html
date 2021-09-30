@@ -7,14 +7,14 @@
     <div class="navbar-nav" class="menu" style="margin-left: auto;">
     </div>
   </div>
-  <div *ngIf="!user" class="login">
+  <div *ngIf="!(user | async)" class="login">
     <button type="button" routerLink="/login" class="btn btn-outline-success"><i class="fa fa-user"
         aria-hidden="true"></i> Acceder</button>
   </div>
-  <div *ngIf="user" class="dropdown login">
+  <div *ngIf="(user | async)" class="dropdown login">
     <button class="btn btn-info dropdown-toggle" type="button" id="drop" data-toggle="dropdown"
       style="background: #d1d1d1; color: #000;" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-user"
-        aria-hidden="true"></i> {{user}}
+        aria-hidden="true"></i> {{(user | async)?.displayName.split(' ')[0]}}
     </button>
     <div class="dropdown-menu" aria-labelledby="drop">
       <a (click)="logOut()" class="dropdown-item"><i class="fa fa-power-off" aria-hidden="true"></i> Cerrar sesión</a>

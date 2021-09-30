@@ -2,7 +2,7 @@
 <div class="container mt-2">
     <div class="row">
         <div class="col-lg-3 col-md-4 col-sm-3">
-            <button type="button" class="btn btn-outline-dark" routerLink="/regiones"><i class="fa fa-chevron-left"
+            <button type="button" class="btn btn-outline-dark border-none" routerLink="/regiones"><i class="fa fa-chevron-left"
                     aria-hidden="true"></i> Volver </button>
         </div>
         <div class="col-lg-6 col-md-4 col-sm-5">
@@ -14,21 +14,21 @@
         </div>
     </div>
     <hr>
-    <table class="table table-sm">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Noticia</th>
-                <th scope="col">Eliminar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let nw of newList" class="hover">
-                <td (click)="create(nw)">{{nw.title}}</td>
-                <td class="center-item biggest"><i (click)="deleteNotice(nw)" class="fa fa-trash-o" style="color:red;"
-                        aria-hidden="true"></i></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-6 col-sm-12" *ngFor="let news of newList" style="padding: 0 !important;">
+            <div class="card">
+                <div class="back-image" style="background-image: url({{news.image}});"></div>
+                <div class="card-body">
+                    <h5 class="card-title">{{news.title}} <small class="text-muted">{{news.state ? 'Activa' : 'Inactiva'}}</small></h5>
+                    <p class="card-text text-truncate">{{news.outline}}</p>
+                    <button type="button" (click)="create(news)" class="btn btn-sm btn-outline-info" style="margin-right: 20px;">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
+                    <button type="button" (click)="delete(news)" class="btn btn-sm btn-outline-danger">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="modal fade bd-example-modal-lg" id="newModal" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">

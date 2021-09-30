@@ -126,7 +126,7 @@ export class NewComponent implements OnInit {
     return !this.newList.some(region => region.title.trim().toLowerCase() === name.trim().toLowerCase());
   }
 
-  deleteNotice(notice: New): void {
+  delete(notice: New): void {
     Swal.fire({
       title: 'Confirmación',
       html: '¿Está seguro que desea eliminar esta noticia?',

@@ -72,6 +72,24 @@ body{
 .container-fluid {
     padding: 0;
 }
+
+.back-image {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-origin: content-box;
+    background-size: cover;
+    border-radius: .25rem .25rem 0 0;
+    margin: -1px;
+    height: 11vh;
+}
+
+.card {
+    margin: 5px
+}
+
+.border-none {
+    border: none !important;
+}
 /*Responsive*/
 /*Desde la altura 0px hasta ka anchura 1488px de pantalla*/
 @media(max-width: 1488px){

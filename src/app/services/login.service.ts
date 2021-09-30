@@ -1,11 +1,33 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { auth } from 'firebase/app';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { User } from '../models/user';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LoginGuard {
+
+  constructor(private router: Router, private loginService: LoginService) {}
+
+  canActivate() {
+    return this.loginService.isAuth().pipe(
+      take(1),
+      map(user => {
+        if(user) {
+          this.router.navigateByUrl('/regiones');
+          return false
+        }
+        return true
+      })
+    );
+  }
+}
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +44,7 @@ export class LoginService {
       console.error(error);
       Swal.fire(
         'Error',
-        'Error iniciando sesión, por favor intentelo más tarde',
+        'Error iniciando sesión, por favor inténtelo más tarde',
         'error'
       );
     }
@@ -36,7 +58,7 @@ export class LoginService {
     return this.afAuth.auth.signOut().catch(() => {
       Swal.fire(
         'Error',
-        'Error cerrando sesión, por favor intentelo más tarde',
+        'Error cerrando sesión, por favor inténtelo más tarde',
         'error'
       );
     });
@@ -49,7 +71,7 @@ export class LoginService {
       console.error(error);
       Swal.fire(
         'Error',
-        'Error iniciando sesión, por favor intentelo más tarde',
+        'Error iniciando sesión, por favor inténtelo más tarde',
         'error'
       );
     }
@@ -72,3 +94,4 @@ export class LoginService {
     return this.fireBase.list('USERS').update(user.idUser, user);
   }
 }
+
