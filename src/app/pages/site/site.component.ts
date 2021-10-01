@@ -21,6 +21,8 @@ export class SiteComponent implements OnInit {
   url: any;
   loading: boolean;
   idMun: string;
+  municipalityName: string;
+  regionName: string;
   siteList: Site[] = [];
   region: string;
   image: string;
@@ -43,11 +45,13 @@ export class SiteComponent implements OnInit {
   ngOnInit(): void {
     this.idMun = sessionStorage.getItem('idMun');
     this.region = sessionStorage.getItem('region');
+    this.regionName = sessionStorage.getItem('regionName');
+    this.municipalityName = sessionStorage.getItem('municipalityName');
     if (this.idMun && this.region) {
-      const sites = JSON.parse(sessionStorage.getItem('sites'));
+      const sites = sessionStorage.getItem('sites') !== 'undefined' ? JSON.parse(sessionStorage.getItem('sites')) : undefined;
       if (sites) {
         Object.keys(sites).forEach((m) => this.siteList.push(sites[m]));
-      }
+      } else { this.siteList = undefined }
     } else {
       Swal.fire({
         title: 'Advertencia',

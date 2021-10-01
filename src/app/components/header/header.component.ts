@@ -11,22 +11,21 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
   user: Observable<firebase.User>;
- // userAuth= new User;
 
   constructor(private loginservice: LoginService, private router: Router) { }
 
   ngOnInit(): void {
     this.user = this.loginservice.isAuth();
-    /*this.loginservice.isAuth().subscribe(answer => {
+    this.loginservice.isAuth().subscribe(answer => {
       if (answer) {
-        this.user = answer.displayName.split(' ')[0];
-        this.userAuth.email = answer.email;
-        this.userAuth.idUser = answer.uid;
-        this.userAuth.nameUser = answer.displayName;
-        this.userAuth.rol = 'admin';
-        this.loginservice.saveUser(this.userAuth);
+        const user: User = new User();
+        user.email = answer.email;
+        user.idUser = answer.uid;
+        user.nameUser = answer.displayName;
+        user.rol = 'admin';
+        this.loginservice.saveUser(user);
       }
-    });*/
+    });
   }
 
   logOut(): void {

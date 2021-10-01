@@ -24,6 +24,7 @@ export class MunicipalityComponent implements OnInit {
   item: string;
   loading: boolean;
   region: string;
+  regionName: string;
   image: string;
   fields = {
     name: 'nombre',
@@ -47,6 +48,7 @@ export class MunicipalityComponent implements OnInit {
 
   ngOnInit(): void {
     this.region = sessionStorage.getItem('region');
+    this.regionName = sessionStorage.getItem('regionName');
     if (this.region) {
       this.loading = true;
       this.municipalityService
@@ -104,6 +106,7 @@ export class MunicipalityComponent implements OnInit {
 
   showConfiguration(mpio: Municipality, item: string): void {
     sessionStorage.setItem('idMun', mpio.idMun);
+    sessionStorage.setItem('municipalityName', mpio.name);
     if (item === 'site') {
       sessionStorage.setItem('sites', JSON.stringify(mpio.sites));
       this.router.navigateByUrl('/sitios');

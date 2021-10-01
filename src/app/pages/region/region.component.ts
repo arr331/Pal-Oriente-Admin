@@ -119,8 +119,9 @@ export class RegionComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  go(id: string): void {
+  go(id: string, regionName: string): void {
     sessionStorage.setItem('region', id);
+    sessionStorage.setItem('regionName', regionName);
     this.router.navigateByUrl('/municipios');
   }
 }

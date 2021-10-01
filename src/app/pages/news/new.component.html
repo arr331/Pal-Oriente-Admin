@@ -5,11 +5,11 @@
             <button type="button" class="btn btn-outline-dark border-none" routerLink="/regiones"><i class="fa fa-chevron-left"
                     aria-hidden="true"></i> Volver </button>
         </div>
-        <div class="col-lg-6 col-md-4 col-sm-5">
+        <div class="col-lg-6 col-md-5 col-sm-5">
             <h3 class="text-center">Noticias</h3>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-4">
-            <button type="button" (click)="create(null)" class="btn btn-outline-primary float-right"><i
+        <div class="col-lg-3 col-md-3 col-sm-4">
+            <button type="button" (click)="create(null)" class="btn btn-outline-primary btn-block float-right"><i
                     class="fa fa-plus" aria-hidden="true"></i> Crear noticia</button>
         </div>
     </div>
@@ -35,6 +35,9 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="container">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 <div class="row" style="margin: 12px;">
                     <div class="col-md-9">
                         <h4>{{nw ? 'Editar' : 'Crear'}} noticia</h4>
@@ -97,7 +100,7 @@
                     </div>
                 </form>
                 <hr>
-                <div class="container-fluid mb-3">
+                <div class="mb-3">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-success pull-right" (click)="save()">Guardar</button>
                 </div>

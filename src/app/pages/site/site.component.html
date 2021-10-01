@@ -1,9 +1,18 @@
 <app-spinner *ngIf="loading"></app-spinner>
-<button type="button" class="btn btn-outline-primary mb-3 mt-2 float-right" (click)="newSite(null)"><i
-        class="fa fa-plus" aria-hidden="true"></i> Crear sitio</button>
-<button type="button" class="btn btn-outline-dark mb-3 mt-2 border-none" routerLink="/municipios"><i class="fa fa-chevron-left"
-        aria-hidden="true"></i> Volver</button>
-<table class="table table-sm">
+<div class="row">
+    <div class="col-md-2 mb-3">
+        <button type="button" class="btn btn-outline-dark border-none" routerLink="/municipios"><i
+                class="fa fa-chevron-left" aria-hidden="true"></i> Volver</button>
+    </div>
+    <div class="col-md-7 text-center mb-3">
+        <h5>{{regionName}} - {{municipalityName}}</h5>
+    </div>
+    <div class="col-md-3 mb-3">
+        <button type="button" class="btn btn-outline-primary btn-block float-right" (click)="newSite(null)"><i
+                class="fa fa-plus" aria-hidden="true"></i> Crear sitio</button>
+    </div>
+</div>
+<table class="table table-sm" *ngIf="siteList?.length > 0; else noData">
     <thead class="thead-dark">
         <tr>
             <th scope="col">Sitio</th>
@@ -18,12 +27,20 @@
         </tr>
     </tbody>
 </table>
+<ng-template #noData>
+    <div class="alert alert-info" role="alert">
+        <i class="fa fa-meh-o" aria-hidden="true"></i> Todavía no hay sitios en este municipio.
+    </div>
+</ng-template>
 
 <div class="modal fade bd-example-modal-lg" id="siteModal" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="container">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <h3><i class="fa fa-{{site ? 'pencil' : 'plus'}}" aria-hidden="true"></i>
                     {{site ? 'Actualizar sitio' : 'Crear sitio'}}</h3>
                 <hr>
@@ -32,9 +49,9 @@
                         <div class="col-md-12" style="text-align: center;">
                             <img *ngIf="image" class="cover-img" src="{{image}}" alt="no se cargo">
                             <ng-container *ngIf="!image">
-                              <i class="fa fa-picture-o" style="font-size: 5rem; color: gray;" aria-hidden="true"></i>
-                              <br>
-                              <span>Sin imagen</span>
+                                <i class="fa fa-picture-o" style="font-size: 5rem; color: gray;" aria-hidden="true"></i>
+                                <br>
+                                <span>Sin imagen</span>
                             </ng-container>
                         </div>
                     </div>
@@ -61,8 +78,8 @@
                         <div class="col-md-12">
                             <label>Descripción</label>
                             <textarea type="text" class="form-control form-control-sm"
-                                placeholder="Ingrese la descripción del sitio" rows="3"
-                                formControlName="description" required></textarea>
+                                placeholder="Ingrese la descripción del sitio" rows="3" formControlName="description"
+                                required></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -87,7 +104,7 @@
                     </div>
                 </form>
                 <hr>
-                <div class="container-fluid mb-3">
+                <div class="mb-3">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     <button type="button" (click)="saveSite()" class="btn btn-success pull-right">Guardar</button>
                 </div>
@@ -101,6 +118,9 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="container">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <div class="row">
                     <div class="col-sm-9">
                         <h4>Imágenes</h4>
@@ -118,7 +138,7 @@
                 <hr>
                 <app-gallery [images]="images"></app-gallery>
                 <hr>
-                <div class="container-fluid mb-3">
+                <div class="mb-3">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-success pull-right" (click)="saveGallery()">Guardar</button>
                 </div>

@@ -35,7 +35,9 @@ export class CelebrationComponent implements OnInit {
   fields = {
     name: 'nombre',
     description: 'descripción',
-  }
+  };
+  municipalityName: string;
+  regionName: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,18 +52,21 @@ export class CelebrationComponent implements OnInit {
   ngOnInit(): void {
     this.idMun = sessionStorage.getItem('idMun');
     this.region = sessionStorage.getItem('region');
-    if (this.idMun && this.region) {
-      const celebrations: Celebration[] = JSON.parse(
-        sessionStorage.getItem('celebrations')
-      );
+    this.regionName = sessionStorage.getItem('regionName');
+    this.municipalityName = sessionStorage.getItem('municipalityName');
+    this.buildForm();
+    if (this.idMun && this.region) {    
+      const celeb = sessionStorage.getItem('celebrations');
+      const celebrations: Celebration[] = celeb !== 'undefined' ? JSON.parse(sessionStorage.getItem('celebrations')) : [];
       if (celebrations && Object.keys(celebrations).length > 0) {
+        this.listCelebration = [];
         Object.keys(celebrations).forEach((m) =>
           this.listCelebration.push(celebrations[m])
         );
-      }
+      } else { this.listCelebration = undefined; }
     } else {
       Swal.fire({
-        title: 'Advertencia?',
+        title: 'Atención',
         html: 'Debe seleccionar un municipio',
         confirmButtonText: `Ir a municipios`,
         icon: 'warning',
@@ -69,7 +74,6 @@ export class CelebrationComponent implements OnInit {
         this.router.navigate(['municipios']);
       });
     }
-    this.buildForm();
   }
 
   buildForm(): void {
@@ -213,7 +217,7 @@ export class CelebrationComponent implements OnInit {
       ? Object.keys(celebration.activities).forEach((m) =>
         this.listActivity.push(celebration.activities[m])
       )
-      : '';
+      : this.listActivity = undefined;
   }
 
   saveActivity(): void {
