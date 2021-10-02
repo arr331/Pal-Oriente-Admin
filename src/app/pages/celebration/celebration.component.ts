@@ -55,7 +55,7 @@ export class CelebrationComponent implements OnInit {
     this.regionName = sessionStorage.getItem('regionName');
     this.municipalityName = sessionStorage.getItem('municipalityName');
     this.buildForm();
-    if (this.idMun && this.region) {    
+    if (this.idMun && this.region) {
       const celeb = sessionStorage.getItem('celebrations');
       const celebrations: Celebration[] = celeb !== 'undefined' ? JSON.parse(sessionStorage.getItem('celebrations')) : [];
       if (celebrations && Object.keys(celebrations).length > 0) {
@@ -113,12 +113,12 @@ export class CelebrationComponent implements OnInit {
   }
 
   addImages(files: FileList): void {
-    for (let index = 0; index < files.length; index++) {
+    Array.from(files).forEach(file => {
       const reader = new FileReader();
       reader.onload = (event) =>
         this.images.push(event.target.result.toString());
-      reader.readAsDataURL(files[index]);
-    }
+      reader.readAsDataURL(file);
+    });
   }
 
   saveGallery(): void {
@@ -192,7 +192,7 @@ export class CelebrationComponent implements OnInit {
         Swal.fire('Atención', `Ya existe una celebración con el mismo nombre`, 'info');
       }
     } else {
-      const imageRequerid = this.image ? '' : ', imagen'
+      const imageRequerid = this.image ? '' : ', imagen';
       const invalids = `${FormValidator.msgInvalidKeys(this.fields, FormValidator.getInvalids(this.celebrationForm))}${imageRequerid}`;
       Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${invalids}</strong>`, 'info');
     }

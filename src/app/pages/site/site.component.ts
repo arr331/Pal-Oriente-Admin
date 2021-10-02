@@ -31,7 +31,7 @@ export class SiteComponent implements OnInit {
     description: 'descripción',
     x: 'coordenada X',
     y: 'coordenada Y'
-  }
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,7 +51,7 @@ export class SiteComponent implements OnInit {
       const sites = sessionStorage.getItem('sites') !== 'undefined' ? JSON.parse(sessionStorage.getItem('sites')) : undefined;
       if (sites) {
         Object.keys(sites).forEach((m) => this.siteList.push(sites[m]));
-      } else { this.siteList = undefined }
+      } else { this.siteList = undefined; }
     } else {
       Swal.fire({
         title: 'Advertencia',
@@ -91,12 +91,12 @@ export class SiteComponent implements OnInit {
   }
 
   addImages(files: FileList): void {
-    for (let index = 0; index < files.length; index++) {
+    Array.from(files).forEach(file => {
       const reader = new FileReader();
       reader.onload = (event) =>
         this.images.push(event.target.result.toString());
-      reader.readAsDataURL(files[index]);
-    }
+      reader.readAsDataURL(file);
+    });
   }
 
   saveGallery(): void {
@@ -147,7 +147,7 @@ export class SiteComponent implements OnInit {
       Swal.fire('Atención', `Ya existe un sitio con el mismo nombre`, 'info');
      }
     } else {
-      const imageRequerid = this.image ? '' : ', imagen'
+      const imageRequerid = this.image ? '' : ', imagen';
       const invalids = `${FormValidator.msgInvalidKeys(this.fields, FormValidator.getInvalids(this.siteForm))}${imageRequerid}`;
       Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${invalids}</strong>`, 'info');
     }

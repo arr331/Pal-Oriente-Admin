@@ -26,7 +26,7 @@ export class NewComponent implements OnInit {
     outline: 'outline',
     text: 'texto',
     title: 'título'
-  }
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,23 +41,22 @@ export class NewComponent implements OnInit {
     this.newService
       .getAll()
       .valueChanges()
-      .subscribe((answer) => {
+      .subscribe(answer => {
         this.newList = answer;
         this.loading = false;
-      }),
-      (error) => {
+      }, error => {
         console.error(error);
         Swal.fire(
           'Problema interno del server',
-          'La información no pudo ser obtenida, intentelo de nuevo más tarde',
+          'La información no pudo ser obtenida, inténtelo de nuevo más tarde',
           'warning'
         );
         this.loading = false;
-      };
+      });
   }
 
   buildForm(): void {
-    let dateNow = new Date().getTime().toString();
+    const dateNow = new Date().getTime().toString();
     this.newForm = this.formBuilder.group({
       outline: ['', Validators.required],
       text: ['', Validators.required],
@@ -115,7 +114,7 @@ export class NewComponent implements OnInit {
         Swal.fire('Atención', `Ya existe una noticia con el mismo nombre`, 'info');
       }
     } else {
-      const imageRequerid = this.image ? '' : ', imagen'
+      const imageRequerid = this.image ? '' : ', imagen';
       const invalids = `${FormValidator.msgInvalidKeys(this.fields, FormValidator.getInvalids(this.newForm))}${imageRequerid}`;
       Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${invalids}</strong>`, 'info');
     }

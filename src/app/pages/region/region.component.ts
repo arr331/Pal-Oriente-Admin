@@ -24,7 +24,7 @@ export class RegionComponent implements OnInit {
     description: 'descripción',
     name: 'nombre',
     state: 'estado'
-  }
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,19 +39,18 @@ export class RegionComponent implements OnInit {
     this.regionService
       .getAll()
       .valueChanges()
-      .subscribe((answer) => {
+      .subscribe(answer => {
         this.regionList = answer;
         this.loading = false;
-      }),
-      (error) => {
+      }, error => {
         console.error(error);
         Swal.fire(
           'Error',
-          'Error cargando datos, intentelo más tarde',
+          'Error cargando datos, inténtelo más tarde',
           'error'
         );
         this.loading = false;
-      };
+      });
     this.buildForm();
   }
 
@@ -101,7 +100,7 @@ export class RegionComponent implements OnInit {
       Swal.fire('Atención', `Ya existe una región con el mismo nombre`, 'info');
      }
     } else {
-      const imageRequerid = this.image ? '' : ', imagen'
+      const imageRequerid = this.image ? '' : ', imagen';
       const invalids = `${FormValidator.msgInvalidKeys(this.fields, FormValidator.getInvalids(this.regionForm))}${imageRequerid}`;
       Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${invalids}</strong>`, 'info');
     }

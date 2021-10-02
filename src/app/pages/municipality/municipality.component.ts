@@ -35,7 +35,7 @@ export class MunicipalityComponent implements OnInit {
     weather: 'clima',
     x: 'coordenada X',
     y: 'coordenada Y'
-  }
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,9 +57,9 @@ export class MunicipalityComponent implements OnInit {
         .subscribe(answer => {
           this.listMunicipalities = answer;
           this.loading = false;
-        }), error => {
-          this.throwError('La información no pudo ser obtenida, intentelo de nuevo más tarde', error);
-        };
+        }, error => {
+          this.throwError('La información no pudo ser obtenida, inténtelo de nuevo más tarde', error);
+        });
     } else {
       Swal.fire({
         title: 'Advertencia',
@@ -150,7 +150,7 @@ export class MunicipalityComponent implements OnInit {
         Swal.fire('Atención', `Ya existe una municipio con el mismo nombre`, 'info');
       }
     } else {
-      const imageRequerid = this.image ? '' : ', imagen'
+      const imageRequerid = this.image ? '' : ', imagen';
       const invalids = `${FormValidator.msgInvalidKeys(this.fields, FormValidator.getInvalids(this.municipalityForm))}${imageRequerid}`;
       Swal.fire('Atención', `Los siguientes campos son inválidos: <br> <strong>${invalids}</strong>`, 'info');
     }

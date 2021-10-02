@@ -118,7 +118,7 @@ describe('CelebrationComponent', () => {
     sessionStorage.setItem('celebrations', JSON.stringify(celebrations));
     component.ngOnInit();
     expect(Swal.isVisible()).toBeTruthy();
-    expect(Swal.getTitle().textContent).toEqual('Advertencia?');
+    expect(Swal.getTitle().textContent).toEqual('Atención');
   });
 
   it('should call addCelebration method and reset method when url not exist', () => {

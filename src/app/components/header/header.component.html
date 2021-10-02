@@ -7,7 +7,7 @@
     <div class="navbar-nav" class="menu" style="margin-left: auto;">
     </div>
   </div>
-  <div *ngIf="!(user | async)" class="login">
+  <div *ngIf="(user | async) === null" class="login">
     <button type="button" routerLink="/login" class="btn btn-outline-success"><i class="fa fa-user"
         aria-hidden="true"></i> Acceder</button>
   </div>

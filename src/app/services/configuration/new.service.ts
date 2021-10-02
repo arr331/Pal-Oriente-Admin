@@ -13,7 +13,7 @@ export class NewService {
     private fireBase: AngularFireDatabase,
     private storage: AngularFireStorage,
     private imageCompress: NgxImageCompressService
-  ) {}
+  ) { }
 
   getAll(): AngularFireList<New> {
     return this.fireBase.list<New>('NEWS');
@@ -25,7 +25,7 @@ export class NewService {
     decisionSave: boolean
   ): Promise<void> {
     nw.id = nw.id || this.fireBase.createPushId();
-    decisionSave ? (nw.image = await this.uploadImg(image, nw.id)) : '';
+    if (decisionSave) { nw.image = await this.uploadImg(image, nw.id); }
     return this.fireBase.list('NEWS').update(nw.id, nw);
   }
 

@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   fields = {
     email: 'correo electrónico',
     password: 'contraseña'
-  }
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit {
     if (FormValidator.validateForm(this.logInForm)) {
       this.loginservice
         .loginEmail(
-          this.logInForm.value['email'],
-          this.logInForm.value['password']
+          this.logInForm.value.email,
+          this.logInForm.value.password
         )
         .then(
           () => this.router.navigateByUrl('/regiones'),

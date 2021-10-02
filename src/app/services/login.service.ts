@@ -13,17 +13,17 @@ import { User } from '../models/user';
 })
 export class LoginGuard {
 
-  constructor(private router: Router, private loginService: LoginService) {}
+  constructor(private router: Router, private loginService: LoginService) { }
 
   canActivate() {
     return this.loginService.isAuth().pipe(
       take(1),
       map(user => {
-        if(user) {
+        if (user) {
           this.router.navigateByUrl('/regiones');
-          return false
+          return false;
         }
-        return true
+        return true;
       })
     );
   }
@@ -35,7 +35,7 @@ export class LoginGuard {
 export class LoginService {
   user = new User();
 
-  constructor(public afAuth: AngularFireAuth, private fireBase: AngularFireDatabase,) {}
+  constructor(public afAuth: AngularFireAuth, private fireBase: AngularFireDatabase) { }
 
   async loginGoogle(): Promise<auth.UserCredential> {
     try {
@@ -51,7 +51,7 @@ export class LoginService {
   }
 
   isAuth(): Observable<firebase.User> {
-    return this.afAuth.authState.pipe(map((auth) => auth));
+    return this.afAuth.authState;
   }
 
   logOut(): Promise<void> {

@@ -97,7 +97,7 @@ describe('RegionComponent', () => {
 
   it('should call navigateByUrl', () => {
     const navigateByUrl = spyOn(router, 'navigateByUrl').and.callThrough();
-    component.go('id');
+    component.go('id', 'ALTIPLANO');
     expect(sessionStorage.getItem('region')).toEqual('id');
     expect(navigateByUrl).toHaveBeenCalledWith('/municipios');
   });
